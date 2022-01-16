@@ -1,8 +1,26 @@
 #!/usr/bin/env python3
 import sys
 
+from collections import defaultdict
+
 
 def solve(N: int, A: "List[int]", B: "List[int]", C: "List[int]"):
+    MOD = 46
+    a_count = [0] * MOD
+    b_count = [0] * MOD
+    c_count = [0] * MOD
+    for i in range(N):
+        a_count[A[i] % MOD] += 1
+        b_count[B[i] % MOD] += 1
+        c_count[C[i] % MOD] += 1
+    print(*a_count, file=sys.stderr)
+    print(*b_count, file=sys.stderr)
+    print(*c_count, file=sys.stderr)
+    ret = 0
+    for i in range(MOD):
+        for j in range(MOD):
+            ret += a_count[i] * b_count[j] * c_count[(MOD - i - j) % MOD]
+    print(ret)
     return
 
 
@@ -12,6 +30,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     A = [int(next(tokens)) for _ in range(N)]  # type: "List[int]"
@@ -19,5 +38,6 @@ def main():
     C = [int(next(tokens)) for _ in range(N)]  # type: "List[int]"
     solve(N, A, B, C)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

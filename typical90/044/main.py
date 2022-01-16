@@ -2,7 +2,21 @@
 import sys
 
 
-def solve(N: int, Q: int, A: "List[int]", T: "List[int]", x: "List[int]", y: "List[int]"):
+def solve(
+    N: int, Q: int, A: "List[int]", T: "List[int]", x: "List[int]", y: "List[int]"
+):
+    left = 0
+    for i in range(Q):
+        if T[i] == 1:
+            A[(left + x[i] - 1) % N], A[(left + y[i] - 1) % N] = (
+                A[(left + y[i] - 1) % N],
+                A[(left + x[i] - 1) % N],
+            )
+        elif T[i] == 2:
+            left = (left - 1) % N
+        else:
+            print(A[(left + x[i] - 1) % N])
+
     return
 
 
@@ -12,6 +26,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     Q = int(next(tokens))  # type: int
@@ -25,5 +40,6 @@ def main():
         y[i] = int(next(tokens))
     solve(N, Q, A, T, x, y)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
