@@ -2,7 +2,20 @@
 import sys
 
 
+def gcd(x, y):
+    if y == 0:
+        return x
+    else:
+        return gcd(y, x % y)
+
+
 def solve(A: int, B: int):
+    c = gcd(A, B)
+    a = A // c
+    if a * B > 10 ** 18:
+        print("Large")
+    else:
+        print(a * B)
     return
 
 
@@ -12,10 +25,12 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     A = int(next(tokens))  # type: int
     B = int(next(tokens))  # type: int
     solve(A, B)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

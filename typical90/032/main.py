@@ -1,8 +1,32 @@
 #!/usr/bin/env python3
 import sys
+from itertools import permutations
 
 
 def solve(N: int, A: "List[List[int]]", M: int, X: "List[int]", Y: "List[int]"):
+    INF = 1000 * 10 + 1
+    ret = INF
+    kirai_list = {}
+    for i in range(M):
+        kirai_list[(X[i] - 1, Y[i] - 1)] = True
+        kirai_list[(Y[i] - 1, X[i] - 1)] = True
+    for pat in permutations(range(N)):
+        kirai_flag = False
+        for i in range(len(pat) - 1):
+            if (pat[i], pat[i + 1]) in kirai_list:
+                kirai_flag = True
+        if kirai_flag:
+            continue
+
+        t = 0
+        for i in range(len(pat)):
+            t += A[pat[i]][i]
+        ret = min(ret, t)
+    if ret == INF:
+        print(-1)
+    else:
+        print(ret)
+
     return
 
 
@@ -12,9 +36,12 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
-    A = [[int(next(tokens)) for _ in range(N)] for _ in range(N)]  # type: "List[List[int]]"
+    A = [
+        [int(next(tokens)) for _ in range(N)] for _ in range(N)
+    ]  # type: "List[List[int]]"
     M = int(next(tokens))  # type: int
     X = [int()] * (M)  # type: "List[int]"
     Y = [int()] * (M)  # type: "List[int]"
@@ -23,5 +50,6 @@ def main():
         Y[i] = int(next(tokens))
     solve(N, A, M, X, Y)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
