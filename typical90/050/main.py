@@ -5,6 +5,18 @@ MOD = 1000000007  # type: int
 
 
 def solve(N: int, L: int):
+    if L > N:
+        print(1)
+        return
+
+    dp = [0] * (N + 1)
+    dp[0] = 1
+    for i in range(1, N + 1):
+        if i < L:
+            dp[i] = dp[i - 1]
+        else:
+            dp[i] = (dp[i - 1] + dp[i - L]) % MOD
+    print(dp[N])
     return
 
 
@@ -14,10 +26,12 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     L = int(next(tokens))  # type: int
     solve(N, L)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

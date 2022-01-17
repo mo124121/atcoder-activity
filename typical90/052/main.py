@@ -5,6 +5,11 @@ MOD = 1000000007  # type: int
 
 
 def solve(N: int, A: "List[List[int]]"):
+    dp = [0] * (N + 1)
+    dp[0] = 1
+    for i in range(N):
+        dp[i + 1] = dp[i] * sum(A[i]) % MOD
+    print(dp[N])
     return
 
 
@@ -14,10 +19,14 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
-    A = [[int(next(tokens)) for _ in range(6)] for _ in range(N)]  # type: "List[List[int]]"
+    A = [
+        [int(next(tokens)) for _ in range(6)] for _ in range(N)
+    ]  # type: "List[List[int]]"
     solve(N, A)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

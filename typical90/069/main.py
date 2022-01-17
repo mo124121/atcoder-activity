@@ -1,10 +1,30 @@
 #!/usr/bin/env python3
+from functools import lru_cache
 import sys
 
+sys.setrecursionlimit(500 * 500)  # 追加
 MOD = 1000000007  # type: int
 
 
+@lru_cache(maxsize=None)
+def calc(base, bin_exp):
+    if bin_exp == 0:
+        return base
+    else:
+        return (calc(base, bin_exp - 1) ** 2) % MOD
+
+
 def solve(N: int, K: int):
+    if N == 1:
+        print(K)
+        return
+    ret = K * (K - 1) % MOD
+    exp = 0
+    while (N - 2) >= (1 << exp):
+        if (N - 2) & (1 << exp):
+            ret = (ret * calc(K - 2, exp)) % MOD
+        exp += 1
+    print(ret)
     return
 
 
@@ -14,10 +34,12 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     K = int(next(tokens))  # type: int
     solve(N, K)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

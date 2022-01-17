@@ -2,7 +2,37 @@
 import sys
 
 
-def solve(N: int, Q: int, A: "List[int]", L: "List[int]", R: "List[int]", V: "List[int]"):
+def height(diff):
+    h = [0] * len(diff)
+    h[0] = diff[0]
+    for i in range(1, len(diff)):
+        h[i] = diff[i] + h[i - 1]
+    return h[1:]
+
+
+def solve(
+    N: int, Q: int, A: "List[int]", L: "List[int]", R: "List[int]", V: "List[int]"
+):
+    diff = [0] * (N + 1)
+    diff[0] = A[0]
+    ret = 0
+    for i in range(1, N):
+        diff[i + 1] = A[i] - A[i - 1]
+        ret += abs(diff[i + 1])
+    # print(height(diff), diff, ret, file=sys.stderr)
+
+    for j in range(Q):
+        if L[j] != 1:
+            ret += abs(diff[L[j]] + V[j]) - abs(diff[L[j]])
+            diff[L[j]] += V[j]
+        else:
+            diff[L[j]] += V[j]
+        if R[j] != N:
+            ret += abs(diff[R[j] + 1] - V[j]) - abs(diff[R[j] + 1])
+            diff[R[j] + 1] -= V[j]
+        # print(height(diff), end=" ", file=sys.stderr)
+        print(ret)
+
     return
 
 
@@ -12,6 +42,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     Q = int(next(tokens))  # type: int
@@ -25,5 +56,6 @@ def main():
         V[i] = int(next(tokens))
     solve(N, Q, A, L, R, V)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
