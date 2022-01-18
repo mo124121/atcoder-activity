@@ -1,8 +1,19 @@
 #!/usr/bin/env python3
+from math import ceil, log2
 import sys
 
 
 def solve(N: int):
+    ret = 0
+    n = N
+    for i in range(2, int(N ** 0.5) + 2):
+        while n % i == 0 and n >= i:
+            n //= i
+            ret += 1
+    if n != 1:
+        ret += 1
+    print(ceil(log2(ret)))
+
     return
 
 
@@ -12,9 +23,11 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     solve(N)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
