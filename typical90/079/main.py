@@ -5,7 +5,35 @@ YES = "Yes"  # type: str
 NO = "No"  # type: str
 
 
+def show(A):
+    print("\n")
+    for line in A:
+        print(*line)
+
+
 def solve(H: int, W: int, A: "List[List[int]]", B: "List[List[int]]"):
+    ret = 0
+    for i in range(H - 1):
+        for j in range(W - 1):
+            diff = B[i][j] - A[i][j]
+            ret += abs(diff)
+            for k in range(2):
+                for l in range(2):
+                    A[i + k][j + l] += diff
+    flag = True
+    for i in range(H):
+        if A[i][W - 1] != B[i][W - 1]:
+            flag = False
+    for i in range(W):
+        if A[H - 1][i] != B[H - 1][i]:
+            flag = False
+
+    if flag:
+        print(YES)
+        print(ret)
+    else:
+        print(NO)
+
     return
 
 
@@ -15,12 +43,18 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     H = int(next(tokens))  # type: int
     W = int(next(tokens))  # type: int
-    A = [[int(next(tokens)) for _ in range(W)] for _ in range(H)]  # type: "List[List[int]]"
-    B = [[int(next(tokens)) for _ in range(W)] for _ in range(H)]  # type: "List[List[int]]"
+    A = [
+        [int(next(tokens)) for _ in range(W)] for _ in range(H)
+    ]  # type: "List[List[int]]"
+    B = [
+        [int(next(tokens)) for _ in range(W)] for _ in range(H)
+    ]  # type: "List[List[int]]"
     solve(H, W, A, B)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
