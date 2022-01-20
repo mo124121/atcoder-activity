@@ -1,10 +1,24 @@
 #!/usr/bin/env python3
 import sys
+from math import log10
 
 MOD = 1000000007  # type: int
 
 
+def sum_series(x: int):
+    return ((x % MOD * (x + 1) % MOD) // 2) % MOD
+
+
 def solve(L: int, R: int):
+
+    ret2 = 0
+
+    for j in range(len(str(L)), len(str(R)) + 1):
+        l = max(10 ** (j - 1), L) - 1
+        r = min(10 ** j - 1, R)
+        ret2 += j * (r * (r + 1) - l * (l + 1)) // 2
+        ret2 %= MOD
+    print(ret2)
     return
 
 
@@ -14,10 +28,12 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     L = int(next(tokens))  # type: int
     R = int(next(tokens))  # type: int
     solve(L, R)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
