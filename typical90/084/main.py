@@ -3,6 +3,23 @@ import sys
 
 
 def solve(N: int, S: str):
+    right = 0
+    ans = 0
+    count = [0] * 2
+    count[int(S[0] == "o")] += 1
+
+    for left in range(N - 1):
+        while True:
+            if count[0] > 0 and count[1] > 0:
+                ans += N - right
+                break
+            if right == N - 1:
+                break
+            right += 1
+            count[int(S[right] == "o")] += 1
+
+        count[int(S[left] == "o")] -= 1
+    print(ans)
     return
 
 
@@ -12,10 +29,12 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     S = next(tokens)  # type: str
     solve(N, S)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
