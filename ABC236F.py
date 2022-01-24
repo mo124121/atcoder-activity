@@ -6,11 +6,20 @@ C.sort()
 
 S = []
 ret = 0
-for c_i, i in C:
-    for s in S:
-        i = min(i, i ^ s)
-    if i != 0:
-        S.append(i)
-        ret += c_i
+cnt = 0
+occurence = {}
+
+for i in range(2 ** N):
+    if cnt == N:
+        break
+    if C[i][1] not in occurence:
+        new_occurence = {}
+        for j in occurence:
+            if occurence[j]:
+                new_occurence[j ^ C[i][1]] = True
+        occurence[C[i][1]] = True
+        occurence = {**occurence, **new_occurence}
+        ret += C[i][0]
+        cnt += 1
 
 print(ret)
