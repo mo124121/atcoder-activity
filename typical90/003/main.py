@@ -1,8 +1,46 @@
 #!/usr/bin/env python3
+from collections import deque
 import sys
 
 
 def solve(N: int, A: "List[int]", B: "List[int]"):
+    G = [[] for _ in range(N + 1)]
+    for i in range(N - 1):
+        G[A[i]].append(B[i])
+        G[B[i]].append(A[i])
+    q = deque()
+    # 1st
+    ret1 = 0
+    node1 = 1
+    q.append((node1, ret1))
+    seen = {}
+    seen[node1] = ret1
+    while len(q):
+        node, d = q.popleft()
+        seen[node1] = d
+        if ret1 < d:
+            ret1 = d
+            node1 = node
+        for node_to in G[node]:
+            if node_to not in seen:
+                q.append((node_to, ret1 + 1))
+
+    # 2nd
+    ret2 = 0
+    q.append((node1, ret2))
+    seen = {}
+    seen[node1] = ret2
+    while len(q):
+        node, d = q.popleft()
+        seen[node] = d
+        if ret2 < d:
+            ret2 = d
+        for node_to in G[node]:
+            if node_to not in seen:
+                q.append((node_to, ret2 + 1))
+
+    print(ret2 + 1)
+
     return
 
 
@@ -12,6 +50,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     A = [int()] * (N - 1)  # type: "List[int]"
@@ -21,5 +60,6 @@ def main():
         B[i] = int(next(tokens))
     solve(N, A, B)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
