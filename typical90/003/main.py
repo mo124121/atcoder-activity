@@ -3,43 +3,37 @@ from collections import deque
 import sys
 
 
+def find_farthest(G, start):
+    d_far = 0
+    node_g = start
+    st = deque()  # 深さ探索=stack
+    seen = {}
+    st.append((node_g, d_far))
+    seen[start] = 0
+
+    while len(st):
+        node, d = st.popleft()
+        seen[node] = d
+        if d_far < d:
+            d_far = d
+            node_g = node
+        for node_to in G[node]:
+            if node_to not in seen:
+                st.append((node_to, d + 1))
+
+    return node_g, d_far
+
+
 def solve(N: int, A: "List[int]", B: "List[int]"):
     G = [[] for _ in range(N + 1)]
     for i in range(N - 1):
         G[A[i]].append(B[i])
         G[B[i]].append(A[i])
-    q = deque()
-    # 1st
-    ret1 = 0
-    node1 = 1
-    q.append((node1, ret1))
-    seen = {}
-    seen[node1] = ret1
-    while len(q):
-        node, d = q.popleft()
-        seen[node1] = d
-        if ret1 < d:
-            ret1 = d
-            node1 = node
-        for node_to in G[node]:
-            if node_to not in seen:
-                q.append((node_to, ret1 + 1))
 
-    # 2nd
-    ret2 = 0
-    q.append((node1, ret2))
-    seen = {}
-    seen[node1] = ret2
-    while len(q):
-        node, d = q.popleft()
-        seen[node] = d
-        if ret2 < d:
-            ret2 = d
-        for node_to in G[node]:
-            if node_to not in seen:
-                q.append((node_to, ret2 + 1))
+    terminal, _ = find_farthest(G, 1)
+    _, ret = find_farthest(G, terminal)
 
-    print(ret2 + 1)
+    print(ret + 1)
 
     return
 
