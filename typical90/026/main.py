@@ -9,35 +9,24 @@ def solve(N: int, A: "List[int]", B: "List[int]"):
         G[A[i]].append(B[i])
         G[B[i]].append(A[i])
 
-    ret = {}
-    for k, e in G.items():
-        if len(e) == 1:
-            ret[k] = True
-            if len(ret) == N // 2:
-                print(*ret.keys())
-                return
+    ret = [[] for _ in range(2)]
 
     st = deque()
-    st.append(k)
-    seen = {}
-    seen[k] = True
+    st.append(1)
+    seen = {1: 0}
 
     while len(st):
         node = st.pop()
-        flag = True
         for neibor in G[node]:
-            if neibor in ret:
-                flag = False
             if neibor not in seen:
                 st.append(neibor)
-                seen[neibor] = True
-        if flag:
-            ret[node] = True
-            if len(ret) == N // 2:
-                print(*ret.keys())
-                return
+                seen[neibor] = 1 - seen[node]
+                ret[seen[neibor]].append(neibor)
 
-    print(*ret.keys())
+    if len(ret[0]) > len(ret[1]):
+        print(*ret[0][: N // 2])
+    else:
+        print(*ret[1][: N // 2])
 
     return
 
