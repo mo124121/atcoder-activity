@@ -10,23 +10,22 @@ if rest + K > A[0]:
 
 A[0] -= rest + K
 
-dp = [[0] * (N) for _ in range(K + 1)]
 
-for i in range(N):
-    dp[1][i] = 1
+def comb(n, r):
+    r = min(r, n - r)
+    if n == 0:
+        return 1
+    big = 1
+    small = 1
+    for i in range(1, r + 1):
+        big *= n + 1 - i
+        small *= i
+    return big // small % MOD
 
-for k in range(1, K):
-    for i in range(N):
-        dp[k + 1][i] = ((dp[k][i] * (A[i] + k))) % MOD
 
 ret = 1
-div = 1
-for i in range(1, K):
-    div *= i
-div %= MOD
-
 for i in range(N):
-    ret *= dp[K][i] // div
+    ret *= comb(A[i] + K - 1, K - 1)
     ret %= MOD
 
 print(ret)
