@@ -3,6 +3,18 @@ import sys
 
 
 def solve(N: int, lx: "List[int]", ly: "List[int]", rx: "List[int]", ry: "List[int]"):
+    dp = [[0] * 1000 for _ in range(1000)]
+    for n in range(N):
+        for i in range(lx[n], rx[n]):
+            for j in range(ly[n], ry[n]):
+                dp[i][j] += 1
+    ret = [0] * (N + 1)
+    for i in range(1000):
+        for j in range(1000):
+            if dp[i][j] > 0:
+                ret[dp[i][j]] += 1
+
+    print(*ret[1:], sep="\n")
     return
 
 
@@ -12,6 +24,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     lx = [int()] * (N)  # type: "List[int]"
@@ -25,5 +38,6 @@ def main():
         ry[i] = int(next(tokens))
     solve(N, lx, ly, rx, ry)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
