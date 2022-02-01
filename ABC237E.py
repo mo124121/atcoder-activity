@@ -11,31 +11,28 @@ for i in range(M):
     u, v = map(int, input().split())
     diff = H[u] - H[v]
     if diff > 0:
-        G[u].append((v, -diff))
-        G[v].append((u, 2 * diff))
-    else:
-        G[u].append((v, -2 * diff))
+        G[u].append((v, 0))
         G[v].append((u, diff))
+    else:
+        G[u].append((v, -diff))
+        G[v].append((u, 0))
 
 import heapq
-from collections import deque
 
 h = []
 heapq.heappush(h, (0, 1))
-q = deque()
 
 
 ret = 0
-dist = [WORST] * (N + 1)
-dist[0] = 0
+dist = [WORST + H[i] for i in range(N + 1)]
 while len(h):
-    s, hiroba = heapq.heappop(h)
-    if dist[hiroba] < s:
+    d, hiroba = heapq.heappop(h)
+    if dist[hiroba] < d:
         continue
-    ret = min(s, ret)
+    ret = min(d + H[hiroba] - H[1], ret)
     best_hiroba = 0
     for neibor, cost in G[hiroba]:
-        if dist[neibor] > s + cost:
-            dist[neibor] = s + cost
-            heapq.heappush(h, (s + cost, neibor))
+        if dist[neibor] > d + cost:
+            dist[neibor] = d + cost
+            heapq.heappush(h, (d + cost, neibor))
 print(-ret)
