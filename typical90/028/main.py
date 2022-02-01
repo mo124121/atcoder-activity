@@ -1,18 +1,31 @@
 #!/usr/bin/env python3
 import sys
+from bisect import bisect
 
 
 def solve(N: int, lx: "List[int]", ly: "List[int]", rx: "List[int]", ry: "List[int]"):
-    dp = [[0] * 1000 for _ in range(1000)]
-    for n in range(N):
-        for i in range(lx[n], rx[n]):
-            for j in range(ly[n], ry[n]):
-                dp[i][j] += 1
+    W = 1000
+    H = 1000
+    dp = [[0] * (W + 1) for _ in range(H + 1)]
+
+    for i in range(N):
+        dp[lx[i]][ly[i]] += 1
+        dp[lx[i]][ry[i]] -= 1
+        dp[rx[i]][ly[i]] -= 1
+        dp[rx[i]][ry[i]] += 1
+
+    for i in range(H):
+        for j in range(W):
+            dp[i][j + 1] += dp[i][j]
+
+    for i in range(H):
+        for j in range(W):
+            dp[i + 1][j] += dp[i][j]
+
     ret = [0] * (N + 1)
-    for i in range(1000):
-        for j in range(1000):
-            if dp[i][j] > 0:
-                ret[dp[i][j]] += 1
+    for i in range(H):
+        for j in range(W):
+            ret[dp[i][j]] += 1
 
     print(*ret[1:], sep="\n")
     return
