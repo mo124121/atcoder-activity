@@ -1,8 +1,24 @@
 #!/usr/bin/env python3
 import sys
+from itertools import product
+from collections import defaultdict
 
 
 def solve(H: int, W: int, P: "List[List[int]]"):
+    ret = 0
+    for pat in product((1, 0), repeat=H):
+        seen = defaultdict(int)
+        for i in range(W):
+            tmp = []
+            for j in range(H):
+                if pat[j] == 1:
+                    tmp.append(P[j][i])
+            if len(tmp):
+                if all(val == tmp[0] for val in tmp):
+                    seen[tmp[0]] += len(tmp)
+        for v in seen.values():
+            ret = max(ret, v)
+    print(ret)
     return
 
 
@@ -12,11 +28,15 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     H = int(next(tokens))  # type: int
     W = int(next(tokens))  # type: int
-    P = [[int(next(tokens)) for _ in range(W)] for _ in range(H)]  # type: "List[List[int]]"
+    P = [
+        [int(next(tokens)) for _ in range(W)] for _ in range(H)
+    ]  # type: "List[List[int]]"
     solve(H, W, P)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
