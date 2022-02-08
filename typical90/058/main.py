@@ -1,10 +1,31 @@
 #!/usr/bin/env python3
 import sys
 
-MOD = 10  # type: int
+MOD = 10 ** 5  # type: int
+
+
+def strange_calc(x):
+    y = sum(map(int, str(x)))
+    return (x + y) % MOD
 
 
 def solve(N: int, K: int):
+    x = N
+    c = 0
+    seen = {x: c}
+    while True:
+        x = strange_calc(x)
+        c += 1
+        if x not in seen:
+            seen[x] = c
+        else:
+            break
+        if c == K:
+            print(x)
+            return
+    for _ in range((K - seen[x]) % (c - seen[x])):
+        x = strange_calc(x)
+    print(x)
     return
 
 
@@ -14,10 +35,12 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     K = int(next(tokens))  # type: int
     solve(N, K)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
