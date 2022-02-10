@@ -2,7 +2,24 @@
 import sys
 
 
+def calc_cost(Z, elec):
+    ret = 0
+    for z in Z:
+        ret += abs(z - elec)
+    return ret
+
+
+def search_best(Z):
+    Z.sort()
+    z = Z[len(Z) // 2]
+    cost = calc_cost(Z, z)
+    return z, cost
+
+
 def solve(N: int, X: "List[int]", Y: "List[int]"):
+    x, x_cost = search_best(X)
+    y, y_cost = search_best(Y)
+    print(x_cost + y_cost)
     return
 
 
@@ -12,6 +29,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     X = [int()] * (N)  # type: "List[int]"
@@ -21,5 +39,6 @@ def main():
         Y[i] = int(next(tokens))
     solve(N, X, Y)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
