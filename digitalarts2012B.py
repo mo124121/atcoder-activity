@@ -19,10 +19,10 @@ elif c == "z" * len(c):
 # 全部同じ
 elif c == c[0] * len(c):
     ret = c[:-2] + chr(ord(c[-2]) + 1) + chr(ord(c[-1]) - 1)
-# それ以外
+# 反転して同じじゃない
+elif c != c[::1]:
+    ret = c[::1]
 else:
-    ret = list(c)
-    ret.sort()
-    ret = chr(ord(ret[0]) + 1) + "".join(ret[1:-1]) + chr(ord(ret[-1]) - 1)
+    ret = "".join(sorted(c))
 
 print(ret)
