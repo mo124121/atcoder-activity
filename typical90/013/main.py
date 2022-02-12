@@ -1,8 +1,41 @@
 #!/usr/bin/env python3
+from collections import defaultdict
+import heapq
 import sys
 
 
 def solve(N: int, M: int, A: "List[int]", B: "List[int]", C: "List[int]"):
+    G = defaultdict(list)
+    for i in range(M):
+        G[A[i]].append((C[i], B[i]))
+        G[B[i]].append((C[i], A[i]))
+
+    h = []
+    ret = [{}, {}]
+
+    # 1->k
+    heapq.heappush(h, (0, 1))
+    while len(h):
+        cost, node = heapq.heappop(h)
+        if node in ret[0]:
+            continue
+        else:
+            ret[0][node] = cost
+        for c, neibor in G[node]:
+            heapq.heappush(h, (c + cost, neibor))
+    # k->N
+    heapq.heappush(h, (0, N))
+    while len(h):
+        cost, node = heapq.heappop(h)
+        if node in ret[1]:
+            continue
+        else:
+            ret[1][node] = cost
+        for c, neibor in G[node]:
+            heapq.heappush(h, (c + cost, neibor))
+
+    print(*[ret[0][i] + ret[1][i] for i in range(1, N + 1)], sep="\n")
+
     return
 
 
@@ -12,6 +45,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     M = int(next(tokens))  # type: int
@@ -24,5 +58,6 @@ def main():
         C[i] = int(next(tokens))
     solve(N, M, A, B, C)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
