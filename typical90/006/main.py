@@ -1,8 +1,26 @@
 #!/usr/bin/env python3
+from collections import defaultdict
 import sys
-
+import heapq
 
 def solve(N: int, K: int, S: str):
+    h=[]
+    for i in range(N-K):
+        heapq.heappush(h,(S[i],i))
+    left=0
+    ret=[]
+    for i in range(N-K,N):
+        heapq.heappush(h,(S[i],i))
+        while True:
+            c,j=heapq.heappop(h)
+            if j >=left:
+                left=j
+                ret.append(c)
+                break
+    print("".join(ret))
+
+
+
     return
 
 
@@ -12,11 +30,13 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     K = int(next(tokens))  # type: int
     S = next(tokens)  # type: str
     solve(N, K, S)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
