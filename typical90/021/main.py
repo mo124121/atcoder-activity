@@ -1,8 +1,54 @@
 #!/usr/bin/env python3
+from collections import defaultdict, deque
 import sys
+
+sys.setrecursionlimit(500 * 500)
 
 
 def solve(N: int, M: int, A: "List[int]", B: "List[int]"):
+    G = defaultdict(list)
+    G_rev = defaultdict(list)
+    for i in range(M):
+        G[A[i]].append(B[i])
+        G_rev[B[i]].append(A[i])
+
+    order = []
+    seen = {}
+
+    def dfs(s):
+        seen[s] = True
+        for t in G[s]:
+            if t not in seen:
+                dfs(t)
+        order.append(s)
+
+    for i in range(1, N + 1):
+        if i not in seen:
+            dfs(i)
+
+    groups = defaultdict(list)
+    seen = {}
+
+    def rdfs(s, col):
+        groups[col].append(s)
+        seen[s] = True
+        for t in G_rev[s]:
+            if t not in seen:
+                rdfs(t, col)
+
+    label = 0
+    for s in reversed(order):
+        if s not in seen:
+            rdfs(s, label)
+            label += 1
+
+    ret = 0
+    for value in groups.values():
+        size = len(value)
+        ret += size * (size - 1) // 2
+
+    print(ret)
+
     return
 
 
@@ -12,6 +58,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     M = int(next(tokens))  # type: int
@@ -22,5 +69,6 @@ def main():
         B[i] = int(next(tokens))
     solve(N, M, A, B)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
