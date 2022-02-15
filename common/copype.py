@@ -31,6 +31,88 @@ class UnionFind:
         return root_x == root_y
 
 
+class SegmentTree:
+    def __init__(self, N, INF=-1) -> None:
+        n = 1
+        while n < N:
+            n <<= 1
+
+        self.n = n
+        self.INF = INF
+        self.elements = [INF] * (2 * n - 1)
+
+    def update(self, i, x):
+        i += self.n - 1
+        self.elements[i] = x
+        while i > 0:
+            i = (i - 1) // 2
+            self.elements[i] = max(self.elements[i * 2 + 1], self.elements[i * 2 + 2])
+
+    def query(self, a, b):
+        return self._query_rec(a, b, 0, 0, self.n)
+
+    def _query_rec(self, a, b, k, l, r):
+        if r <= a or b <= l:
+            return self.INF
+        elif a <= l and r <= b:
+            return self.elements[k]
+        else:
+            vl = self._query_rec(a, b, k * 2 + 1, l, (l + r) // 2)
+            vr = self._query_rec(a, b, k * 2 + 2, (l + r) // 2, r)
+            return max(vl, vr)
+
+
+class LazySegmentTree:
+    def __init__(self, N, INF=0) -> None:
+        n = 1
+        while n < N:
+            n *= 2
+
+        self.n = n
+        self.INF = INF
+        self.elements = [INF] * (2 * n - 1)
+        self.lazy = [INF] * (2 * n - 1)
+
+    def eval(self, k):
+        if self.lazy[k] == self.INF:
+            return
+        if k < self.n - 1:
+            self.lazy[k * 2 + 1] = self.lazy[k]
+            self.lazy[k * 2 + 2] = self.lazy[k]
+
+        self.elements[k] = self.lazy[k]
+        self.lazy[k] = self.INF
+
+    def query(self, a, b):
+        return self._query_rec(a, b, 0, 0, self.n)
+
+    def _query_rec(self, a, b, k, l, r):
+        self.eval(k)
+        if r <= a or b <= l:
+            return self.INF
+        elif a <= l and r <= b:
+            return self.elements[k]
+        else:
+            vl = self._query_rec(a, b, k * 2 + 1, l, (l + r) // 2)
+            vr = self._query_rec(a, b, k * 2 + 2, (l + r) // 2, r)
+            return max(vl, vr)
+
+    def update(self, a, b, x):
+        self._update_rec(a, b, x, 0, 0, self.n)
+
+    def _update_rec(self, a, b, x, k, l, r):
+        self.eval(k)
+        if r <= a or b <= l:
+            return
+        elif a <= l and r <= b:
+            self.lazy[k] = x
+            self.eval(k)
+        else:
+            self._update_rec(a, b, x, k * 2 + 1, l, (l + r) // 2)
+            self._update_rec(a, b, x, k * 2 + 2, (l + r) // 2, r)
+            self.elements[k] = max(self.elements[k * 2 + 1], self.elements[k * 2 + 2])
+
+
 import gc
 
 
