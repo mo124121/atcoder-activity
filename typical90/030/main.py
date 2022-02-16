@@ -3,6 +3,20 @@ import sys
 
 
 def solve(N: int, K: int):
+    c = [0] * (N + 1)
+    for i in range(2, N + 1):
+        if c[i] != 0:
+            continue
+        j = i
+        while j <= N:
+            c[j] += 1
+            j += i
+
+    ret = 0
+    for i in range(N + 1):
+        if c[i] >= K:
+            ret += 1
+    print(ret)
     return
 
 
@@ -12,10 +26,12 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     K = int(next(tokens))  # type: int
     solve(N, K)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
