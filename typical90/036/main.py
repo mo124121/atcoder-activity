@@ -3,6 +3,39 @@ import sys
 
 
 def solve(N: int, Q: int, x: "List[int]", y: "List[int]", q: "List[int]"):
+    x_max, x_min = max(x), min(y)
+    y_max, y_min = max(y), min(y)
+    xc, yc = (x_max + x_min) // 2, (y_max + y_min) // 2
+
+    xpyp = []
+    xpyn = []
+    xnyp = []
+    xnyn = []
+
+    for i in range(N):
+        d_from_c = abs(x[i] - xc) + abs(y[i] - yc)
+        if x[i] - xc >= 0:
+            if y[i] - yc >= 0:
+                xpyp.append((d_from_c, x[i], y[i]))
+            else:
+                xpyn.append((d_from_c, x[i], y[i]))
+        else:
+            if y[i] - yc >= 0:
+                xnyp.append((d_from_c, x[i], y[i]))
+            else:
+                xnyn.append((d_from_c, x[i], y[i]))
+    xpyp.sort()
+    xpyn.sort()
+    xnyp.sort()
+    xnyn.sort()
+
+    candidate = xpyp[-2:] + xpyn[-2:] + xnyp[-2:] + xnyn[-2:]
+
+    ret = [0] * Q
+    for i in range(Q):
+        for _, xq, yq in candidate:
+            ret[i] = max(ret[i], abs(x[q[i] - 1] - xq) + abs(y[q[i] - 1] - yq))
+    print(*ret, sep="\n")
     return
 
 
@@ -12,6 +45,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     Q = int(next(tokens))  # type: int
@@ -23,5 +57,21 @@ def main():
     q = [int(next(tokens)) for _ in range(Q)]  # type: "List[int]"
     solve(N, Q, x, y, q)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
+
+
+"""
+考察
+・マンハッタン距離
+  ->なんか斜めにする解法をみた気がするが、理解を途中であきらめたので忘れた
+
+・4象限における原点から最も遠い２つの要素をピックアップしてそれらだけでソートするとか？
+  ->一つの象限にだけある問題だと死ぬ
+・重心または最大最小中心とって差し引くのはどうか？それなら距離は変わらない
+  ->要素ない時に死にそう、そのあたりの細かなコーナーケース処理で沼にはまりそう、悪手
+
+・N=10**6 ->　O(Nlog(N))の計算量っぽそう　ソート使いそう
+・マンハッタン距離はひし形のイメージ
+"""
