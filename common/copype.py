@@ -48,6 +48,20 @@ class SegmentTree:
             i = (i - 1) // 2
             self.elements[i] = max(self.elements[i * 2 + 1], self.elements[i * 2 + 2])
 
+    def update_range(self, l, r, x):
+        if type(x) in [int, float]:
+            x = [x] * (r - l)
+        l += self.n - 1
+        r += self.n - 1
+        self.elements[l:r] = x
+        while 0 < l < r:
+            l = (l - 1) // 2
+            r = r // 2
+            for i in range(l, r):
+                self.elements[i] = max(
+                    self.elements[i * 2 + 1], self.elements[i * 2 + 2]
+                )
+
     def query(self, a, b):
         return self._query_rec(a, b, 0, 0, self.n)
 
@@ -111,6 +125,27 @@ class LazySegmentTree:
             self._update_rec(a, b, x, k * 2 + 1, l, (l + r) // 2)
             self._update_rec(a, b, x, k * 2 + 2, (l + r) // 2, r)
             self.elements[k] = max(self.elements[k * 2 + 1], self.elements[k * 2 + 2])
+
+
+class FenwickTree:
+    def __init__(self, n, init_data=0):
+        self.size = n
+        self.tree = [0] * (n + 1)
+        if init_data != 0:
+            for i in range(1, n + 1):
+                self.add(i, init_data)
+
+    def sum(self, i):
+        ret = 0
+        while i > 0:
+            ret += self.tree[i]
+            i -= i & -i
+        return ret
+
+    def add(self, i, x):
+        while i <= self.size:
+            self.tree[i] += x
+            i += i & -i
 
 
 import gc
