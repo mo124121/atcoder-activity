@@ -32,14 +32,14 @@ class UnionFind:
 
 
 class SegmentTree:
-    def __init__(self, N, INF=-1) -> None:
+    def __init__(self, N, init_value=-1, INF=-(10 ** 15)) -> None:
         n = 1
         while n < N:
             n <<= 1
 
         self.n = n
         self.INF = INF
-        self.elements = [INF] * (2 * n - 1)
+        self.elements = [init_value] * (2 * n - 1)
 
     def update(self, i, x):
         i += self.n - 1
@@ -62,18 +62,29 @@ class SegmentTree:
                     self.elements[i * 2 + 1], self.elements[i * 2 + 2]
                 )
 
-    def query(self, a, b):
-        return self._query_rec(a, b, 0, 0, self.n)
+    def query(self, l, r):
+        l += self.n - 1
+        r += self.n - 1
+        res = self.INF
+        while l < r:
+            res = max(max(res, self.elements[l]), self.elements[r - 1])
+            l = l // 2
+            r = (r - 1) // 2
+        return res
 
-    def _query_rec(self, a, b, k, l, r):
-        if r <= a or b <= l:
-            return self.INF
-        elif a <= l and r <= b:
-            return self.elements[k]
-        else:
-            vl = self._query_rec(a, b, k * 2 + 1, l, (l + r) // 2)
-            vr = self._query_rec(a, b, k * 2 + 2, (l + r) // 2, r)
-            return max(vl, vr)
+    # 遅い
+    # def query(self, a, b):
+    #     return self._query_rec(a, b, 0, 0, self.n)
+
+    # def _query_rec(self, a, b, k, l, r):
+    #     if r <= a or b <= l:
+    #         return self.INF
+    #     elif a <= l and r <= b:
+    #         return self.elements[k]
+    #     else:
+    #         vl = self._query_rec(a, b, k * 2 + 1, l, (l + r) // 2)
+    #         vr = self._query_rec(a, b, k * 2 + 2, (l + r) // 2, r)
+    #         return max(vl, vr)
 
 
 class LazySegmentTree:
