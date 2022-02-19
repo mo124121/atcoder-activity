@@ -58,18 +58,16 @@ class SegmentTree:
 def solve(W: int, N: int, L: "List[int]", R: "List[int]", V: "List[int]"):
     st = SegmentTree(W + 1, INF=0)
     st.update(0, 0)
-    nl = [-1] * (W + 1)
-    nl[0] = 0
+    dp = [-1] * (W + 1)
+    dp[0] = 0
 
     for i in range(N):
-        for j in range(L[i], R[i]):
-            nl[j] = max(nl[j], st.query(0, j - L[i] + 1) + V[i])
-        for j in range(R[i], W + 1):
-            nl[j] = max(nl[j], st.query(j - R[i], j - L[i] + 1) + V[i])
-
-        st.update_range(0, W + 1, nl)
+        for w in range(L[i], R[i]):
+            dp[w] = max(dp[w], st.query(0, w - L[i] + 1) + V[i])
+        for w in range(R[i], W + 1):
+            dp[w] = max(dp[w], st.query(w - R[i], w - L[i] + 1) + V[i])
         print(i, end=" ")
-        st.show()
+        st.update_range(0, W + 1, dp)
 
     ret = st.query(W, W + 1)
     print(ret)
