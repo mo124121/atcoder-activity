@@ -2,16 +2,18 @@
 from collections import defaultdict
 import sys
 
+INF = 10 ** 15
+
 
 class SegmentTree:
-    def __init__(self, N, INF=-1) -> None:
+    def __init__(self, N, init_value=-1) -> None:
         n = 1
         while n < N:
             n <<= 1
 
         self.n = n
-        self.INF = INF
-        self.elements = [INF] * (2 * n - 1)
+        self.INF = init_value
+        self.elements = [init_value] * (2 * n - 1)
 
     def update(self, i, x):
         i += self.n - 1
@@ -34,18 +36,15 @@ class SegmentTree:
                     self.elements[i * 2 + 1], self.elements[i * 2 + 2]
                 )
 
-    def query(self, a, b):
-        return self._query_rec(a, b, 0, 0, self.n)
-
-    def _query_rec(self, a, b, k, l, r):
-        if r <= a or b <= l:
-            return self.INF
-        elif a <= l and r <= b:
-            return self.elements[k]
-        else:
-            vl = self._query_rec(a, b, k * 2 + 1, l, (l + r) // 2)
-            vr = self._query_rec(a, b, k * 2 + 2, (l + r) // 2, r)
-            return max(vl, vr)
+    def query(self, l, r):
+        l += self.n - 1
+        r += self.n - 1
+        res = -INF
+        while l < r:
+            res = max(max(res, self.elements[l]), self.elements[r - 1])
+            l = l // 2
+            r = (r - 1) // 2
+        return res
 
     def show(self):
         ret = []
@@ -56,9 +55,10 @@ class SegmentTree:
 
 
 def solve(W: int, N: int, L: "List[int]", R: "List[int]", V: "List[int]"):
-    st = SegmentTree(W + 1, INF=0)
+
+    st = SegmentTree(W + 1, init_value=-INF)
     st.update(0, 0)
-    dp = [-1] * (W + 1)
+    dp = [-INF] * (W + 1)
     dp[0] = 0
 
     for i in range(N):
@@ -66,11 +66,13 @@ def solve(W: int, N: int, L: "List[int]", R: "List[int]", V: "List[int]"):
             dp[w] = max(dp[w], st.query(0, w - L[i] + 1) + V[i])
         for w in range(R[i], W + 1):
             dp[w] = max(dp[w], st.query(w - R[i], w - L[i] + 1) + V[i])
-        print(i, end=" ")
         st.update_range(0, W + 1, dp)
 
     ret = st.query(W, W + 1)
-    print(ret)
+    if ret > 0:
+        print(ret)
+    else:
+        print(-1)
 
     return
 
