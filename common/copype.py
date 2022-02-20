@@ -1,6 +1,12 @@
-import sys  # 追加
+import sys
 
-sys.setrecursionlimit(500 * 500)  # 追加
+sys.setrecursionlimit(10 ** 6)
+
+"""
+pypy用
+import pypyjit
+pypyjit.set_param("max_unroll_recursion=-1")
+"""
 
 
 class UnionFind:
