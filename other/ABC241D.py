@@ -1,3 +1,4 @@
+# https://atcoder.jp/contests/abc241/submissions/29718960
 class FenwickTree:
     def __init__(self, n, init_data=0):
         self.size = n
@@ -64,7 +65,6 @@ for i in range(N):
     if Q[i][0] == 1:
         x = Q[i][1]
         ft.add(D[x], 1)
-        ft.show()
     else:
         x, k = Q[i][1:]
         if Q[i][0] == 2:
