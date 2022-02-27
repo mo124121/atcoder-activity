@@ -33,6 +33,15 @@
 		],
 		"description": "multi int input"
 	},
+	"int array": {
+		"prefix": [
+			"ia"
+		],
+		"body": [
+			"${1:A}=list(map(int,input().split()))"
+		],
+		"description": "int array"
+	},
 	"multi string input": {
 		"prefix": [
 			"msi"
