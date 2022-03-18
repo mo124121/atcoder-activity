@@ -1,15 +1,16 @@
+from collections import deque
+
+
 N = int(input())
 S = input()
 
-from collections import deque
-
-deq = deque()
-
-deq.append(N)
-for i in reversed(range(N)):
-    if S[i] == "R":
-        deq.appendleft(i)
+dq = deque()
+dq.append(N)
+for i in range(N - 1, -1, -1):
+    c = S[i]
+    if c == "L":
+        dq.append(i)
     else:
-        deq.append(i)
-
-print(*deq)
+        dq.appendleft(i)
+    prev = c
+print(*list(dq))
