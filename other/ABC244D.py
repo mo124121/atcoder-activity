@@ -1,0 +1,9 @@
+S = input().split()
+T = input().split()
+
+if S[0] == T[0] and S[1] == T[1] and S[2] == T[2]:
+    print("Yes")
+elif S[0] == T[0] or S[1] == T[1] or S[2] == T[2]:
+    print("No")
+else:
+    print("Yes")
