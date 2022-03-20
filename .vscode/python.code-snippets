@@ -42,6 +42,15 @@
 		],
 		"description": "int array"
 	},
+	"single string input": {
+		"prefix": [
+			"ssi"
+		],
+		"body": [
+			"${1:S}=input()"
+		],
+		"description": "single string input"
+	},
 	"multi string input": {
 		"prefix": [
 			"msi"
