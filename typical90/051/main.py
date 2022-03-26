@@ -1,35 +1,40 @@
 #!/usr/bin/env python3
 from bisect import bisect
+import enum
 from itertools import product
 
 
-
-def gen_partial_sum(value_list):
+def gen_partial_sum(value_list, k, p):
     n = len(value_list)
-    ret = [[] for _ in range(n + 1)]
-    st=[(-1,0,0)]
+    m = min(k, n)
+    ret = [[] for _ in range(m + 1)]
+    ret[0].append(0)
 
-    while len(st):
-        i,s,c=st.pop()
-        if i+1<n:
-            st.append((i+1,s+value_list[i+1],c+1))
-            st.append((i+1,s,c))
-        else:
-            ret[c].append(s)
-
+    for v in value_list:
+        for i in range(m - 1, -1, -1):  # 逆向きにやると、自分が足した後に更に足しちゃうケースを回避できる
+            for s in ret[i]:
+                if s + v <= p:
+                    ret[i + 1].append(s + v)
     return ret
 
 
 def solve(N: int, K: int, P: int, A: "List[int]"):
-    B = gen_partial_sum(A[: N // 2])
-    C = gen_partial_sum(A[N // 2 :])
+    left = gen_partial_sum(A[: N // 2], K, P)
+    right = gen_partial_sum(A[N // 2 :], K, P)
 
     ret = 0
-    for i in range(max(0,K-len(B)),min(len(C),K+1)):
-        B[K - i].sort()
-        for p in C[i]:
-            j = bisect(B[K - i], P - p)
-            ret += j
+    for x in range(K - len(right) + 1, len(left)):
+        L = left[x]
+        R = right[K - x]
+        L.sort()
+        R.sort()
+        j = len(R) - 1
+        for x, s in enumerate(L):
+            while j >= 0 and s + R[j] > P:
+                j -= 1
+            if j < 0:
+                break
+            ret += j + 1
 
     print(ret)
 
