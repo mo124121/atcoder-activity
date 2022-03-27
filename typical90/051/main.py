@@ -4,23 +4,22 @@ import enum
 from itertools import product
 
 
-def gen_partial_sum(value_list, k, p):
-    n = len(value_list)
-    m = min(k, n)
+def gen_partial_sum(AA, l, r, k, p):
+    m = min(k, r - l)
     ret = [[] for _ in range(m + 1)]
     ret[0].append(0)
 
-    for v in value_list:
+    for a in AA[l:r]:
         for i in range(m - 1, -1, -1):  # 逆向きにやると、自分が足した後に更に足しちゃうケースを回避できる
             for s in ret[i]:
-                if s + v <= p:
-                    ret[i + 1].append(s + v)
+                if a + s <= p:
+                    ret[i + 1].append(a + s)
     return ret
 
 
 def solve(N: int, K: int, P: int, A: "List[int]"):
-    left = gen_partial_sum(A[: N // 2], K, P)
-    right = gen_partial_sum(A[N // 2 :], K, P)
+    left = gen_partial_sum(A, 0, N // 2, K, P)
+    right = gen_partial_sum(A, N // 2, N, K, P)
 
     ret = 0
     for x in range(K - len(right) + 1, len(left)):
@@ -29,7 +28,7 @@ def solve(N: int, K: int, P: int, A: "List[int]"):
         L.sort()
         R.sort()
         j = len(R) - 1
-        for x, s in enumerate(L):
+        for s in L:
             while j >= 0 and s + R[j] > P:
                 j -= 1
             if j < 0:
