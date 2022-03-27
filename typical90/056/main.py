@@ -5,27 +5,29 @@ NO = "Impossible"  # type: str
 
 
 def solve(N: int, S: int, A: "List[int]", B: "List[int]"):
-    C = [0] * N
+    dp = [[False] * (S + 1) for _ in range(N + 1)]
+    dp[0][0] = True
     for i in range(N):
-        C[i] = B[i] - A[i]
-        S -= A[i]
+        for j in range(S):
+            if dp[i][j]:
+                if j + A[i] <= S:
+                    dp[i + 1][j + A[i]] = True
+                if j + B[i] <= S:
+                    dp[i + 1][j + B[i]] = True
 
-    seen = {}
-    seen[S] = []
-
-    for i in range(N):
-        nexs = {}
-        for k, v in seen.items():
-            if k - C[i] not in seen:
-                nexs[k - C[i]] = v.copy() + [i]
-        seen.update(nexs)
-        if 0 in seen:
-            ret = ["A"] * N
-            for j in seen[0]:
-                ret[j] = "B"
-            print(*ret, sep="")
-            return
-    print(NO)
+    if dp[N][S]:
+        ret = ""
+        S_pre = S
+        for i in reversed(range(N)):
+            if S_pre - A[i] >= 0 and dp[i][S_pre - A[i]]:
+                S_pre = S_pre - A[i]
+                ret += "A"
+            elif S_pre - B[i] >= 0 and dp[i][S_pre - B[i]]:
+                S_pre = S_pre - B[i]
+                ret += "B"
+        print(ret[::-1])
+    else:
+        print(NO)
     return
 
 
@@ -50,7 +52,9 @@ if __name__ == "__main__":
 N<100
 全パターン2^N
 
-
+解説後
+普通にDPでいい
+経路復元がミソ、dp時に保存せずにさかのぼる感じ
 
 
 """
