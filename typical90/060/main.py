@@ -1,8 +1,28 @@
 #!/usr/bin/env python3
+from bisect import bisect, bisect_left
 import sys
 
+INF=7*10**5
+
+def LIS(A):
+    dp=[]
+    lis=[]
+    for a in A:
+        i=bisect_left(dp,a)
+        if i < len(dp):
+            dp[i]=a
+        else:
+            dp.append(a)
+        lis.append(len(dp))  
+    return lis
 
 def solve(N: int, A: "List[int]"):
+    LIS_l=LIS(A)
+    LIS_r=LIS(A[::-1])
+    ret=0
+    for i in range(N):
+        ret=max(LIS_l[i]+LIS_r[-i-1]-1,ret)
+    print(ret)
     return
 
 
@@ -19,3 +39,38 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+"""
+考察
+最近発想がすべてDP
+
+狭義の単調増加/単調減少
+
+N<3*10**5
+制約があんまり見ない数字設定
+
+一番シンプルなのはずっと増加するケース　→　最長増加部分列
+この場合DPだった気がする
+
+左右から最長増加部分列をそれぞれ計算して、
+最後に位置ごとの和の最大値が答え
+
+と思ったが、LISのDPは、
+dp[i]:i個の増加部分列をとるときの最小値
+なので、元数列の位置は保存しない
+→　このアプローチなら復元を考える必要がある。
+
+ただ、条件を満たす最大値は双方dpテーブル上で同じ値になっているはず
+→必ずしもそうではない
+
+1 2 3 5 8 9 10 11 3 5 1
+dpl=1 2 3 5 8 9 10 11 inf...
+dpr=1 3 5 inf...
+
+解説後
+やっぱりLISだった
+ただ、そもそも要素を増やしながらdpを組んでいくので、
+元配列位置における要素数を求めるのは容易…復元とか考えなくていい
+
+"""
