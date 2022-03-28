@@ -2,26 +2,28 @@
 from bisect import bisect, bisect_left
 import sys
 
-INF=7*10**5
+INF = 7 * 10**5
+
 
 def LIS(A):
-    dp=[]
-    lis=[]
+    dp = []
+    lis = []
     for a in A:
-        i=bisect_left(dp,a)
+        i = bisect_left(dp, a)
         if i < len(dp):
-            dp[i]=a
+            dp[i] = a
         else:
             dp.append(a)
-        lis.append(len(dp))  
+        lis.append(len(dp))
     return lis
 
+
 def solve(N: int, A: "List[int]"):
-    LIS_l=LIS(A)
-    LIS_r=LIS(A[::-1])
-    ret=0
+    LIS_l = LIS(A)
+    LIS_r = LIS(A[::-1])
+    ret = 0
     for i in range(N):
-        ret=max(LIS_l[i]+LIS_r[-i-1]-1,ret)
+        ret = max(LIS_l[i] + LIS_r[-i - 1] - 1, ret)
     print(ret)
     return
 
@@ -32,12 +34,14 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     A = [int(next(tokens)) for _ in range(N)]  # type: "List[int]"
     solve(N, A)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
 
 
