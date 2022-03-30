@@ -1,8 +1,125 @@
 #!/usr/bin/env python3
 import sys
 
+sys.setrecursionlimit(10**6)
+NO = "Ambiguous"
 
-def solve(N: int, Q: int, T: "List[int]", X: "List[int]", Y: "List[int]", V: "List[int]"):
+
+class UnionFind:
+    def __init__(self, N):
+
+        self.parent = [0] * N
+        for i in range(N):
+            self.parent[i] = i
+
+    def root(self, x):
+        if self.parent[x] == x:
+            return x
+        else:
+            self.parent[x] = self.root(self.parent[x])
+            return self.parent[x]
+
+    def unite(self, x, y):
+        root_x = self.root(x)
+        root_y = self.root(y)
+        if root_x == root_y:
+            return
+        else:
+            self.parent[root_x] = root_y
+
+    def same(self, x, y):
+        root_x = self.root(x)
+        root_y = self.root(y)
+        return root_x == root_y
+
+
+class FenwickTree:
+    def __init__(self, n, init_data=0):
+        self.size = n
+        self.tree = [0] * (n + 1)
+        if init_data != 0:
+            for i in range(1, n + 1):
+                self.add(i, init_data)
+
+    def sum(self, i):
+        ret = 0
+        i += 1
+        while i > 0:
+            ret += self.tree[i]
+            i -= i & -i
+        return ret
+
+    def add(self, i, x):
+        i += 1
+        while i <= self.size:
+            self.tree[i] += x
+            i += i & -i
+
+    def get(self, i):
+        return self.sum(i) - self.sum(i - 1)
+
+    def lower_bound(self, w):
+        if w <= 0:
+            return 0
+        x = 0
+        r = 1
+        while r < self.size:
+            r = r << 1
+        length = r
+        S = 0
+        while length > 0:
+            if length + x < self.size and self.tree[x + length] < w:
+                w -= self.tree[x + length]
+                x += length
+            length = length >> 1
+        return x
+
+    def show(self):
+        ret = []
+        for i in range(self.size):
+            ret.append(self.get(i))
+        print(*ret)
+
+
+def solve(
+    N: int, Q: int, T: "List[int]", X: "List[int]", Y: "List[int]", V: "List[int]"
+):
+    uf = UnionFind(N + 1)
+    ft = FenwickTree(N + 1)
+    ret = []
+    dummy = [0] * N
+    for i in range(Q):
+        x, y, v = X[i], Y[i], V[i]
+        if T[i] == 0:
+            uf.unite(x, y)
+            if x % 2 == 1:
+                ft.add(x, v)
+            else:
+                ft.add(x, -v)
+            dummy[x] = v
+        else:
+            if uf.same(x, y):
+                flag = True
+                if x > y:
+                    x, y = y, x
+                    flag = False
+
+                r = 0
+                s = ft.sum(y - 1) - ft.sum(x - 1)
+                if x % 2 == 0:
+                    s *= -1
+                if (y - x) % 2 == 0 and flag:
+                    s *= -1
+
+                if (y - x) % 2 == 1:
+                    r = s - v
+                else:
+                    r = s + v
+
+                ret.append(r)
+            else:
+                ret.append(NO)
+    print(*ret, sep="\n")
     return
 
 
@@ -12,6 +129,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     Q = int(next(tokens))  # type: int
@@ -26,5 +144,62 @@ def main():
         V[i] = int(next(tokens))
     solve(N, Q, T, X, Y, V)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
+
+
+"""
+UFっぽい
+ペアとして和が定義されていれば、片方の値が定まればもう片方は固まる
+UFでつながっていれば同じ
+UFで同じならambiguiousかどうかは判定ができる
+
+問題は数値をどう出すか？
+N<10**5なので
+N**2となるようなパターンを全て保持するのは現実的じゃない
+
+要は区間和なので、fenwickで出す
+
+まとめ
+・Ambiguious判断->Union Find
+・クエリ回答->fenwick
+
+A4=V3-A3
+A5=V4-A4=V4-V3+A3
+A6=V5-A5=V5-(V4-A4)=V5-V4+A4=V5-V4+V3-A3
+
+S34=V3-V4
+A5=-(S34-A3)
+  =-S34+A3
+
+S35=V3-V4+V5
+A6=S35-A3
+
+A5=V4-A4
+A6=V5-A5=V5-V4+A4
+A7=V6-A6=V6-(V5-A5)=V6-V5+A5=V6-V5+V4-A4
+
+S45=-V4+V5
+A6=S45+A4
+
+S46=-V4+V5-V6
+A7=-S46-A4
+
+in_1
+V:3 6 6 ? ? ?
+
+
+
+S1=V1
+S2=V1-V2
+S3=V1-V2+V3
+S4=V1-V2+V3-V4
+
+3->4:A4=V3-A3=s3-s2+a3
+3->5:A5=V4-a4=v4-v3+a3=-(s4-s2)+a3
+
+2->3:a3=v2-a2=-(s2-s1)-A2
+2->4:a4=v3-a3=v3-v2+a2=s3-s1+a2=-(-(s3-s1)-a2)
+
+"""
