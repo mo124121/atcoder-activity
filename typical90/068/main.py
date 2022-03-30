@@ -5,120 +5,72 @@ sys.setrecursionlimit(10**6)
 NO = "Ambiguous"
 
 
-class UnionFind:
+class WeightedUnionFind:
     def __init__(self, N):
-
-        self.parent = [0] * N
-        for i in range(N):
-            self.parent[i] = i
+        N += 1
+        self.par = [-1] * N
+        self.diff_weight = [0] * N  # 根からの重み
 
     def root(self, x):
-        if self.parent[x] == x:
-            return x
-        else:
-            self.parent[x] = self.root(self.parent[x])
-            return self.parent[x]
+        q = []
+        while self.par[x] >= 0:
+            q.append(x)
+            x = self.par[x]
+        for i in reversed(q):
+            self.diff_weight[i] += self.diff_weight[self.par[i]]
+            self.par[i] = x
 
-    def unite(self, x, y):
-        root_x = self.root(x)
-        root_y = self.root(y)
-        if root_x == root_y:
-            return
-        else:
-            self.parent[root_x] = root_y
-
-    def same(self, x, y):
-        root_x = self.root(x)
-        root_y = self.root(y)
-        return root_x == root_y
-
-
-class FenwickTree:
-    def __init__(self, n, init_data=0):
-        self.size = n
-        self.tree = [0] * (n + 1)
-        if init_data != 0:
-            for i in range(1, n + 1):
-                self.add(i, init_data)
-
-    def sum(self, i):
-        ret = 0
-        i += 1
-        while i > 0:
-            ret += self.tree[i]
-            i -= i & -i
-        return ret
-
-    def add(self, i, x):
-        i += 1
-        while i <= self.size:
-            self.tree[i] += x
-            i += i & -i
-
-    def get(self, i):
-        return self.sum(i) - self.sum(i - 1)
-
-    def lower_bound(self, w):
-        if w <= 0:
-            return 0
-        x = 0
-        r = 1
-        while r < self.size:
-            r = r << 1
-        length = r
-        S = 0
-        while length > 0:
-            if length + x < self.size and self.tree[x + length] < w:
-                w -= self.tree[x + length]
-                x += length
-            length = length >> 1
         return x
 
-    def show(self):
-        ret = []
-        for i in range(self.size):
-            ret.append(self.get(i))
-        print(*ret)
+    def weight(self, x):
+        self.root(x)
+        return self.diff_weight[x]
+
+    def diff(self, x, y):
+        return self.weight(y) - self.weight(x)
+
+    def same(self, x, y):
+        return self.root(x) == self.root(y)
+
+    def unite(self, x, y, w):
+        x_root = self.root(x)
+        y_root = self.root(y)
+        w += self.diff_weight[x] - self.diff_weight[y]
+        x, y = x_root, y_root
+        if x == y:
+            return
+        if self.par[y] < self.par[x]:
+            x, y, w = y, x, -w
+        self.par[x] += self.par[y]
+        self.par[y] = x
+        self.diff_weight[y] = w
 
 
 def solve(
     N: int, Q: int, T: "List[int]", X: "List[int]", Y: "List[int]", V: "List[int]"
 ):
-    uf = UnionFind(N + 1)
-    ft = FenwickTree(N + 1)
+    wuf = WeightedUnionFind(N)
     ret = []
-    dummy = [0] * N
     for i in range(Q):
-        x, y, v = X[i], Y[i], V[i]
-        if T[i] == 0:
-            uf.unite(x, y)
-            if x % 2 == 1:
-                ft.add(x, v)
-            else:
-                ft.add(x, -v)
-            dummy[x] = v
-        else:
-            if uf.same(x, y):
-                flag = True
-                if x > y:
-                    x, y = y, x
-                    flag = False
-
-                r = 0
-                s = ft.sum(y - 1) - ft.sum(x - 1)
+        t, x, y, v = T[i], X[i] - 1, Y[i] - 1, V[i]
+        if t:
+            if wuf.same(x, y):
+                r = wuf.diff(y, x)
                 if x % 2 == 0:
-                    s *= -1
-                if (y - x) % 2 == 0 and flag:
-                    s *= -1
-
-                if (y - x) % 2 == 1:
-                    r = s - v
+                    r -= v
                 else:
-                    r = s + v
-
+                    r += v
+                if y % 2 == 0:
+                    r *= -1
                 ret.append(r)
             else:
                 ret.append(NO)
+        else:
+            if x % 2 == 0:
+                wuf.unite(y, x, v)
+            else:
+                wuf.unite(y, x, -v)
+
     print(*ret, sep="\n")
     return
 
