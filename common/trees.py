@@ -26,6 +26,7 @@ class UnionFind:
         return root_x == root_y
 
 
+# https://gist.github.com/masa-aa/4be96f053457dc60625a3552288fb1e4
 class WeightedUnionFind:
     def __init__(self, N):
         N += 1

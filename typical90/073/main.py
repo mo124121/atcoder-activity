@@ -1,10 +1,37 @@
 #!/usr/bin/env python3
+from collections import defaultdict
 import sys
 
 MOD = 1000000007  # type: int
 
 
 def solve(N: int, c: "List[str]", a: "List[int]", b: "List[int]"):
+    G = defaultdict(list)
+    for i in range(N - 1):
+        G[a[i] - 1].append(b[i] - 1)
+        G[b[i] - 1].append(a[i] - 1)
+
+    dp = [[0] * 3 for _ in range(10**5 + 1)]
+    for i in range(N):
+        dp[i][2] = 1
+        dp[i][ord(c[i]) - ord("a")] = 1
+
+    def dfs(v, par=-1):
+        for i in G[v]:
+            if i == par:
+                continue
+            dfs(i, v)
+            a = dp[i][2] + dp[i][0]
+            b = dp[i][2] + dp[i][1]
+            dp[v][0] = dp[v][0] * a % MOD
+            dp[v][1] = dp[v][1] * b % MOD
+            dp[v][2] = dp[v][2] * (a + b) % MOD
+        dp[v][2] -= dp[v][0] + dp[v][1]
+
+    dfs(0)
+
+    print(dp[0][2] % MOD)
+
     return
 
 
@@ -14,6 +41,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     c = [next(tokens) for _ in range(N)]  # type: "List[str]"
@@ -24,5 +52,46 @@ def main():
         b[i] = int(next(tokens))
     solve(N, c, a, b)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
+
+
+"""
+考察
+N<10**5 -> NlogNぐらい
+
+edgeの数がN-1 -> 木構造　そう書いてます
+
+in_1
+  3
+ /|\
+2 4 7
+| |\
+1 5 6
+
+  b
+ /|\
+a a a
+| |\
+b b b
+
+削除すると必ず分割される
+まず言えるは1個になるような削除はできない
+
+
+カットできるところは独立とは限らない
+  a
+ / \
+a  a     
+|  |
+b  b
+根の片方を切るのはいいが、両方は切れない
+
+dfs+dpに見える
+
+解説後
+dp[node][今の連結成分にどれがあるか]=nodeの部分木を考えたとき何通りあるか
+どれがあるか:0-a,1-b,2-a,b
+
+"""
