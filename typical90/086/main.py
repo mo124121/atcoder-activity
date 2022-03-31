@@ -4,7 +4,9 @@ import sys
 MOD = 1000000007  # type: int
 
 
-def solve(N: int, Q: int, x: "List[int]", y: "List[int]", z: "List[int]", w: "List[int]"):
+def solve(
+    N: int, Q: int, x: "List[int]", y: "List[int]", z: "List[int]", w: "List[int]"
+):
     return
 
 
@@ -14,6 +16,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     Q = int(next(tokens))  # type: int
@@ -28,5 +31,37 @@ def main():
         w[i] = int(next(tokens))
     solve(N, Q, x, y, z, w)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
+
+
+"""
+考察
+N<12 小さい！
+Q<50
+
+bit演算で制約をおいていくイメージ？
+問題はわかるが方針が立たない
+いったん手を動かす
+in
+4 2
+1 2 3 50
+2 3 4 45
+
+50=0x110010
+45=0x101101
+
+各数のbit桁に対して制約をかけていく
+dp[数列の番号][bit桁]=とれるパターン
+
+初期化は全て2 0or1
+制約が0のとき:orで0が来たら0しかとれないので1
+制約が1のとき:状況次第。どれかは1にならなきゃいけない　それぞれの数だけでは自由に決められない
+            全部1=1、2つ1=3、一つ1=3
+
+大事な事実として、桁同士は独立しているので、
+Π(各桁でとれるN個の数列パターン)
+が答え
+
+"""
