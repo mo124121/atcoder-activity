@@ -1,8 +1,56 @@
 #!/usr/bin/env python3
 import sys
 
+INF = 10**15
+
+
+def reset_dp(dp, A, X):
+    N = len(dp) - 1
+    for i in range(N):
+        for j in range(N):
+            if A[i][j] == -1:
+                dp[i + 1][j + 1] = X
+            else:
+                dp[i + 1][j + 1] = A[i][j]
+    for i in range(1, N + 1):
+        dp[i][i] = 0
+
+
+def bin_search(N, P, K, A):
+    dp = [[INF] * (N + 1) for _ in range(N + 1)]
+    l = 0
+    r = INF
+    m = (l + r) // 2
+    while l < m:
+        X = m
+        reset_dp(dp, A, X)
+        for k in range(1, N + 1):
+            for i in range(1, N + 1):
+                for j in range(1, N + 1):
+                    dp[i][j] = min(dp[i][j], dp[i][k] + dp[k][j])
+        count = 0
+        for i in range(1, N):
+            for j in range(i + 1, N + 1):
+                if dp[i][j] <= P:
+                    count += 1
+        if count >= K:
+            l = m
+        else:
+            r = m
+        m = (r + l) // 2
+    return m
+
 
 def solve(N: int, P: int, K: int, A: "List[List[int]]"):
+    right = bin_search(N, P, K, A)
+    left = bin_search(N, P, K + 1, A)
+    if right == INF - 1:
+        if left == INF - 1:
+            print(0)
+        else:
+            print("Infinity")
+    else:
+        print(right - left)
     return
 
 
@@ -12,12 +60,35 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     P = int(next(tokens))  # type: int
     K = int(next(tokens))  # type: int
-    A = [[int(next(tokens)) for _ in range(N)] for _ in range(N)]  # type: "List[List[int]]"
+    A = [
+        [int(next(tokens)) for _ in range(N)] for _ in range(N)
+    ]  # type: "List[List[int]]"
     solve(N, P, K, A)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
+
+
+"""
+考察
+ワーシャルフロイドって見えちゃった…
+N<40 -> N^3<64000
+xを二分探索で変更して、
+ワーシャルフロイドで計算して都度本数を数える感じ
+ごり押し感すごい
+
+dpテーブルの作成・削除が走るので、
+gcが効かないpypyだとメモリが怪しいかも？
+dpテーブルを再利用するようにする
+
+WAが取れない、どうしたもんか
+全体の2割ぐらい　そこそこのケースで落としている
+
+
+"""

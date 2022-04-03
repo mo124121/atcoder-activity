@@ -5,26 +5,20 @@ def calc(a, b):
     return a**3 + a**2 * b + a * b**2 + b**3
 
 
-for ab in range(10**6 + 1):
-    if N <= 4 * ab**3:
+ret = 0
+b = 0
+for a in range(10**6 + 1):
+    ret = calc(a, b)
+    if N <= ret:
         break
 
-ret = 4 * ab**3
-for a in range(ab, 2 * ab + 1):
-
-    l = -1
-    r = a + 1
-    m = (l + r) // 2
-    while l < m:
-        t = calc(a, m)
-        if t < N:
-            l = m
-        else:
-            r = m
-        m = (l + r) // 2
-    ret = min(ret, calc(a, r))
-
-    if m == -1:
-        break
+while a >= 0:
+    a -= 1
+    flag = True
+    for b in range(b, a + 1):
+        r = calc(a, b)
+        if N <= r:
+            ret = min(ret, r)
+            break
 
 print(ret)
