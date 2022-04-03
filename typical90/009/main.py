@@ -1,8 +1,38 @@
 #!/usr/bin/env python3
+from math import atan2, degrees
 import sys
+
+INF = 200
 
 
 def solve(N: int, X: "List[int]", Y: "List[int]"):
+    abs_angles = [[0] * N for _ in range(N)]
+    for i in range(N):
+        for j in range(N):
+            if i != j:
+                abs_angles[i][j] = degrees(atan2(Y[j] - Y[i], X[j] - X[i]))
+            else:
+                abs_angles[i][j] = INF
+        abs_angles[i].sort()
+        abs_angles[i].pop()
+
+    ret = 0
+    for i in range(N):
+        r = 1
+        for l in range(N - 1):
+            while True:
+                a = (abs_angles[i][r] - abs_angles[i][l]) % 360
+                if a < 180:
+                    ret = max(ret, a)
+                else:
+                    ret = max(ret, 360 - a)
+                    break
+                if l == (r + 1) % (N - 1):
+                    break
+                r = (r + 1) % (N - 1)
+
+    print(ret)
+
     return
 
 
@@ -12,6 +42,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     X = [int()] * (N)  # type: "List[int]"
@@ -21,5 +52,18 @@ def main():
         Y[i] = int(next(tokens))
     solve(N, X, Y)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
+
+
+"""
+考察
+N<2000
+O(N^2 log(N^2))ぐらいまでいける
+
+とりあえず各点から生える線の絶対角を計算（N^2)
+ある点に対し、N*
+  中心に生える線を絶対角でソート　NlogN
+  尺取り的に一番角度を稼げるやつを探して行く　2N
+"""
