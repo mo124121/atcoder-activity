@@ -1,12 +1,31 @@
 #!/usr/bin/env python3
+from itertools import product
 import sys
 
 MOD = 1000000007  # type: int
+FULL = 2**60 - 1
 
 
 def solve(
     N: int, Q: int, x: "List[int]", y: "List[int]", z: "List[int]", w: "List[int]"
 ):
+    ret = 1
+    for i in range(60):
+        r = 0
+        for p in product((1, 0), repeat=N):
+            flag = True
+            for q in range(Q):
+                xf = p[x[q] - 1]
+                yf = p[y[q] - 1]
+                zf = p[z[q] - 1]
+                if (w[q] >> i & 1) != (xf | yf | zf):
+                    flag = False
+                    break
+            if flag:
+                r += 1
+        ret = ret * r % MOD
+    print(ret)
+
     return
 
 
@@ -54,6 +73,7 @@ in
 
 各数のbit桁に対して制約をかけていく
 dp[数列の番号][bit桁]=とれるパターン
+ちょっと違う？
 
 初期化は全て2 0or1
 制約が0のとき:orで0が来たら0しかとれないので1
@@ -64,4 +84,10 @@ dp[数列の番号][bit桁]=とれるパターン
 Π(各桁でとれるN個の数列パターン)
 が答え
 
+N=12なので、桁ごとに全制約みたしているかみればいいのでは？
+bit数×全列挙×制約
+=logW x 2^N x Q
+60x2^12x50
+60x4096x50
+=10*6ぐらい？
 """
