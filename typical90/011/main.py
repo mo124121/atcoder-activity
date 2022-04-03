@@ -12,6 +12,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     D = [int()] * (N)  # type: "List[int]"
@@ -23,5 +24,27 @@ def main():
         S[i] = int(next(tokens))
     solve(N, D, C, S)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
+
+"""
+考察
+見るからにDP 蟻本の最初のほうで見た気がする
+ただ、ディティールが違うかも
+
+締め切りでソートした上で、がちゃがちゃする感じ？
+N,D,Ci<5000
+DPは組みやすそう
+S<10**9
+Sは混ぜられない
+
+問題は組み方
+
+dp[今の日にち][使った最後の問番号]=今の日にちで最後に解いた問題でできた最大スコア
+微妙に違う？
+
+個数制限なし
+なんとなく範囲加算に見える　セグメント木
+
+"""
