@@ -1,43 +1,49 @@
 from collections import deque
 
 N = int(input())
-INF = 9
-Ax, Ay = map(int, input().split())
-Bx, By = map(int, input().split())
-S = [[1] * (N + 2) for _ in range(N + 2)]
-D = [[INF] * (2 + N) for _ in range(N + 2)]
-for i in range(N):
-    s = input()
-    for j in range(N):
-        S[i + 1][j + 1] = int(s[j] == "#")
-
-
-D[Ax][Ay] = 0
-moves = [(1, 1), (-1, -1), (-1, 1), (1, -1)]
-dq = deque()
-dq.append((Ax, Ay))
+ax, ay = map(int, input().split())
+bx, by = map(int, input().split())
+INF = N * N
+WALL = -1
+NOT_PASSED = INF
+S = [[WALL] * (N + 2) for _ in range(N + 2)]
 
 
 def show():
-    for s in D:
+    for s in S:
         print(*s)
 
 
-while len(dq) > 0:
-    x, y = dq.popleft()
-    d = D[x][y]
-    if (x, y) == (Bx, By):
-        print(d)
+for i in range(N):
+    s = input()
+    for j in range(N):
+        if s[j] == "#":
+            S[i + 1][j + 1] = WALL
+        else:
+            S[i + 1][j + 1] = INF
+
+mvs = [(1, 1), (-1, -1), (1, -1), (-1, 1)]
+
+S[ax][ay] = 0
+Q = deque([(ax, ay)])
+
+while len(Q):
+    x, y = Q.popleft()
+    c = S[x][y]
+    if (x, y) == (bx, by):
+        print(c)
         exit()
-    for mx, my in moves:
-        xt, yt = x, y
+    for mx, my in mvs:
+        nx, ny = x, y
         while True:
-            xt += mx
-            yt += my
-            if S[xt][yt] or D[xt][yt] <= d:
+            nx += mx
+            ny += my
+            if S[nx][ny] == WALL or S[nx][ny] <= c:
                 break
-            if D[xt][yt] < INF:
+            if S[nx][ny] != NOT_PASSED:
                 continue
-            D[xt][yt] = d + 1
-            dq.append((xt, yt))
+            S[nx][ny] = c + 1
+            Q.append((nx, ny))
+    # show()
+
 print(-1)
