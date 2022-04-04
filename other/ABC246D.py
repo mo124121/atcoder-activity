@@ -6,19 +6,20 @@ def calc(a, b):
 
 
 ret = 0
-b = 0
 for a in range(10**6 + 1):
-    ret = calc(a, b)
+    ret = calc(a, a)
     if N <= ret:
         break
 
-while a >= 0:
-    a -= 1
-    flag = True
-    for b in range(b, a + 1):
+b = a
+while a <= 10**6 + 1:
+    while b >= 0:
         r = calc(a, b)
         if N <= r:
             ret = min(ret, r)
+        else:
             break
+        b -= 1
+    a += 1
 
 print(ret)
