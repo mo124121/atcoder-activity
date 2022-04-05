@@ -42,6 +42,15 @@
 		],
 		"description": "int array"
 	},
+	"empty int array": {
+		"prefix": [
+			"ea"
+		],
+		"body": [
+			"${1:A}=[${2:0}]*${3:N}"
+		],
+		"description": "int array"
+	},
 	"single string input": {
 		"prefix": [
 			"ssi"
