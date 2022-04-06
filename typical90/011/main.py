@@ -3,6 +3,20 @@ import sys
 
 
 def solve(N: int, D: "List[int]", C: "List[int]", S: "List[int]"):
+    dcs = [(D[i], C[i], S[i]) for i in range(N)]
+    dcs.sort()
+    D_max = max(D)
+    dp = [[0] * (D_max + 1) for _ in range(N + 1)]
+
+    for i in range(N):
+        d, c, s = dcs[i]
+        for j in range(D_max + 1):
+            dp[i + 1][j] = dp[i][j]
+        for j in range(c, d + 1):
+            dp[i + 1][j] = max(dp[i][j - c] + s, dp[i][j])
+
+    print(max(dp[N]))
+
     return
 
 
@@ -44,7 +58,13 @@ Sは混ぜられない
 dp[今の日にち][使った最後の問番号]=今の日にちで最後に解いた問題でできた最大スコア
 微妙に違う？
 
-個数制限なし
+個数制限なしナップサック問題ぽく同日中の遷移が多数でそう？
 なんとなく範囲加算に見える　セグメント木
+あと区間最大値ほしい、やっぱりセグメント木
 
+後ろからやっていくという手もあるのでは？
+何が利点？
+
+解説後
+本で見たやつまんまだった
 """
