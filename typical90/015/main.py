@@ -4,7 +4,45 @@ import sys
 MOD = 1000000007  # type: int
 
 
+class Binominal:
+    def __init__(self, N, mod) -> None:
+        fact = [1, 1]
+        factinv = [1, 1]
+        inv = [0, 1]
+
+        for i in range(2, N + 1):
+            fact.append((fact[-1] * i) % mod)
+            inv.append((-inv[mod % i] * (mod // i)) % mod)
+            factinv.append((factinv[-1] * inv[-1]) % mod)
+
+        self.fact = fact
+        self.factinv = factinv
+        self.inv = inv
+        self.mod = mod
+        self.N = N
+
+    def calc(self, n, r):
+        if r < 0 or n < r:
+            return 0
+        r = min(r, n - r)
+        return self.fact[n] * self.factinv[r] * self.factinv[n - r] % self.mod
+
+
 def solve(N: int):
+    bn = Binominal(N, MOD)
+    ret = []
+    for k in range(1, N + 1):
+        r = 0
+        a = 1
+        while True:
+            l = N - (k - 1) * (a - 1)
+            if l < 0 or l - a < 0:
+                break
+            r += bn.calc(N - (k - 1) * (a - 1), a)
+            r %= MOD
+            a += 1
+        ret.append(r)
+    print(*ret, sep="\n")
     return
 
 
@@ -14,9 +52,41 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     solve(N)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
+
+
+"""
+考察
+これもDPくさい
+dp[i番目のボール]=選択の通り数
+
+k以上前の通り数の合算値
+今度こそfenwickや！
+
+これをN回やるんやけど…
+まあでも結局過去の合計やん
+
+ただ都度出す必要がある→全部保存するとN*Nオーダーになりそう
+
+逆向きから計算していく
+k=N -> An=N
+K=N-1 -> An-1=An+N-
+
+
+解説後　調和級数そんなんあったな…
+二項係数周りは整理が必要そう
+
+
+課題としては２つ
+・二項係数を用いての計算式を思いつく
+・思いついた計算式が調和級数に相当して計算速度的に間に合うと見積もる
+ 調和級数はO(NlogN)で競プロ的にはよくある計算量なのでキーとして持っておく
+
+"""
