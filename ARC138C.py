@@ -14,8 +14,8 @@ for i in range(N // 2, N):
 
 C = [0] * (N + 1)
 
-for i in range(N):
-    C[i + 1] = C[i] + B[i]
+for i in range(1, N):
+    C[i] = C[i - 1] + B[i]
 
 k = C.index(min(C)) - C[0]
 
