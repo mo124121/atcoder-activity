@@ -26,6 +26,11 @@
 - ARC067-E
 - ARC068-E
 
+## 幾何
+- ABC151-F
+https://drken1215.hatenablog.com/entry/2020/01/12/224200
+https://tubo28.me/compprog/algorithm/minball/
+
 ## DP
 
 ### 桁DP
