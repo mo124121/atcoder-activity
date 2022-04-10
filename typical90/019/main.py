@@ -1,8 +1,23 @@
 #!/usr/bin/env python3
 import sys
 
+INF = 300 * 10**6
+
 
 def solve(N: int, A: "List[int]"):
+    # A=[INF]+A+[INF]
+    dp = [[INF] * (2 * N + 1) for _ in range(2 * N + 1)]
+    for i in range(2 * N + 1):
+        dp[i][i] = 0
+
+    for diff in range(2, 2 * N + 1, 2):
+        for l in range(2 * N + 1 - diff):
+            r = l + diff
+            dp[l][r] = min(dp[l][r], dp[l + 1][r - 1] + abs(A[l] - A[r - 1]))
+            for k in range(l + 2, r, 2):
+                dp[l][r] = min(dp[l][r], dp[l][k] + dp[k][r])
+
+    print(dp[0][2 * N])
     return
 
 
@@ -27,7 +42,7 @@ if __name__ == "__main__":
 考察
 N<200　小さい N^3までは行けそう
 
-全部の消していくパターンを考えると N!
+全部の消していくパターンを考えると O(N!)
 
 単調増加を仮定すると、
 0 : 0 5 15 20 21 30
@@ -46,7 +61,12 @@ N<200　小さい N^3までは行けそう
 なんとなく状態遷移っぽくて、
 消す順番性をmin(cost)で消していくとか？
 
+dpで考える？
+N[i番目][j番目]=i~jを消す最小のコスト
 
 
+解説後
+区間DP
+たぶん発想はあってた
 
 """
