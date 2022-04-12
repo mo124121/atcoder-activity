@@ -48,3 +48,7 @@ https://tubo28.me/compprog/algorithm/minball/
 ### リュカ数
 
 - ABC247-F
+
+## 最適行動ゲーム
+
+- caddi2018-D
