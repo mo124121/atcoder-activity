@@ -5,19 +5,20 @@ INF = 300 * 10**6
 
 
 def solve(N: int, A: "List[int]"):
-    # A=[INF]+A+[INF]
+    A = [0] + A
     dp = [[INF] * (2 * N + 1) for _ in range(2 * N + 1)]
     for i in range(2 * N + 1):
         dp[i][i] = 0
+    for i in range(1, 2 * N):
+        dp[i][i + 1] = abs(A[i] - A[i + 1])
 
-    for diff in range(2, 2 * N + 1, 2):
-        for l in range(2 * N + 1 - diff):
-            r = l + diff
-            dp[l][r] = min(dp[l][r], dp[l + 1][r - 1] + abs(A[l] - A[r - 1]))
-            for k in range(l + 2, r, 2):
-                dp[l][r] = min(dp[l][r], dp[l][k] + dp[k][r])
-
-    print(dp[0][2 * N])
+    for i in range(3, 2 * N + 1, 2):
+        for l in range(1, 2 * N + 1 - i):
+            r = l + i
+            for k in range(l, r):
+                dp[l][r] = min(dp[l][r], dp[l][k] + dp[k + 1][r])
+            dp[l][r] = min(dp[l][r], dp[l + 1][r - 1] + abs(A[l] - A[r]))
+    print(dp[1][2 * N])
     return
 
 
