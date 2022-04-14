@@ -6,28 +6,30 @@ A = [0] * N
 for i in range(N):
     A[i] = int(input())
 
-A.sort()
+A.sort(reverse=True)
 
-dq = deque()
-l = 0
-r = N - 1
-flag = True
-while l < r:
-    if flag:
-        dq.appendleft(A[l])
-        l += 1
-    else:
-        dq.append(A[r])
-        r -= 1
-    flag ^= True
-pre = dq.popleft()
-ret = 0
-while len(dq):
-    post = dq.popleft()
-    ret += abs(pre - post)
-    print(pre, post, ret)
-    pre = post
+if N % 2 == 0:
+    ret = 0
+    for i in range(N // 2 - 1):
+        ret += A[i] * 2
+    ret += A[N // 2 - 1] - A[N // 2]
+    for i in range(N // 2 + 1, N):
+        ret -= A[i] * 2
+else:
+    ret1 = 0
+    for i in range(N // 2 - 1):
+        ret1 += A[i] * 2
+    ret1 += A[N // 2 - 1] + A[N // 2]
+    for i in range(N // 2 + 1, N):
+        ret1 -= A[i] * 2
 
+    ret2 = 0
+    for i in range(N // 2):
+        ret2 += A[i] * 2
+    ret2 -= A[N // 2] + A[N // 2 + 1]
+    for i in range(N // 2 + 2, N):
+        ret2 -= A[i] * 2
+    ret = max(ret1, ret2)
 
 print(ret)
 
