@@ -1,8 +1,73 @@
 #!/usr/bin/env python3
+from collections import defaultdict
+from heapq import heappop, heappush
 import sys
 
 
+class UnionFind:
+    def __init__(self, N):
+
+        self.parent = [0] * N
+        for i in range(N):
+            self.parent[i] = i
+
+    def root(self, x):
+        if self.parent[x] == x:
+            return x
+        else:
+            self.parent[x] = self.root(self.parent[x])
+            return self.parent[x]
+
+    def unite(self, x, y):
+        root_x = self.root(x)
+        root_y = self.root(y)
+        if root_x == root_y:
+            return
+        else:
+            self.parent[root_x] = root_y
+
+    def same(self, x, y):
+        root_x = self.root(x)
+        root_y = self.root(y)
+        return root_x == root_y
+
+
 def solve(N: int, K: int, X: "List[int]", Y: "List[int]"):
+    uf = UnionFind(N)
+    uf_count = N
+    h = []
+    ds = [[0] * N for _ in range(N)]
+    for i in range(N - 1):
+        for j in range(i + 1, N):
+            d = (X[i] - X[j]) ** 2 + (Y[i] - Y[j]) ** 2
+            heappush(h, (d, i, j))
+            ds[i][j] = d
+            ds[j][i] = d
+
+    ret = 0
+    seen = defaultdict(list)
+    while uf_count > K:
+        d, i, j = heappop(h)
+        if not uf.same(i, j):
+            i_list = []
+            j_list = []
+            for k in range(N):
+                if uf.same(i, k):
+                    i_list.append(k)
+                if uf.same(j, k):
+                    j_list.append(k)
+            flag = True
+            for ii in i_list:
+                for jj in j_list:
+                    if ds[ii][jj] > d:
+                        flag = False
+                        break
+            if flag:
+                uf.unite(i, j)
+                uf_count -= 1
+                ret = d
+    print(ret)
+
     return
 
 
@@ -12,6 +77,7 @@ def main():
         for line in sys.stdin:
             for word in line.split():
                 yield word
+
     tokens = iterate_tokens()
     N = int(next(tokens))  # type: int
     K = int(next(tokens))  # type: int
@@ -22,5 +88,42 @@ def main():
         Y[i] = int(next(tokens))
     solve(N, K, X, Y)
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()
+
+
+"""
+考察
+k近傍法っぽい　クラスタリングや
+
+K<N<15　小さい
+
+問題設定を言い換えると、辺のコストが実距離で定義されたグラフ
+K個の連結部分に分割して、最大のコスト辺を最小化すること
+
+辺の数　N*(N-1)//2 全部のコストは計算できる
+
+ヒープを使って小さいほうから接続していく？
+連結部分の個数をどう計算していくか？ UF? 元が接続されていないものが接続されたとき、
+連結部分の個数が減る
+なんかいけそうなので実装する
+
+違った、どれかひとつ繋がればいいわけじゃない、全部つながる必要がある
+とすると、ヒープを使うなら、つながっているものがある場合は一番遠いやつを選ぶ必要がある
+
+サイズも大きくないし、都度走査してもいいのでは
+心情的に自分が所属するunionのサイズがほしい
+
+3/21 WA
+コーナーケースのような数字だけど、嘘回答に近い気もする
+現在のアプローチの問題は何か？
+
+先につないじゃいけないものをつなぐ可能性がある
+X=0 K=2
+0 2 4 5 7 9
+これだと先に4-5がつながって、
+どうしようもなくなる
+
+
+"""
