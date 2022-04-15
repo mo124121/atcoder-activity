@@ -49,6 +49,9 @@ https://tubo28.me/compprog/algorithm/minball/
 
 - ABC247-F
 
-## 最適行動ゲーム
+## 最適行動ゲーム(Grundy数)
 
 - caddi2018-D
+- 典型90問 031
+- ARC013-C
+- ARC038-C
