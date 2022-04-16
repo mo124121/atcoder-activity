@@ -63,5 +63,12 @@ https://tubo28.me/compprog/algorithm/minball/
 
 ## その他
 
+### 時間なくて届かなかったもの
+
 - ABC248-F
 - ABC197-F
+
+
+### 実装に苦労したもの
+
+- ARC127-A
