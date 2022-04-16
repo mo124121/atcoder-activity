@@ -12,11 +12,12 @@ P = [Decimal(0) for _ in range(62)]
 P[0] = p
 for i in range(61):
     P[i + 1] = 2 * P[i] * (1 - P[i])
+# 全体確率の計算
 ret = Decimal(0)
 for i in range(62):
     if (n >> i) & 1 == 1:
         q = P[i]
-        ret = ret * q + (1 - ret) * q
+        ret = ret * (1 - q) + (1 - ret) * q
 
 print("{:.7f}".format(ret))
 """
