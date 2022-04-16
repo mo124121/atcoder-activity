@@ -1,73 +1,38 @@
 #!/usr/bin/env python3
-from collections import defaultdict
-from heapq import heappop, heappush
 import sys
 
 
-class UnionFind:
-    def __init__(self, N):
-
-        self.parent = [0] * N
-        for i in range(N):
-            self.parent[i] = i
-
-    def root(self, x):
-        if self.parent[x] == x:
-            return x
-        else:
-            self.parent[x] = self.root(self.parent[x])
-            return self.parent[x]
-
-    def unite(self, x, y):
-        root_x = self.root(x)
-        root_y = self.root(y)
-        if root_x == root_y:
-            return
-        else:
-            self.parent[root_x] = root_y
-
-    def same(self, x, y):
-        root_x = self.root(x)
-        root_y = self.root(y)
-        return root_x == root_y
-
-
 def solve(N: int, K: int, X: "List[int]", Y: "List[int]"):
-    uf = UnionFind(N)
-    uf_count = N
-    h = []
+
     ds = [[0] * N for _ in range(N)]
+
+    # 二点間の距離算出
     for i in range(N - 1):
         for j in range(i + 1, N):
             d = (X[i] - X[j]) ** 2 + (Y[i] - Y[j]) ** 2
-            heappush(h, (d, i, j))
             ds[i][j] = d
             ds[j][i] = d
 
-    ret = 0
-    seen = defaultdict(list)
-    while uf_count > K:
-        d, i, j = heappop(h)
-        if not uf.same(i, j):
-            i_list = []
-            j_list = []
-            for k in range(N):
-                if uf.same(i, k):
-                    i_list.append(k)
-                if uf.same(j, k):
-                    j_list.append(k)
-            flag = True
-            for ii in i_list:
-                for jj in j_list:
-                    if ds[ii][jj] > d:
-                        flag = False
-                        break
-            if flag:
-                uf.unite(i, j)
-                uf_count -= 1
-                ret = d
-    print(ret)
+    # bitが立っているグループの最大距離算出
+    d_bit = [0] * (1 << N)
+    for i in range(1, 1 << N):
+        for j in range(N):
+            for k in range(j):
+                if i >> j & 1 == 1 and i >> k & 1 == 1:
+                    d_bit[i] = max(d_bit[i], ds[j][k])
 
+    INF = 10**18
+    dp = [[INF] * (1 << N) for _ in range(K + 1)]
+    dp[0][0] = 0
+
+    for i in range(K):
+        for j in range(1, 1 << N):
+            k = j
+            while k != 0:
+                dp[i + 1][j] = min(dp[i + 1][j], max(dp[i][j - k], d_bit[k]))
+                k = (k - 1) & j
+
+    print(dp[K][(1 << N) - 1])
     return
 
 
@@ -125,5 +90,12 @@ X=0 K=2
 これだと先に4-5がつながって、
 どうしようもなくなる
 
+最小からやると事故ってる、どうするか？
+
+遠くのほうからつなぐ？
+別につなぐのがマストじゃない
+
+解法後
+bitDP・・・だと・・・？
 
 """

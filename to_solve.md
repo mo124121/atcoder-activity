@@ -1,13 +1,5 @@
 # 私的解くべきリスト
 
-## 木DP
-
-- 典型90問 073 https://atcoder.jp/contests/typical90/tasks/typical90_bu
-- ABC070-D
-- ABC138-D
-- ABC187-E
-- ABC149-F
-
 ## 包徐原理
 
 - ABC246-F
@@ -33,6 +25,14 @@ https://tubo28.me/compprog/algorithm/minball/
 
 ## DP
 
+### 木DP
+
+- 典型90問 073 https://atcoder.jp/contests/typical90/tasks/typical90_bu
+- ABC070-D
+- ABC138-D
+- ABC187-E
+- ABC149-F
+
 ### 桁DP
 
 - ABC007-D
@@ -42,6 +42,11 @@ https://tubo28.me/compprog/algorithm/minball/
 - 典型90問 019
 - Typical DP Contest 問題1
 
+### bitDP
+
+- 典型90問 045
+- ABC187-F
+- M-SOLUTIONS 2020-E
 
 ## 数列
 
