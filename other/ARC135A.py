@@ -1,24 +1,31 @@
 from functools import lru_cache
-from math import ceil, floor
+import sys
+
+sys.setrecursionlimit(10**6)
+
+import pypyjit
+
+pypyjit.set_param("max_unroll_recursion=-1")
 
 X = int(input())
+
 MOD = 998244353
 
 
-memo = {}
-
-
+@lru_cache(maxsize=None)
 def rec(X):
-    if X in memo:
-        return memo[X]
-    if X <= 4:
-        memo[X] = X
+    if X < 5:
         return X
-    a = X // 2
-    b = X // 2 + X % 2
-    ret = rec(a) * rec(b) % MOD
-    memo[X] = ret
-    return ret
+    return (rec(X // 2) * rec((X + 1) // 2)) % MOD
 
 
 print(rec(X))
+
+"""
+1 0 0 x
+2 1 1 x
+3 1 2 x
+4 2 2 x
+5 2 3 o
+
+"""
