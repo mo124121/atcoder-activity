@@ -60,3 +60,7 @@ https://tubo28.me/compprog/algorithm/minball/
 - 典型90問 031
 - ARC013-C
 - ARC038-C
+
+## その他
+
+- ABC248-F
