@@ -1,19 +1,14 @@
-# import numpy as np
-
-from decimal import Decimal
-
-
 s = input().split()
-p = Decimal(s[0])
+p = float(s[0])
 n = int(s[1])
 
 # 　状態遷移確率の計算
-P = [Decimal(0) for _ in range(62)]
+P = [0 for _ in range(62)]
 P[0] = p
 for i in range(61):
     P[i + 1] = 2 * P[i] * (1 - P[i])
 # 全体確率の計算
-ret = Decimal(0)
+ret = 0
 for i in range(62):
     if (n >> i) & 1 == 1:
         q = P[i]
