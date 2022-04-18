@@ -72,3 +72,7 @@ https://tubo28.me/compprog/algorithm/minball/
 ### 実装に苦労したもの
 
 - ARC127-A
+
+### めんどくさいの
+
+- ARC112-B

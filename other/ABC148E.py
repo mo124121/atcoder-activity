@@ -4,15 +4,14 @@ if N % 2 == 1 or N < 10:
     print(0)
     exit()
 
-ret = 1
-start = 10
-top = bot = start
-while True:
-    if bot > N:
-        break
-    top *= 10
-    ret += min(top, N) // 10 - 1
-    bot = top
+ret = N // 10
+N //= 10
+devider = 5
+while devider <= N:
+    ret += N // devider
+    devider *= 5
+
+
 print(ret)
 
 
@@ -30,5 +29,7 @@ n=奇数の時、2が出てこない min(0,N)->0
 
 解説後
 発想は正しい
+5の約数で割っていって足していく
+
 
 """
