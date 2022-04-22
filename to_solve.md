@@ -76,3 +76,7 @@ https://tubo28.me/compprog/algorithm/minball/
 ### めんどくさいの
 
 - ARC112-B
+
+### 解けそうだから自力ACしたいもの
+
+- ABC165-F
