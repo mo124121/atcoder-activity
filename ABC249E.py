@@ -6,19 +6,23 @@ if N <= 2:
 
 dp = [[0] * N for _ in range(N + 1)]
 dp[0][0] = 1
-
+dp[1][0] = -1
 
 for j in range(N):
+    if j == 0:
+        pat = 26
+    else:
+        pat = 25
     for i in range(N):
         dp[i + 1][j] += dp[i][j]
         dp[i + 1][j] %= P
     for i in range(N):
         for k in range(1, 5):
             if i + 10 ** (k - 1) <= N and j + 1 + k < N:
-                dp[i + 10 ** (k - 1)][j + 1 + k] += dp[i][j] * 25
+                dp[i + 10 ** (k - 1)][j + 1 + k] += dp[i][j] * pat
                 dp[i + 10 ** (k - 1)][j + 1 + k] %= P
                 if i + 10**k < N + 1:
-                    dp[i + 10**k][j + 1 + k] -= dp[i][j] * 25
+                    dp[i + 10**k][j + 1 + k] -= dp[i][j] * pat
 
 
 print(sum(dp[N]) % P)
