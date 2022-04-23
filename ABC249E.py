@@ -1,31 +1,21 @@
 N, P = map(int, input().split())
-if N <= 2:
-    print(0)
-    exit()
-
-
-dp = [[0] * N for _ in range(N + 1)]
+dp = [[0] * (N + 10) for _ in range(N + 10)]
 dp[0][0] = 1
-dp[1][0] = -1
+for i in range(N):
+    if i != 0:
+        for j in range(N + 3):
+            dp[i][j + 1] = (dp[i][j] + dp[i][j + 1]) % P
+    for j in range(N):
+        ways = dp[i][j] * (26 if i == 0 else 25) % P
+        L, k = 1, 1
+        while L <= N - j:
+            R = min(L * 10, N - j + 3)
+            di = k + 1
+            dp[i + di][j + L] = (dp[i + di][j + L] + ways) % P
+            dp[i + di][j + R] = (dp[i + di][j + R] - ways) % P
+            L, k = L * 10, k + 1
 
-for j in range(N):
-    if j == 0:
-        pat = 26
-    else:
-        pat = 25
-    for i in range(N):
-        dp[i + 1][j] += dp[i][j]
-        dp[i + 1][j] %= P
-    for i in range(N):
-        for k in range(1, 5):
-            if i + 10 ** (k - 1) <= N and j + 1 + k < N:
-                dp[i + 10 ** (k - 1)][j + 1 + k] += dp[i][j] * pat
-                dp[i + 10 ** (k - 1)][j + 1 + k] %= P
-                if i + 10**k < N + 1:
-                    dp[i + 10**k][j + 1 + k] -= dp[i][j] * pat
-
-
-print(sum(dp[N]) % P)
+print(sum([dp[i][N] for i in range(N)]) % P)
 
 
 """
