@@ -48,6 +48,12 @@ https://tubo28.me/compprog/algorithm/minball/
 - ABC187-F
 - M-SOLUTIONS 2020-E
 
+### 累積和DP
+
+- ABC249-E
+- ABC222-D
+- DPまとめコンテスト M
+
 ## 数列
 
 ### リュカ数
@@ -72,7 +78,6 @@ https://tubo28.me/compprog/algorithm/minball/
 ### 実装に苦労したもの
 
 - ARC127-A
-- ABC249-F
 
 ### めんどくさいの
 
