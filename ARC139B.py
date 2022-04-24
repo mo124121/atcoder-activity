@@ -10,27 +10,24 @@ for t in range(T):
     if A * Z < B * Y:  # A/Y<B/Z
         A, Y, B, Z = B, Z, A, Y
 
-    # Aを使い切るパターン
-    r1 = N // A
-    N1 = N - r1 * A
-    if Z < B * X:  # 1/X<B/Z
-        r = r1 * Y + N1 // B * Z + (N1 - N1 // B * B) * X
+    r = N // A * Y + (N - N // A * A) * X
+    # Bがでかいパターン
+    if B**B > N:
+        for i in range(1, N // B + 2):
+            Ni = N - i * B
+            ri = Ni // A * Y + i * Z + (Ni - Ni // A * A) * X
+            r = min(r, ri)
+    # そうでもないパターン
     else:
-        r = r1 * Y + N1 * X
-
-    # Bも1回使ってみるパターン
-    if N >= B:
-        r2 = (N - 1 * B) // A
-        N2 = N - r2 * A
-        r2 = r2 * Y + N2 // B * Z + (N2 - N2 // B * B) * X
-        r = min(r, r2)
-
-    # Aを1回減らしてみるパターン
-    if N >= A:
-        r3 = N // A - 1
-        N3 = N - r3 * A
-        r3 = r3 * Y + N3 // B * Z + (N3 - N3 // B * B) * X
-        r = min(r, r3)
+        seen = {}
+        for i in range(N // A, -1, -1):
+            Ni = N - i * A
+            xc = Ni - Ni // B * B
+            if xc in seen:
+                break
+            ri = i * Y + Ni // B * B * Z + xc * X
+            r = min(r, ri)
+            seen[xc] = True
 
     ret.append(r)
 
