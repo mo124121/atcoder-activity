@@ -2,32 +2,17 @@ T = int(input())
 ret = []
 for t in range(T):
     N, A, B, X, Y, Z = map(int, input().split())
+    Y = min(Y, A * X)
+    Z = min(Z, B * X)
 
-    if Y >= A * X and Z >= B * X:
-        ret.append(N * X)
-        continue
-
-    if A * Z < B * Y:  # A/Y<B/Z
-        A, Y, B, Z = B, Z, A, Y
-
-    r = N // A * Y + (N - N // A * A) * X
-    # Bがでかいパターン
-    if B**B > N:
-        for i in range(1, N // B + 2):
-            Ni = N - i * B
-            ri = Ni // A * Y + i * Z + (Ni - Ni // A * A) * X
-            r = min(r, ri)
-    # そうでもないパターン
-    else:
-        seen = {}
-        for i in range(N // A, -1, -1):
-            Ni = N - i * A
-            xc = Ni - Ni // B * B
-            if xc in seen:
-                break
-            ri = i * Y + Ni // B * B * Z + xc * X
-            r = min(r, ri)
-            seen[xc] = True
+    if B * Y < A * Z:  # Y/A<Z/B
+        A, B, Z, Y = B, A, Y, Z
+    r = N * X
+    i = 0
+    while i < B and i * A <= N:
+        Ni = N - i * A
+        r = min(r, Ni // B * Z + Ni % B * X + i * Y)
+        i += 1
 
     ret.append(r)
 
@@ -101,6 +86,7 @@ B**2>N 全列挙
 B**2<N yの個数でmodをとるイメージ
 
 
-
+解説後
+華麗すぎた
 
 """
