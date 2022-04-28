@@ -95,6 +95,18 @@ class Binominal:
         return self.fact[n] * self.factinv[r] * self.factinv[n - r] % self.mod
 
 
+def comb(n, r, MOD):
+    r = min(r, n - r)
+    if n == 0:
+        return 1
+    big = 1
+    small = 1
+    for i in range(1, r + 1):
+        big *= n + 1 - i
+        small *= i
+    return big // small % MOD
+
+
 def compress(L):
     S = sorted(set(L))
     d = dict()
