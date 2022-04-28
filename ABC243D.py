@@ -2,20 +2,14 @@ N, X = map(int, input().split())
 S = input()
 
 d = 0
-
+X_s = list(bin(X))
 for c in S:
     if c == "U":
-        if d == 0:
-            X //= 2
-        else:
-            d -= 1
+        X_s.pop()
+    elif c == "L":
+        X_s.append("0")
     else:
-        if X <= 10**18:
-            if c == "L":
-                X = X * 2
-            else:
-                X = X * 2 + 1
-        else:
-            d += 1
+        X_s.append("1")
 
-print(X)
+
+print(int("".join(X_s), 0))
