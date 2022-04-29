@@ -12,8 +12,10 @@ for i in range(M - 1):
 
 ret = bisect_right(B, K)
 for i, a in enumerate(A):
-    if a < K:
+    if a <= K:
         ret = max(ret, i + 1 + bisect_right(B, K - a))
+    else:
+        break
 
 print(ret)
 
@@ -31,5 +33,12 @@ dp[i]:i冊読む時の最短時間
 
 2WA
 コーナーケースくさい
+
+a<K -> a<=Kに変えたらAC
+a=Kならbがとれなくてもとれるから
+
+AC
+解説後
+尺取り法でも行ける
 
 """
