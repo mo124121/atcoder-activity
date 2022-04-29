@@ -4,9 +4,12 @@ if K % 2 == 0 or K % 5 == 0:
     print(-1)
     exit()
 
-for i in range(1, K + 1, 2):
-    if K % 5 == 0:
-        continue
+r = 7 % K
+i = 1
+while r != 0:
+    r = (r * 10 + 7) % K
+    i += 1
+print(i)
 
 
 """
