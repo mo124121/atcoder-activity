@@ -1,15 +1,17 @@
 K = int(input())
 
-if K % 2 == 0 or K % 5 == 0:
-    print(-1)
-    exit()
-
 r = 7 % K
 i = 1
-while r != 0:
+seen = set()
+while r not in seen:
+    if r == 0:
+        print(i)
+        exit()
+    seen.add(r)
     r = (r * 10 + 7) % K
     i += 1
-print(i)
+
+print(-1)
 
 
 """
