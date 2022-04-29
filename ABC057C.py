@@ -1,44 +1,16 @@
 N = int(input())
-i = 2
-primes = dict()
-n = N
-while i * i <= N:
-    while n % i == 0:
-        n = n // i
-        if i in primes:
-            primes[i] += 1
-        else:
-            primes[i] = 1
-    i += 1
-if n != 1:
-    primes[n] = 1
-primes[1] = 1
 
 
 def order_count(n):
-    i = 1
-    while 10**i <= n:
-        i += 1
-    return i
+    return len(str(n))
 
 
-ret = 10
-cans = set((1,))
-for p, c in primes.items():
-    tmp = set()
-    for can in cans:
-        for i in range(1, c + 1):
-            a = can * p**i
-            b = N // a
-            a_order = order_count(a)
-            b_order = order_count(b)
-            ret = min(ret, max(a_order, b_order))
-            if a < b:
-                tmp.add(a)
-            else:
-                break
-    cans = cans.union(tmp)
-
+ret = order_count(N)
+i = 1
+while i**2 <= N:
+    if N % i == 0:
+        ret = min(ret, max(order_count(i), order_count(N // i)))
+    i += 1
 print(ret)
 
 
@@ -65,5 +37,7 @@ sqrt(N)ぐらいな感じする
 はい1WA
 1の時の考慮が抜けていた、最小値ぐらいは試すべき
 
+解説後
+そもそもi**2<Nの範囲のiのどれかは当たるじゃん
 
 """
