@@ -1,11 +1,24 @@
 T = int(input())
 ret = []
 for t in T:
-    R, G, B = map(int, input().split())
-    # 赤を増やす
+    B = list(map(int, input().split()))
+    B.sort()
+    r=10**18
+    if B[1]==B[2]:
+        r=min(r,B[1])
+        continue
+    elif B[0]==B[1]:
+        r=min(r,B[0])
+    # 1番目と2番目
+    if (B[0]-B[1])%3==0 and (B[0]-B[1])//3>=B[2]:
+        r=min(r,(B[0]-B[1])%3+B[1]+(B[0]-B[1])//3)
+    # 1番目と3番目
+    if (B[0]-B[2])%3==0 and (B[0]-B[2])//3>=B[1]:
+        r=min(r, (B[0]-B[2])%3+B[2]+(B[0]-B[2])//3)
+    # 2番目と3番目
+    if (B[1]-B[2])%3==0 and (B[1]-B[2])//3>=B[1]:
+        
 
-    # 青を増やす
-    # 緑を増やす
 
 
 """
