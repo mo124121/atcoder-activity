@@ -1,24 +1,24 @@
 T = int(input())
 ret = []
-for t in T:
+for t in range(T):
     B = list(map(int, input().split()))
-    B.sort()
-    r=10**18
-    if B[1]==B[2]:
-        r=min(r,B[1])
-        continue
-    elif B[0]==B[1]:
-        r=min(r,B[0])
+    B.sort(reverse=True)
+    r = 10**18
     # 1番目と2番目
-    if (B[0]-B[1])%3==0 and (B[0]-B[1])//3>=B[2]:
-        r=min(r,(B[0]-B[1])%3+B[1]+(B[0]-B[1])//3)
+    if (B[0] - B[1]) % 3 == 0:
+        r = min(r, (B[0] - B[1]) // 3 + B[1] + (B[0] - B[1]) // 3 * 2)
     # 1番目と3番目
-    if (B[0]-B[2])%3==0 and (B[0]-B[2])//3>=B[1]:
-        r=min(r, (B[0]-B[2])%3+B[2]+(B[0]-B[2])//3)
+    if (B[0] - B[2]) % 3 == 0:
+        r = min(r, (B[0] - B[2]) // 3 + B[2] + (B[0] - B[2]) // 3 * 2)
     # 2番目と3番目
-    if (B[1]-B[2])%3==0 and (B[1]-B[2])//3>=B[1]:
-        
+    if (B[1] - B[2]) % 3 == 0:
+        r = min(r, (B[1] - B[2]) // 3 + B[2] + (B[1] - B[2]) // 3 * 2)
 
+    if r == 10**18:
+        r = -1
+    ret.append(r)
+
+print(*ret, sep="\n")
 
 
 """
@@ -34,5 +34,8 @@ RGB<10**8
 青を増やして赤にできるか？とか
 
 
+WA
+解説見る
+余計な判定消したらAC
 
 """
