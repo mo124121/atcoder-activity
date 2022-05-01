@@ -31,26 +31,25 @@ class UnionFind:
 
 N, K, L = map(int, input().split())
 
-uf = UnionFind(N + 1)
+uf1 = UnionFind(N + 1)
 
 for i in range(K):
     p, q = map(int, input().split())
-    uf.unite(p, q)
+    uf1.unite(p, q)
 
 uf2 = UnionFind(N + 1)
 
 for i in range(L):
     r, s = map(int, input().split())
-    if uf.same(r, s):
-        uf2.unite(r, s)
+    uf2.unite(r, s)
 sizes = defaultdict(int)
 
 for i in range(1, N + 1):
-    sizes[uf2.root(i)] += 1
+    sizes[(uf1.root(i), uf2.root(i))] += 1
 
 ret = []
 for i in range(1, N + 1):
-    ret.append(sizes[uf2.root(i)])
+    ret.append(sizes[(uf1.root(i), uf2.root(i))])
 print(*ret)
 
 """
@@ -64,9 +63,12 @@ ufくさい
 逆UF?なにそれ
 
 片方でufして、ufじゃないものをつなぐ鉄道は追加しない
-
 ufの大きさが答え
 
 できてる気がするがWA
+12/18WAで根本から違っているレベル
+普通あり得る想定パターンが通っていない感覚か？
+
+解説後AC
 
 """
