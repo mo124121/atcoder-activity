@@ -72,6 +72,23 @@ def gcd(x, y):
 
 
 class Binominal:
+    def __init__(self, N):
+        c = [[0] * (N + 1) for _ in range(N + 1)]
+
+        c[0][0] = 1
+        for i in range(N):
+            for j in range(i + 1):
+                c[i + 1][j] += c[i][j]
+                c[i + 1][j + 1] += c[i][j]
+        self.c = c
+
+    def calc(self, n, r):
+        if r < 0 or n < r:
+            return 0
+        return self.c[n][r]
+
+
+class Binominal:
     def __init__(self, N, mod) -> None:
         fact = [1, 1]
         factinv = [1, 1]
