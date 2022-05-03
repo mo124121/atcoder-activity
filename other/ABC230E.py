@@ -5,15 +5,25 @@ def calc_sum(x):
     return x * (x + 1) // 2
 
 
-ret = 0
 i = 1
-while True:
-    ret += (N + i - 1) // i
+ret = 0
+while i**2 <= N:
+    ret += (N // i - i) * 2 + 1
+    i += 1
 
+print(ret)
 
 """
 数え上げのsqrt(N)を狙うイメージ
 
 ある時は同じ数字が並ぶ、その区間
+
+R-L=i*(R*(R+1)//2 - L*(L+1)//2)
+
+解説後
+そもそもfloorとceilを間違えてしっちゃかめっちゃか
+グラフを書くとわかりやすい
+sqrtのオーダでたたける
+
 
 """
