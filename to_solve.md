@@ -67,6 +67,10 @@ https://tubo28.me/compprog/algorithm/minball/
 - ARC013-C
 - ARC038-C
 
+## Mo's algorithm
+
+- ABC174-F
+
 ## その他
 
 ### 時間なくて届かなかったもの
