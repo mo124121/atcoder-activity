@@ -36,6 +36,7 @@ https://tubo28.me/compprog/algorithm/minball/
 ### 桁DP
 
 - ABC007-D
+- ABC129-E
 
 ### 区間DP
 

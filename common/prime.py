@@ -10,6 +10,7 @@ while A[0] ** 2 <= N:
 print(p + A)
 
 
+# 　エラトステネスの篩 2
 N = 10**5 + 100
 
 is_prime = [True] * (N + 1)
