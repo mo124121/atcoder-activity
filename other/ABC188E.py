@@ -12,28 +12,17 @@ for i in range(M):
     x -= 1
     y -= 1
     G[x].append(y)
+INF = 10**11
+dp = [INF] * N
 
-seen = set()
-h = [(A[i], i) for i in range(N)]
-heapify(h)
-ret = -(10**11)
-while len(h):
-    a, i = heappop(h)
-    if i in seen:
-        continue
-    q = deque()
-    q.append(i)
-    while len(q):
-        j = q.popleft()
+for i in range(N):
+    for nxt in G[i]:
+        dp[nxt] = min(dp[nxt], dp[i], A[i])
 
-        for nxt in G[j]:
-            if nxt not in seen:
-                q.append(nxt)
-                ret = max(ret, A[nxt] - a)
-                seen.add(nxt)
-
+ret = -INF
+for i in range(1, N):
+    ret = max(ret, A[i] - dp[i])
 print(ret)
-
 
 """
 ある町からある町へ移動できるか？
