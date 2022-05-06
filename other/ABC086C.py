@@ -1,25 +1,15 @@
-N=int(input())
-
-x_origin=0
-y_origin=0
-t_origin=0
-ret="Yes"
+N = int(input())
+pt = 0
+px = 0
+py = 0
+ret = "Yes"
 for i in range(N):
-    t_target, x_target, y_target = map(int,input().split())
-    diff_x = x_target-x_origin
-    diff_y = y_target-y_origin
-    steps = abs(diff_x)+abs(diff_y)
-    t_spent = t_target-t_origin
-    if steps>t_spent:
-        #print("too far")
-        ret="No"
-    elif (steps-t_spent)%2 != 0:
-        #print("near!")
-        #print(f"{t_origin=} {x_origin=} {y_origin=} -> {t_target=} {x_target=} {y_target=}")
-        ret="No"
-    else:
-        t_origin = t_target
-        x_origin = x_target
-        y_origin = y_target
-
+    t, x, y = map(int, input().split())
+    d = abs(x - px) + abs(y - py)
+    dt = t - pt
+    if d > dt:
+        ret = "No"
+    if (dt - d) % 2 != 0:
+        ret = "No"
+    pt, px, py = t, x, y
 print(ret)
