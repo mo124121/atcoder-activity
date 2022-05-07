@@ -1,34 +1,29 @@
-import sys
-
-sys.setrecursionlimit(10**6)
-# import pypyjit
-# pypyjit.set_param("max_unroll_recursion=-1")
-
 N, K = map(int, input().split())
 S = input()
 
 win = {
     ("R", "S"): "R",
     ("S", "R"): "R",
+    ("R", "R"): "R",
     ("R", "P"): "P",
     ("P", "R"): "P",
+    ("P", "P"): "P",
     ("P", "S"): "S",
     ("S", "P"): "S",
+    ("S", "S"): "S",
 }
 
-
-def rec(l, r):
-    if r - l == 1:
-        return S[l % N]
-    m = (l + r) // 2
-    L = rec(l, m)
-    R = rec(m, r)
-    if L == R:
-        return L
-    return win[(L, R)]
+memo = [[""] * (N) for _ in range(K + 1)]
+for i in range(N):
+    memo[0][i] = S[i]
+for i in range(K):
+    for j in range(N):
+        l = memo[i][j]
+        r = memo[i][(j + pow(2, i, N)) % N]
+        memo[i + 1][j] = win[(l, r)]
 
 
-print(rec(0, 2**K))
+print(memo[K][0])
 
 
 """
@@ -49,5 +44,10 @@ print(rec(0, 2**K))
 さてどう圧縮するか？
 
 mod上で同じスタート・同じ人数なら結果は同じ　これを使えないか？
+先に保存しておく
+memo[K][N]
+
+すったもんだでAC
+
 
 """
