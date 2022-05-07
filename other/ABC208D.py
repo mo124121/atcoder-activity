@@ -1,40 +1,23 @@
 N, M = map(int, input().split())
 from collections import defaultdict, deque
 
-
-G = defaultdict(list)
+INF = 10**10
+memo = [[INF] * (N + 1) for _ in range(N + 1)]
 for i in range(M):
     a, b, c = map(int, input().split())
-    G[a].append((b, c))
-INF = 10**10
-memo = [[[INF] * (N + 1) for _ in range(N + 1)] for _ in range(N + 1)]
-
-
+    memo[a][b] = c
 for i in range(1, N + 1):
-    q = deque()
-    t = 0
-    k = 0
-    seen = set()
-    q.append((t, i, k))
-    while len(q):
-        t, node, k = q.popleft()
-        memo[k][i][node] = min(t, memo[k][i][node])
-        if k == N:
-            continue
-        for nxt, c in G[node]:
-            q.append((t + c, nxt, k + 1))
+    memo[i][i] = 0
+
 
 ret = 0
-for s in range(N + 1):
-    for t in range(N + 1):
-        c = INF
-        for k in range(N + 1):
-            cn = memo[k][s][t]
-            c = min(c, cn)
-            memo[k][s][t] = c
-            if c != INF:
-                ret += c
 
+for k in range(1, N + 1):
+    for i in range(N + 1):
+        for j in range(N + 1):
+            memo[i][j] = min(memo[i][j], memo[i][k] + memo[k][j])
+            if memo[i][j] != INF:
+                ret += memo[i][j]
 
 print(ret)
 
@@ -62,6 +45,6 @@ N**3<2*10*7
 解説後
 やっぱりワーシャルフロイドやんけ
 
-
+ふぁーーーー問題よみまちがえてるーーーー
 
 """
