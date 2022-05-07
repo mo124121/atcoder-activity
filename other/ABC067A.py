@@ -1,15 +1,7 @@
 A, B = map(int, input().split())
 
-ret = False
-
-if A % 3 == 0:
-    ret = True
-elif B % 3 == 0:
-    ret = True
-elif (A + B) % 3 == 0:
-    ret = True
-
-if ret:
-    print("Possible")
-else:
-    print("Impossible")
+for c in [A, B, A + B]:
+    if c % 3 == 0:
+        print("Possible")
+        exit()
+print("Impossible")
