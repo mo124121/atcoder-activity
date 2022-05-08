@@ -1,13 +1,15 @@
 # https://muhenkou.net/?p=7691#%E7%B4%A0%E5%9B%A0%E6%95%B0%E5%88%86%E8%A7%A3
+# ちょい改変
 # エラトステネスの篩 O(NloglogN)
 N = int(input())
-A = list(range(2, N + 1))
-p = list()
-while A[0] ** 2 <= N:
-    tmp = A[0]
-    p.append(tmp)
-    A = [e for e in A if e % tmp != 0]
-print(p + A)
+base = list(range(2, N + 1))
+primes = list()
+while base[0] ** 2 <= N:
+    tmp = base[0]
+    primes.append(tmp)
+    base = [e for e in base if e % tmp != 0]
+primes += base
+print(primes)
 
 
 # 　エラトステネスの篩 2
