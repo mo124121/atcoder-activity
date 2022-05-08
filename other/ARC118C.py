@@ -1,52 +1,15 @@
-from heapq import heappop, heappush
-
+import numpy as np
 
 N = int(input())
+MAX = 10000
 
+in_A = np.zeros(MAX + 1, np.bool_)
+for d in [6, 10, 15]:
+    in_A[d::d] = 1
 
-def ok(N):
-    base = [6, 10, 15]
-    A = []
-    for b in base:
-        x = b
-        while x < 10**4:
-            A.append(x)
-            x += b
-    bad = [i * 30 for i in range(10**4 // 30 + 1)]
-    A = list(set(A).difference(bad))
-    A.sort()
-    return A[:N]
-
-
-A = ok(N)
-print(*A)
-
-
-def ng(N):
-    B = [2, 3, 5]
-    prod = 1
-    for b in B:
-        prod *= b
-    A = []
-    for b in B:
-        A.append(prod // b)
-    seen = set(A)
-    x = A.copy()
-
-    h = []
-    for i in range(len(A)):
-        heappush(h, (A[i], i))
-
-    while len(A) < N:
-        a, i = heappop(h)
-        a += x[i]
-        while a % B[i] == 0 or a in seen:
-            a += x[i]
-        seen.add(a)
-        A.append(a)
-        heappush(h, (a, i))
-    print(*A)
-
+A = np.where(in_A)[0]
+A[2], A[3] = A[3], A[2]  # avoid gcd(A) > 1
+print(*A[:N])
 
 # for debug
 def gcd(x, y):
@@ -82,4 +45,6 @@ print(x)
 
 ×でなく足せば？
 
+解説後
+理解間違い（無限回）
 """
