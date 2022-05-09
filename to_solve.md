@@ -23,6 +23,10 @@
 https://drken1215.hatenablog.com/entry/2020/01/12/224200
 https://tubo28.me/compprog/algorithm/minball/
 
+## 繰り返し二乗法
+
+- ARC111-A
+
 ## DP
 
 ### 木DP

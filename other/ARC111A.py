@@ -1,27 +1,5 @@
 N, M = map(int, input().split())
-if M == 0:
-    print(0)
-    exit()
-
-
-def calc(x, r):
-    ret_x = 2 * x * r + (r**2 // M)
-    ret_r = r**2 % M
-    return ret_x, ret_r
-
-
-base = 10
-i = 0
-x = 10 // M
-r = 10 % M
-
-ret = 0
-while 2**i <= N:
-    if (N >> i) & 1 == 1:
-        ret = (ret + x) % M
-    i += 1
-    x, r = calc(x, r)
-print(ret)
+print(pow(10, N, M**2) // M % M)
 """
 式変形が大事
 
@@ -49,4 +27,16 @@ R[i+1]=R[i]**2%M
 
 
 M==1のときはあまり0
+
+
+
+解説を見る
+たぶんアプローチはあってた
+文章解説は鬼シンプル
+
+10**N//M%M
+(aM**2+bM+c)//M%M
+(bM+c)//M%M
+b%M
+
 """
