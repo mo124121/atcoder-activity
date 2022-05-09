@@ -1,14 +1,15 @@
-import numpy as np
-
 N = int(input())
 MAX = 10000
+A = []
+for base in [6, 10, 15]:
+    a = base
+    while a < MAX:
+        A.append(a)
+        a += base
+A = list(set(A))
+A.sort()
+A[2], A[3] = A[3], A[2]
 
-in_A = np.zeros(MAX + 1, np.bool_)
-for d in [6, 10, 15]:
-    in_A[d::d] = 1
-
-A = np.where(in_A)[0]
-A[2], A[3] = A[3], A[2]  # avoid gcd(A) > 1
 print(*A[:N])
 
 # for debug
@@ -47,4 +48,7 @@ print(x)
 
 解説後
 理解間違い（無限回）
+
+
+
 """
