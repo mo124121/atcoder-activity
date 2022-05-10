@@ -1,18 +1,46 @@
 N = int(input())
-S = [[input() for _ in range(N)]]
-T = [[input() for _ in range(N)]]
+S = [[list(input()) for _ in range(N)]]
+T = [[list(input()) for _ in range(N)]]
 
 
 def rotate(U):
-    pass
+    R = [["."] * N for _ in range(N)]
+    for i in range(N):
+        for j in range(N):
+            R[i][j] = U[j][-1 - i]
+    return R
 
 
 def shift_corner(U):
-    pass
+    h_shift = 0
+    for i in range(N):
+        if "#" in U[i]:
+            break
+        h_shift += 1
+
+    v_shift = 0
+    for j in range(N):
+        flag = False
+        for i in range(N):
+            if U[i][j] == "#":
+                flag = True
+                break
+        if flag:
+            break
+        v_shift += 1
+
+    U = U[h_shift:] + U[:h_shift]
+    for i in range(N):
+        U[i] = U[i][v_shift:] + U[i][:v_shift]
+    return U
 
 
 def same(U, V):
-    pass
+    for i in range(N):
+        for j in range(N):
+            if U[i][j] != V[i][j]:
+                return False
+    return True
 
 
 for i in range(3):
@@ -20,12 +48,12 @@ for i in range(3):
     T.append(rotate(T[i]))
 
 for i in range(4):
-    shift_corner(S[i])
-    shift_corner(T[i])
+    S[i] = shift_corner(S[i])
+    T[i] = shift_corner(T[i])
 
-for i in range(4):
-    for j in range(4):
-        if same(S[i], T[j]):
+for k in range(4):
+    for l in range(4):
+        if same(S[k], T[l]):
             print("Yes")
             exit()
 
@@ -38,5 +66,7 @@ zobrist hashしか思いつかない脳
 各ハッシュを計算する　4**2*200**2　大した数じゃないのでhashじゃなくていい
 一致を見る
 
-
+AC
+解説後
+#がある位置を持っておいて、ガチャガチャするほうが楽
 """
