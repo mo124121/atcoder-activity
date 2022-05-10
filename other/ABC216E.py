@@ -1,35 +1,30 @@
+def calc_sum(x):
+    return x * (x + 1) // 2
+
+
 N, K = map(int, input().split())
 A = list(map(int, input().split()))
 ret = 0
 for a in A:
-    ret += a * (a + 1) // 2
-if ret <= K:
+    ret += calc_sum(a)
+if sum(A) <= K:
     print(ret)
     exit()
-
-A.sort()
-f = A.pop()
-c = 1
-
-ret = 0
-while len(A):
-    nxt = A.pop()
-    if c * (f - nxt) >= K:
-        break
+K -= sum(A)
+A.sort(reversed=True)
+pre = 0
+for i, a in enumerate(A):
+    if K + (N - i) * (a - pre) >= 0:
+        ret -= (N - i) * (calc_sum(a) - calc_sum(pre))
+        K += (N - i) * (a - pre)
     else:
-        ret += c * (f * (f + 1) // 2 - nxt * (nxt + 1) // 2)
-        K -= c * (f - nxt)
-        c += 1
-        f = nxt
-
-if K != 0:
-    d = f - K // c
-    e = c - K % c
-    r = c * (f * (f + 1) // 2 - d * (d + 1) // 2) + d * e
-    ret += r
-
+        c = (-K - (N - i) * pre) // (N - i)
+        d = -K % (N - i)
+        ret -= (N - i) * (calc_sum(c) - calc_sum(pre))
+        ret -= c * d
+        break
+    pre = a
 print(ret)
-
 """
 貪欲にやるなら、2番目に高いものまで眺めて、
 1番目を2番目を下回るまで乗る・減らす
@@ -45,5 +40,7 @@ K<10**9なのでそのままやると間に合わない
 
 結構WA
 どうするか？
+
+いっそ総合計を出してから引いていく
 
 """
