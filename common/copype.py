@@ -79,6 +79,7 @@ def tousa_sum(a, d, n):
     return n * (2 * a + (n - 1) * d) // 2
 
 
+# パスカル modなし　O(N**2)
 class Binominal:
     def __init__(self, N):
         c = [[0] * (N + 1) for _ in range(N + 1)]
@@ -96,6 +97,7 @@ class Binominal:
         return self.c[n][r]
 
 
+# 高速なの　O(N)
 class Binominal:
     def __init__(self, N, mod) -> None:
         fact = [1, 1]
@@ -120,6 +122,24 @@ class Binominal:
         return self.fact[n] * self.factinv[r] * self.factinv[n - r] % self.mod
 
 
+# nがでかいもの
+class Binominal:
+    def __init__(self, N, MAX_K, MOD):
+        fact_inv = [1, 1]
+        inv = [0, 1]
+        for i in range(2, MAX_K + 1):
+            inv.append((MOD - inv[MOD % i] * (MOD // i)) % MOD)
+            fact_inv.append((fact_inv[-1] * inv[-1]) % MOD)
+        com = [1]
+        for i in range(1, MAX_K + 1):
+            com.append((com[-1] * ((N - i + 1) * inv[i] % MOD)) % MOD)
+        self.com = com
+
+    def calc(self, k):
+        return self.com[k]
+
+
+# 直接
 def comb(n, r, MOD):
     r = min(r, n - r)
     if n == 0:
