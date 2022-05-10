@@ -1,3 +1,4 @@
+# 再帰対策を忘れずに
 class UnionFind:
     def __init__(self, N):
 
