@@ -44,7 +44,7 @@
 	},
 	"multi int array": {
 		"prefix": [
-			"mia"
+			"mla"
 		],
 		"body": "${1:A}=[0]*${2:N}\n${3:B}=[0]*${2:N}\nfor i in range(${s:N}):\n    ${1:A}[i],${3:B}[i]=map(int,input().split())"
 	},

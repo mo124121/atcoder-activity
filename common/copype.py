@@ -74,6 +74,11 @@ def gcd(x, y):
         return gcd(y, x % y)
 
 
+def tousa_sum(a, d, n):
+    # 初項a,交差d,項数n
+    return n * (2 * a + (n - 1) * d) // 2
+
+
 class Binominal:
     def __init__(self, N):
         c = [[0] * (N + 1) for _ in range(N + 1)]
