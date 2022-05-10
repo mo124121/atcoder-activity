@@ -1,34 +1,26 @@
 from collections import Counter, deque
-from heapq import heapify, heappop, heappush
 
 
 N, M = map(int, input().split())
 A = list(map(int, input().split()))
 
-q = deque(A[: M - 1])
-count = Counter(A[: M - 1])
-h = []
+q = deque(A[:M])
+count = Counter(A[:M])
+
 for i in range(N + 1):
     if i not in count:
-        h.append(i)
-heapify(h)
+        ret = i
+        break
 
-ret = 10**7
-
-for a in A[M - 1 :]:
-    q.append(a)
+for a in A:
     count[a] += 1
+    q.append(a)
 
-    m = heappop(h)
-    while count[m] != 0:
-        m = heappop(h)
-    ret = min(ret, m)
-    heappush(h, m)
+    b = q.popleft()
+    count[b] -= 1
+    if count[b] == 0:
+        ret = min(ret, b)
 
-    l = q.popleft()
-    count[l] -= 1
-    if count[l] == 0:
-        heappush(h, l)
 
 print(ret)
 
@@ -55,5 +47,9 @@ orderset使う問題に見える
 
 5WA/26
 コーナケースっぽいなあ
+AC
+
+解説
+もっとシンプルっぽい
 
 """
