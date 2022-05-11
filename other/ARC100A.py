@@ -1,21 +1,13 @@
 N = int(input())
 A = list(map(int, input().split()))
 B = [A[i] - i - 1 for i in range(N)]
-B_sum = sum(B)
+B.sort()
 ret = 0
-shift = B_sum // N
+c = B[N // 2]
 for b in B:
-    ret += abs(b - shift)
+    ret += abs(b - c)
 
-ret2 = 0
-if B_sum > 0:
-    shift += 1
-else:
-    shift -= 1
-for b in B:
-    ret2 += abs(b - shift)
-
-print(min(ret, ret2))
+print(ret)
 
 
 """
@@ -33,6 +25,9 @@ print(min(ret, ret2))
 
 左側にある数と右側にある数が同一になるのが答え
 Bをソートして、-B[N//2]を全体にすればいい、ほんまか？
+やったぜAC
 
+解説
+典型：マンハッタン距離の差の総和を最小化するときは中央値を使う
 
 """
