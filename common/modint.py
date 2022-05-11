@@ -1,3 +1,7 @@
+# https://qiita.com/wotsushi/items/c936838df992b706084c
+# ちょい改変
+
+
 class ModInt:
     MOD = -1
 
@@ -69,48 +73,3 @@ class ModInt:
             if isinstance(other, ModInt)
             else ModInt(pow(other, self.x, self.MOD), self.MOD)
         )
-
-
-n, a, b = map(int, input().split())
-MOD = 10**9 + 7
-
-
-def nCr(n, r):
-    md = ModInt(1, MOD)
-    for i in range(n, n - r, -1):
-        md *= i
-    for i in range(1, r + 1):
-        md /= i
-    return md
-
-
-ret = ModInt(2, MOD) ** n - 1 - nCr(n, a) - nCr(n, b)
-print(ret)
-
-"""
-mod内の引き算ができれば余裕？
-n<10**9
-単純に数え上げはできないが、愚直は下記
-
-ΣnCi  -nCa-nCb
-
-a,b<2*10**5
-この制約・・・？何かに使える？
-
-逆に低くとも2*10**5以降のmod部分は変わらない
-
-2項係数の和をうまく計算して、
-nCaとnCbを計算すればいい
-
-2項係数の和は2**n (i=0...n)
-
-あとはnCaの計算
-
-ある程度高速に行きたいが、さて
-何も考えずにやっても間に合う？
-
-nがでかいときの2項係数ライブラリを使ってAC
-
-解説後 mod intを使うべし invがとれる
-
-"""

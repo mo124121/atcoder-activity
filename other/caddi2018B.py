@@ -4,17 +4,18 @@ cs = [0] * (N)
 for i in range(N):
     a = int(input())
     cs[i] = a
-cs.sort()
+cs.sort(reverse=True)
 
-turn = 0
-count = 0
-for i in range(N):
-    b = cs[i] - count
-    count += b
-if count % 2 == 0:
-    print("second")
+if N == 1:
+    if cs[0] % 2 == 0:
+        print("second")
+    else:
+        print("first")
 else:
-    print("first")
+    if cs[1] % 2 == 0:
+        print("second")
+    else:
+        print("first")
 
 
 """
@@ -28,5 +29,13 @@ O(NlogN)
 
 たぶん食べれる最大が相手の手番の猶予をなくすのでベストなはず
 1個だけ残して食べるのがたぶん
+
+再び考察
+
+
+4WA/22
+この時点でだいぶ答えは近いはず
+
+
 
 """
