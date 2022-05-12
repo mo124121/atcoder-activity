@@ -1,22 +1,15 @@
 N = int(input())
-cs = [0] * (N)
-
+A = [0] * (N)
+F = "first"
+S = "second"
 for i in range(N):
-    a = int(input())
-    cs[i] = a
-cs.sort(reverse=True)
+    A[i] = int(input())
 
-if N == 1:
-    if cs[0] % 2 == 0:
-        print("second")
-    else:
-        print("first")
-else:
-    if cs[1] % 2 == 0:
-        print("second")
-    else:
-        print("first")
-
+for a in A:
+    if a % 2 == 1:
+        print(F)
+        exit()
+print(S)
 
 """
 考察
@@ -36,6 +29,10 @@ O(NlogN)
 4WA/22
 この時点でだいぶ答えは近いはず
 
+解説後
+N=2で図を書く 実験する
+状態遷移方向を考える
+選択肢があるかどうかを考える
 
 
 """
