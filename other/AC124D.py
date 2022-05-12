@@ -24,12 +24,12 @@ def solve(K, S):
         r += c
         if bit == 0:
             k += 1
-            if k > K:
-                _, c1 = q.popleft()
-                r -= c1
-                _, c1 = q.popleft()
-                r -= c1
-                k -= 1
+            while k > K:
+                bi, ci = q.popleft()
+                r -= ci
+                if bi == 0:
+                    k -= 1
+
         ret = max(ret, r)
     return ret
 
@@ -65,5 +65,7 @@ submit()
 
 反転パターンも考えるべき？あんまり意味ある感じしないんだよな
 
+解説後
+考え方は普通にあってた
 
 """
