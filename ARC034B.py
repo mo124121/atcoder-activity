@@ -14,29 +14,12 @@ def greed(N):
 
 
 def solve(N):
-
+    f_max = len(str(N)) * 9
     ans = []
-
-    def rec(N, x, keta):
-        if keta == 1:
-            y = f(x)
-            if (N - y) >= 0 and (N - y) % 2 == 0:
-                ans.append(x + (N - y) // 2)
-            return
-
-        for i in range(9, -1, -1):
-            xi = x + i * 10 ** (keta - 1)
-            yi = f(xi)
-            v_max = 10 ** (keta - 1) - 1 + 9 * (keta - 1) * keta // 2
-            if N < yi:
-                continue
-            if N > yi + v_max:
-                break
-            rec(N, xi, keta - 1)
-
-    rec(N, 0, len(str(N)))
+    for i in range(max(0, N - f_max), N + 1):
+        if f(i) == N:
+            ans.append(i)
     ans.sort()
-
     return ans
 
 
