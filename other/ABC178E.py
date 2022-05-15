@@ -1,16 +1,27 @@
-N=int(input())
-
-x=[0]*N
-y=[0]*N
+N = int(input())
+X = [0] * N
+Y = [0] * N
 for i in range(N):
-    x[i],y[i]=map(int,input().split())
+    x, y = map(int, input().split())
+    X[i], Y[i] = x - y, x + y
+d = max(max(Y) - min(Y), max(X) - min(X))
 
-ret=0
-for i in range(N):
-    for j in range(i+1,N):
-        current= abs(x[i]-x[j])+abs(y[j]-y[i])
-        if ret > current:
-            ret=current
+print(d)
 
 
-print(ret)
+"""
+マンハッタン距離は45度回転が定石
+ただ別に回転しなくてもいい気もする
+
+グラフ木の直径同様、
+2回一番遠いところを選べば答えに見える
+4WA/18
+反例思いついてダメ、最初の選び方が悪いと、
+遠くなる頂点にたどり着かない
+
+やっぱ斜めにするか、
+そのうえで、x,yで一番端に来るやつが答えの候補
+
+
+
+"""
