@@ -1,31 +1,32 @@
 N = int(input())
-a = list(map(int, input().split()))
-INF = 10**5
-ret = -INF
-score = [0] * 2
+A = list(map(int, input().split()))
+ret = -(10**10)
 for i in range(N):
-    a_max = (-INF, -1, i, -INF)
+    r = 0
+    score_a_max = -(10**10)
     for j in range(N):
         if i == j:
             continue
-        score[0] = score[1] = 0
-        for k in range(min(i, j), max(i, j)):
-            score[(1 + k) % 2] += a[k]
-        a_max = max(a_max, (score[1], -j, i, score[0]))
-    ret = max(ret, a_max[3])
+        if i < j:
+            x, y = i, j
+        else:
+            x, y = j, i
+        s = [0] * 2
+        for k in range(y - x + 1):
+            s[(1 + k) % 2] += A[k + x]
+        if score_a_max < s[0]:
+            score_a_max = s[0]
+            r = s[1]
+    ret = max(ret, r)
+
 print(ret)
-
-
 """
-先行操作
-後攻は自分のスコア最大化することを目的としていて、相互作用はない
+全探索
 
-N<50　小さい
-もうごり押しでいいじゃん
+青木がとれるうちベストなときの高橋のスコアが
+各高橋の選択の結果
+これの最大値を更新していく
 
-偶奇の操作は後攻もする可能性がある　これは全探索したほうが抜け漏れなさそう
-
-ただ、反転が多い問題、ややこしい
-問題設定どおりの挙動をさせるべき
+ACしたけどバグらせすぎ
 
 """
