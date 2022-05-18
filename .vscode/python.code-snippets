@@ -89,5 +89,10 @@
 			"    G[${3:b}].append(${2:a})"
 		],
 		"description": "graph"
+	},
+	"moves": {
+		"prefix": "mvs",
+		"body": "mvs = [[0, 1], [1, 0], [0, -1], [-1, 0]]",
+		"description": "moves on grid"
 	}
 }

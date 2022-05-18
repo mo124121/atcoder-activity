@@ -5,10 +5,9 @@
 - ABC246-F
 - 典型90問 080
 
-## ワーシャルフロイド
+## ワーシャルフロイドもとい2分探索
 
 - 典型90問 87
-- ABC020-C 
 - ABC155-D 
 
 ## 調和級数
@@ -22,10 +21,6 @@
 - ABC151-F
 https://drken1215.hatenablog.com/entry/2020/01/12/224200
 https://tubo28.me/compprog/algorithm/minball/
-
-## 繰り返し二乗法
-
-- ARC111-A
 
 ## DP
 
@@ -65,7 +60,7 @@ https://tubo28.me/compprog/algorithm/minball/
 
 - ABC247-F
 
-## 最適行動ゲーム(Grundy数)
+## 最適行動ゲーム
 
 - caddi2018-D
 - 典型90問 031
