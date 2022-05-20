@@ -1,15 +1,14 @@
 def solve(N, T, AB):
-    dp = [[-1] * (T + 1) for _ in range(N + 1)]
+    dp = [-1] * (T + 1)
+    dp[0] = 0
     for i, (a, b) in enumerate(AB):
-        dp[i][0] = 0
-        for t in range(T):
-            if dp[i][t] < 0:
+        for t in reversed(range(T)):
+            nxt = min(t + a, T)
+            if dp[t] < 0:
                 continue
-            nt = min(T, t + a)
-            dp[i + 1][t] = max(dp[i + 1][t], dp[i][t])
-            dp[i + 1][nt] = max(dp[i + 1][nt], dp[i][nt], dp[i][t] + b)
+            dp[nxt] = max(dp[nxt], dp[t] + b)
 
-    return max(dp[N])
+    return max(dp)
 
 
 def submit():
@@ -21,7 +20,7 @@ def submit():
     print(solve(N, T, AB))
 
 
-submit()
+# submit()
 
 from collections import defaultdict
 from itertools import product
@@ -42,27 +41,27 @@ def naive(N, T, AB):
     return ret
 
 
-# import random
+import random
 
-# N = 10
-# T = 300
+N = 10
+T = 300
 
-# e = 0
-# tot = 100
-# for t in range(tot):
-#     AB = []
-#     for i in range(N):
-#         AB.append((random.randint(1, 3000), random.randint(1, 300)))
+e = 0
+tot = 100
+for t in range(tot):
+    AB = []
+    for i in range(N):
+        AB.append((random.randint(1, 3000), random.randint(1, 300)))
 
-#     s = solve(N, T, AB)
-#     g = naive(N, T, AB)
-#     if s != g:
-#         print("ERROR", t, s, g)
-#         print(N, T)
-#         for ab in AB:
-#             print(*ab)
-#         e += 1
-# print(f"{e}/{tot}")
+    s = solve(N, T, AB)
+    g = naive(N, T, AB)
+    if s != g:
+        print("ERROR", t, s, g)
+        print(N, T)
+        for ab in AB:
+            print(*ab)
+        e += 1
+print(f"{e}/{tot}")
 
 
 """
@@ -70,4 +69,7 @@ def naive(N, T, AB):
 ただ、最後の条件がちょっとやらしい
 まあTのところにまとめたらいっか
 dp[i][t]:i個目の料理をためべて時刻tの時のスコアの最大値
+
+もらうDPは今回のような最後のいくつかをまとめる挙動があると書きづらい
+配るDPでフルで書くか、一行で後ろの方から足し合わせて行く、か辞書
 """
