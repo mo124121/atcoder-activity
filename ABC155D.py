@@ -1,6 +1,3 @@
-from bisect import bisect
-
-
 def naive(N, K, A):
     B = []
     for i in range(N - 1):
@@ -10,47 +7,71 @@ def naive(N, K, A):
     return B[K - 1]
 
 
-bisect
+def getMinus(pl, mi, l):
+    j = 0
+    ret = 0
+    for m in mi:
+        while j < len(pl) and l < m * pl[j]:
+            j += 1
+        ret += len(pl) - j
+    return ret
 
 
-def count(N, A, x):
-    tot = 0
-    for i, a in enumerate(A):
-        l = -1
-        r = N
-        if a < 0:
-            while r - l > 1:
-                m = (l + r) // 2
-                if a * A[m] < x:
-                    r = m
-                else:
-                    l = m
-            tot += N - r
-        else:
-            while r - l > 1:
-                m = (l + r) // 2
-                if a * A[m] < x:
-                    l = m
-                else:
-                    r = m
-            tot += r
-        if a**2 < x:
-            tot -= 1
-    tot //= 2
-    return tot
+def getPlus(pl, mi, l):
+
+    ret = 0
+    mi = list(reversed(mi))
+    n = len(mi)
+    j = n - 1
+    for i in range(n):
+        while i < j and l < mi[i] * mi[j]:
+            j -= 1
+        ret += max(0, j - i)
+
+    n = len(pl)
+    j = n - 1
+    for i in range(n):
+        while i < j and l < pl[i] * pl[j]:
+            j -= 1
+        ret += max(0, j - i)
+    return ret
+
+
+def getCount(pl, mi, zero, l):
+    ret = getMinus(pl, mi, min(l, -1))
+    if 0 <= l:
+        ret += zero
+    if 0 < l:
+        ret += getPlus(pl, mi, l)
+    return ret
 
 
 def solve(N, K, A):
     A.sort()
-    l = -(10**18) - 1
-    r = 10**18 + 1
-    while r - l > 1:
-        m = (r + l) // 2
-        if count(N, A, m) < K:
-            l = m
+
+    mi = []
+    pl = []
+    for i in range(N):
+        if A[i] < 0:
+            mi.append(A[i])
+        elif A[i] > 0:
+            pl.append(A[i])
+    zero = 0
+    for a in A:
+        if a == 0:
+            zero += 1
+    zero = zero * (N - zero) + zero * (zero - 1) // 2
+
+    ng = -(10**18) - 1
+    ok = 10**18 + 1
+    while ok - ng > 1:
+        m = (ok + ng) // 2
+        if K <= getCount(pl, mi, zero, m):
+            ok = m
         else:
-            r = m
-    return l
+            ng = m
+
+    return ok
 
 
 def submit():
@@ -61,13 +82,13 @@ def submit():
 
 submit()
 
-test = [[4, 6, [1, 2, 3, 4]], [4, 4, [1, 2, 3, 4]], [4, 3, [3, 3, -4, -2]]]
+# test = [[4, 6, [1, 2, 3, 4]], [4, 4, [1, 2, 3, 4]], [4, 3, [3, 3, -4, -2]]]
 
-for N, K, A in test:
-    s = solve(N, K, A)
-    g = naive(N, K, A)
-    if s != g:
-        print(N, K, *A, s, g)
+# for N, K, A in test:
+#     s = solve(N, K, A)
+#     g = naive(N, K, A)
+#     if s != g:
+#         print(N, K, *A, s, g)
 
 """
 計算ができれば楽勝だが、
