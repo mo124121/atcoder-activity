@@ -1,38 +1,15 @@
-from collections import defaultdict
-from itertools import product
-
-
-def greed(N, T, A, B):
-    ret = 0
-    for pat in product((True, False), repeat=N):
-        t = 0
-        s = 0
-        for i, p in enumerate(pat):
-            if p:
-                t += A[i]
-                s += B[i]
-        if t <= T:
-            ret = max(ret, s)
-    return ret
-
-
 def solve(N, T, AB):
+    dp = [[-1] * (T + 1) for _ in range(N + 1)]
+    for i, (a, b) in enumerate(AB):
+        dp[i][0] = 0
+        for t in range(T):
+            if dp[i][t] < 0:
+                continue
+            nt = min(T, t + a)
+            dp[i + 1][t] = max(dp[i + 1][t], dp[i][t])
+            dp[i + 1][nt] = max(dp[i + 1][nt], dp[i][nt], dp[i][t] + b)
 
-    seen = defaultdict(int)
-    seen[0] = 0
-    exceed = defaultdict(int)
-    for a, b in AB:
-        tmp = defaultdict(int)
-        for t, v in seen.items():
-            tmp[a + t] = b + v
-        for k, v in tmp.items():
-            if k < T:
-                if seen[k] < v:
-                    seen[k] = v
-            else:
-                if exceed[k] < v:
-                    exceed[k] = v
-    return max(*seen.values(), *exceed.values())
+    return max(dp[N])
 
 
 def submit():
@@ -44,26 +21,48 @@ def submit():
     print(solve(N, T, AB))
 
 
-# submit()
+submit()
 
-import random
+from collections import defaultdict
+from itertools import product
 
-N = 10
-T = 300
-for t in range(10):
-    A = []
-    B = []
-    for i in range(N):
-        A.append(random.randint(1, 3000))
-        B.append(random.randint(1, 3000))
 
-    s = solve(N, T, A, B)
-    g = greed(N, T, A, B)
-    if s != g:
-        print(t, s, g)
-        print(N, T)
-        for a, b in zip(A, B):
-            print(a, b)
+def naive(N, T, AB):
+    ret = 0
+    for pat in product((True, False), repeat=N):
+        t = 0
+        s = 0
+        for i, p in enumerate(pat):
+            if p:
+                t += AB[i][0]
+                s += AB[i][1]
+            if AB[i][0] >= T:
+                break
+        ret = max(ret, s)
+    return ret
+
+
+# import random
+
+# N = 10
+# T = 300
+
+# e = 0
+# tot = 100
+# for t in range(tot):
+#     AB = []
+#     for i in range(N):
+#         AB.append((random.randint(1, 3000), random.randint(1, 300)))
+
+#     s = solve(N, T, AB)
+#     g = naive(N, T, AB)
+#     if s != g:
+#         print("ERROR", t, s, g)
+#         print(N, T)
+#         for ab in AB:
+#             print(*ab)
+#         e += 1
+# print(f"{e}/{tot}")
 
 
 """
