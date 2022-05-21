@@ -1,21 +1,23 @@
 N = int(input())
-A = list(map(int, input().split()))
-B = [-1] * (N + 1)
+A = [0] + list(map(int, input().split()))
+
+B = [0] * (N + 1)
 for i in range(N, 0, -1):
     r = 0
-    for j in range(i * 2, N + 1, i):
+    for j in reversed(range(2 * i, N + 1, i)):
         r += B[j]
-    if r % 2 == A[i - 1]:
-        B[i] = 0
-    else:
-        B[i] = 1
-
-
+    B[i] = (A[i] - r) % 2
 ret = []
 for i in range(N + 1):
-    if B[i] == 1:
+    if B[i] != 0:
         ret.append(i)
-
 print(len(ret))
-if len(ret):
+if ret:
     print(*ret)
+
+"""
+日本語がわからん
+mod計算っぽい
+
+
+"""
