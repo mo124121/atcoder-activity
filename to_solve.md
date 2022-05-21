@@ -11,7 +11,6 @@
 
 ## 調和級数
 
-- 典型90問 015
 - ABC134-D
 - ARC067-E
 - ARC068-E
@@ -76,6 +75,7 @@ https://tubo28.me/compprog/algorithm/minball/
 
 - ABC248-F
 - ABC197-F
+- ARC078-B
 
 
 ### 実装に苦労したもの
