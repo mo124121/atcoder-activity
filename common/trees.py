@@ -3,6 +3,7 @@ class UnionFind:
     def __init__(self, N):
 
         self.parent = [0] * N
+        self.rank = [0] * N
         for i in range(N):
             self.parent[i] = i
 
@@ -18,13 +19,15 @@ class UnionFind:
         root_y = self.root(y)
         if root_x == root_y:
             return
-        else:
+        if self.rank[root_x] < self.rank[root_y]:
             self.parent[root_x] = root_y
+        else:
+            self.parent[root_y] = root_x
+            if self.rank[root_x] == self.rank[root_y]:
+                self.rank[root_x] += 1
 
     def same(self, x, y):
-        root_x = self.root(x)
-        root_y = self.root(y)
-        return root_x == root_y
+        return self.root(x) == self.root(y)
 
 
 # https://gist.github.com/masa-aa/4be96f053457dc60625a3552288fb1e4
