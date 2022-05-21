@@ -1,9 +1,3 @@
-from math import factorial
-
-X, Y = map(int, input().split())
-MOD = 10 ** 9 + 7
-
-
 class Binominal:
     def __init__(self, N, mod) -> None:
         fact = [1, 1]
@@ -28,11 +22,12 @@ class Binominal:
         return self.fact[n] * self.factinv[r] * self.factinv[n - r] % self.mod
 
 
-if (X + Y) % 3 == 0 and X // 2 <= Y and Y / 2 <= X:
-    jump = (X + Y) // 3
-    choice = jump * 2 - X
-    binominal = Binominal((X + Y) // 3, MOD)
-    ret = binominal.calc(jump, choice)
-    print(ret)
-else:
+X, Y = map(int, input().split())
+Z = (X + Y) // 3
+if (X + Y) % 3 != 0 or Z > X or Z > Y:
     print(0)
+    exit()
+MOD = 10**9 + 7
+bn = Binominal(Z, MOD)
+
+print(bn.calc(Z, X - Z))

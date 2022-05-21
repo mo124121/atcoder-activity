@@ -2,14 +2,10 @@ import sys
 
 sys.setrecursionlimit(10**6)
 
-"""
-pypy用
-import sys
+if sys.implementation.name == "pypy":
+    import pypyjit
 
-sys.setrecursionlimit(10**6)
-import pypyjit
-pypyjit.set_param("max_unroll_recursion=-1")
-"""
+    pypyjit.set_param("max_unroll_recursion=-1")
 
 
 class LinkedList:
