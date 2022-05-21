@@ -14,21 +14,22 @@ d = 0
 node = 1
 e = 0
 parent = 0
-heappush(h, (d, node, e, parent))
+heappush(h, (d, node, e))
 ret = []
-seen = {}
+INF = 10**18
+dist = [INF] * (N + 1)
 
 while h:
-    d, node, e, parent = heappop(h)
+    d, node, e = heappop(h)
 
-    if node in seen:
+    if dist[node] <= d:
         continue
-    seen[node] = d
+    dist[node] = d
     ret.append(e)
 
     for nxt, c, en in G[node]:
-        if nxt != parent and nxt not in seen:
-            heappush(h, (d + c, nxt, en, node))
+        if dist[nxt] > d + c:
+            heappush(h, (d + c, nxt, en))
 
 print(*ret[1:])
 
