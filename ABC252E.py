@@ -1,73 +1,34 @@
-import sys
-
-sys.setrecursionlimit(10**6)
-
 from collections import defaultdict
 from heapq import heappop, heappush
 
-import pypyjit
-
-pypyjit.set_param("max_unroll_recursion=-1")
-
-
-class UnionFind:
-    def __init__(self, N):
-
-        self.parent = [0] * N
-        self.rank = [0] * N
-        for i in range(N):
-            self.parent[i] = i
-
-    def root(self, x):
-        if self.parent[x] == x:
-            return x
-        else:
-            self.parent[x] = self.root(self.parent[x])
-            return self.parent[x]
-
-    def unite(self, x, y):
-        root_x = self.root(x)
-        root_y = self.root(y)
-        if root_x == root_y:
-            return
-        if self.rank[root_x] < self.rank[root_y]:
-            self.parent[root_x] = root_y
-        else:
-            self.parent[root_y] = root_x
-            if self.rank[root_x] == self.rank[root_y]:
-                self.rank[root_x] += 1
-
-    def same(self, x, y):
-        return self.root(x) == self.root(y)
-
-
 N, M = map(int, input().split())
 G = defaultdict(list)
-edge = [(0, 1)]
+
 for i in range(M):
     a, b, c = map(int, input().split())
     G[a].append((b, c, i + 1))
     G[b].append((a, c, i + 1))
-    edge.append((a, b))
-
-uf = UnionFind(N + 1)
 
 h = []
-heappush(h, (0, 1, 0, 0))
+d = 0
+node = 1
+e = 0
+parent = 0
+heappush(h, (d, node, e, parent))
 ret = []
+seen = {}
+
 while h:
     d, node, e, parent = heappop(h)
 
-    if uf.same(edge[e][0], edge[e][1]):
+    if node in seen:
         continue
-
-    uf.unite(edge[e][0], edge[e][1])
+    seen[node] = d
     ret.append(e)
 
     for nxt, c, en in G[node]:
-        if nxt == parent or uf.same(nxt, node):
-            continue
-        heappush(h, (d + c, nxt, en, node))
+        if nxt != parent and nxt not in seen:
+            heappush(h, (d + c, nxt, en, node))
 
 print(*ret[1:])
 
