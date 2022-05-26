@@ -3,15 +3,11 @@ A = list(map(int, input().split()))
 MOD = 10**9 + 7
 ret = 0
 for k in range(61):
-    x = 0
-    for j in range(1, N):
-        x += int((A[j - 1] >> k) & 1)
-        if int((A[j] >> k) & 1) == 0:
-            y = x
-        else:
-            y = j - x
-        ret += y * 2**k
-        ret %= MOD
+    x = [0, 0]
+    for j in range(N):
+        x[int((A[j] >> k) & 1)] += 1
+    ret += x[0] * x[1] * 2**k
+    ret %= MOD
 
 print(ret)
 

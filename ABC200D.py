@@ -1,36 +1,32 @@
+from itertools import product
+
+
 N = int(input())
 A = list(map(int, input().split()))
 
-seen = {0: []}
-tmp = {}
-for i, a in enumerate(A):
-    tmp.clear()
-    for k, v in seen.items():
-        kn = (k + a) % 200
-        tmp[kn] = seen[k] + [i + 1]
-        if kn in seen:
-            tmp[kn] = seen[k] + [i + 1]
-            if len(tmp[kn]) == N:
-                print("No")
-            else:
-                if len(seen[kn]) == 0:
-                    for j in range(1, N + 1):
-                        if j not in tmp[kn]:
-                            seen[kn].append(j)
-                            tmp[kn].append(j)
-                            break
-                print("Yes")
-                print(len(seen[kn]), *sorted(seen[kn]))
-                print(len(tmp[kn]), *sorted(tmp[kn]))
-                exit()
+seen = {}
 
-    for k, v in tmp.items():
-        if k not in seen:
-            seen[k] = tmp[k]
+l = min(8, len(A))
+for pat in product((True, False), repeat=l):
+    b = [i + 1 for i in range(l) if pat[i]]
+    if not b:
+        continue
+    x = sum([A[i] for i in range(l) if pat[i]]) % 200
+    if x in seen:
+        print("Yes")
+        print(len(seen[x]), *seen[x])
+        print(len(b), *b)
+        exit()
+    else:
+        seen[x] = b
+
 print("No")
 
 
 """
 回答空間が広そうな問題
 modの空間で0が作れるものが存在すればOK
+
+解説が賢すぎる
+
 """
