@@ -1,44 +1,54 @@
 N = int(input())
 
-v = 4
-com_sum = [1, -2]
-for i in range(40):
-    com_sum.append(v + com_sum[-2])
-    v *= -2
-
 if N == 0:
     print(0)
     exit()
 elif N > 0:
-    i = 0
-    while N > com_sum[i]:
-        i += 2
+    sgn = -1
 else:
-    i = 1
-    while N < com_sum[i]:
-        i += 2
-
-max_i = i
-
+    sgn = 1
+M = abs(N)
 
 ret = []
+TS = []
+i = 0
+kuriagari = 0
 
-
-def rec(v, i):
-    if i < 0:
-        return
-    if v == 0:
-        ret.extend(["0"] * i)
-        return
-    if v * ((-2) ** i) > 0:
-        if abs(v) > abs(com_sum[i - 2]):
-            ret.append("1")
-            rec(v - (-2) ** i, i - 1)
+deb_1 = 0
+deb_2 = 0
+while 2 ** (i - 2) <= M:
+    t = (M >> i) & 1
+    s = t ^ kuriagari
+    if sgn > 0:
+        kuriagari = t | s
     else:
-        ret.append("0")
-        rec(v, i - 1)
+        kuriagari = t & ~s
+    ret.append(s)
+    if True:
+        TS.append((t, s))
+        deb_1 += t * 2**i
+        deb_2 += s * (-2) ** i
+    i += 1
+    sgn *= -1
+
+for i in range(2):
+    if ret[-1] == 0:
+        ret.pop()
+
+print(*reversed(ret), sep="")
 
 
-rec(N, max_i)
+"""
+ノートで考察して自力AC
+ 2のbitの世界のΣ=N
+-2のbitの世界のΣ=N
+の差をとると、Σ-Σ=N-N=0
 
-print(*ret, sep="")
+そうすると、2の世界のbitが立つのに対して、
+それを消しこむために、
+-2のbitをどう立てたらいいかを考えていく問題になる
+
+場合分けして考えると消しこめる
+
+解説の考えもすごい大事
+"""
