@@ -1,4 +1,13 @@
-# 再帰対策を忘れずに
+import sys
+
+sys.setrecursionlimit(10**6)
+
+if sys.implementation.name == "pypy":
+    import pypyjit
+
+    pypyjit.set_param("max_unroll_recursion=-1")
+
+
 class UnionFind:
     def __init__(self, N):
 
