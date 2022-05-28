@@ -147,12 +147,19 @@ class SortedSet(Generic[T]):
         return ans
 
 
+N = int(input())
 
-N=int(input())
-
-ss=SortedSet()
-ret=[]
+ss = SortedSet()
+ret = []
 for i in range(N):
-    s,c=map(int,input().split())
+    s, c = map(int, input().split())
     while True:
-        
+        l = ss.le((s, -1))
+        r = ss.ge((s + c, 1))
+        if l == r:
+            ret.append(s + c)
+            ss.add((s, -1))
+            ss.add((s + c, 1))
+            break
+        else:
+            ss.add(s)

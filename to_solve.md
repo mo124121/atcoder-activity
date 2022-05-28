@@ -74,6 +74,7 @@ https://tubo28.me/compprog/algorithm/minball/
 - ABC248-F
 - ABC197-F
 - ARC078-B
+- code-festial-2015qualbB
 
 
 ### 実装に苦労したもの
