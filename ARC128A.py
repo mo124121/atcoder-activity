@@ -1,11 +1,19 @@
 N = int(input())
-A = list(map(int, input().split()))
+A = [0] + list(map(int, input().split())) + [10**10]
 
+gradients = [A[i + 1] - A[i] for i in range(N + 1)]
+slopes_signs = []
+for i, g in enumerate(gradients):
+    if g != 0:
+        slopes_signs.append((i, g > 0))
 ret = [0] * N
-for i in range(N - 1):
-    if A[i] > A[i + 1]:
-        ret[i] ^= 1
-        ret[i + 1] ^= 1
+
+for i in range(len(slopes_signs) - 1):
+    j1, f1 = slopes_signs[i]
+    j2, f2 = slopes_signs[i + 1]
+    if f1 ^ f2:
+        ret[j1] = 1
+
 
 print(*ret)
 
