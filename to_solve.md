@@ -92,6 +92,10 @@ https://tubo28.me/compprog/algorithm/minball/
 
 - ABC165-F
 
-### よくわからないの
+### 解説読むの放置されてたもの
 
 - ARC119-B
+
+### 人のコードを見て洗練させたいもの
+
+- ABC198-D
