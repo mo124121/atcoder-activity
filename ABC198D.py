@@ -7,7 +7,7 @@ if sys.implementation.name == "pypy":
 
     pypyjit.set_param("max_unroll_recursion=-1")
 
-S = [list(input()) for _ in range(3)]
+S = [input() for _ in range(3)]
 
 
 def no():
@@ -17,14 +17,8 @@ def no():
 
 def yes(T):
     for i in range(3):
-        print("".join(T[i]))
+        print(T[i])
     exit()
-
-
-def rep(T, a, b):
-    for i in range(len(T)):
-        if T[i] == a:
-            T[i] = b
 
 
 chars = set()
@@ -39,9 +33,7 @@ used = set()
 
 def rec(T, i):
     if i == len(chars):
-        if "0" in [T[i][0] for i in range(3)]:
-            return False
-        if int("".join(T[0])) + int("".join(T[1])) == int("".join(T[2])):
+        if int(T[0]) + int(T[1]) == int(T[2]):
             yes(T)
         else:
             return False
@@ -50,16 +42,16 @@ def rec(T, i):
         if j not in used:
             used.add(j)
             for k in range(3):
-                rep(T[k], chars[i], str(j))
-            rec(T, i + 1)
+                T[k] = T[k].replace(chars[i], str(j))
+            if "0" not in [T[i][0] for i in range(3)]:
+                rec(T, i + 1)
             for k in range(3):
-                rep(T[k], str(j), chars[i])
+                T[k] = T[k].replace(str(j), chars[i])
             used.discard(j)
 
 
 rec(S, 0)
 no()
-
 
 """
 はじめてのふくめんざん
