@@ -82,32 +82,39 @@ class RangedFenwick:
 N, M, Q = map(int, input().split())
 queries = [list(map(int, input().split())) for _ in range(Q)]
 
-rft = RangedFenwick(N + 1)
-# 先読みしてリセットする対応を探す
-seen = defaultdict(list)
-target = [set() for _ in range(Q)]
-for i in range(Q - 1, -1, -1):
-    q = queries[i]
-    if q[0] == 3:
-        seen[q[1]].append(i)
-    elif q[0] == 2:
-        if q[1] in seen:
-            target[i].update(seen[q[1]])
-            seen[q[1]] = []
+last_update = {}
+score_event = defaultdict(list)
+for t, query in enumerate(queries):
+    if query[0] == 2:
+        _, i, x = query
+        last_update[i] = t
+    if query[0] == 3:
+        _, i, j = query
+        if i in last_update:
+            score_event[last_update[i]].append((t, j))
+
+
+rft = RangedFenwick(M + 1)
 
 ret = []
-ret_tmp = [0] * Q
-for i in range(Q):
-    q = queries[i]
-    if q[0] == 1:
-        rft.add_range(q[1] - 1, q[2], q[3])
-    elif q[0] == 2:
-        for t in target[i]:
-            j = queries[t][2]
-            ret_tmp[t] -= rft.get(j) + q[2]
+offset = {}
+for t, query in enumerate(queries):
+    query = queries[t]
+    if query[0] == 1:
+        _, l, r, x = query
+        rft.add_range(l, r, x)
+    elif query[0] == 2:
+        _, i, x = query
+        if t in score_event:
+            for q2, j in score_event[t]:
+                offset[q2] = x - rft.get(j)
     else:
-        j = queries[i][2]
-        ret.append(rft.get(j) - ret_tmp[i])
+        _, i, j = query
+        tmp = rft.get(j)
+        if t in offset:
+            tmp += offset[t]
+        ret.append(tmp)
+
 print(*ret, sep="\n")
 
 
