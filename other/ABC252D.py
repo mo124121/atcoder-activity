@@ -1,21 +1,16 @@
-from collections import Counter, defaultdict
+from collections import Counter
 
 
 N = int(input())
 A = list(map(int, input().split()))
-
-ret = N * (N - 1) * (N - 2) // 6
 count = Counter(A)
+M = len(count)
+B = list(count.values())
+dp = [[0] * 4 for _ in range(M + 1)]
 
-for k, v in count.items():
-    if v == 2:
-        ret -= N - 2
-    elif v > 2:
-        ret -= v * (v - 1) // 2 * (N - v)
-        ret -= v * (v - 1) * (v - 2) // 6
-print(ret)
+for i in range(M):
+    dp[i][0] = 1
+    for b in range(3):
+        dp[i + 1][b + 1] = dp[i][b] * B[i] + dp[i][b + 1]
 
-
-"""
-
-"""
+print(dp[M][3])

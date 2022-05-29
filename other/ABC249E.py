@@ -1,47 +1,45 @@
 N, P = map(int, input().split())
-dp = [[0] * (N + 10) for _ in range(N + 10)]
+
+dp = [[0] * (N + 2) for _ in range(N + 5)]
 dp[0][0] = 1
+
 for i in range(N):
-    if i != 0:
-        for j in range(N + 3):
-            dp[i][j + 1] = (dp[i][j] + dp[i][j + 1]) % P
+    if i == 0:
+        way = 26
+    else:
+        way = 25
     for j in range(N):
-        ways = dp[i][j] * (26 if i == 0 else 25) % P
-        L, k = 1, 1
-        while L <= N - j:
-            R = min(L * 10, N - j + 3)
-            di = k + 1
-            dp[i + di][j + L] = (dp[i + di][j + L] + ways) % P
-            dp[i + di][j + R] = (dp[i + di][j + R] - ways) % P
-            L, k = L * 10, k + 1
+        ways = dp[i][j] * way
+        for d in range(4):
+            if j + 10**d > N:
+                break
+            dp[i + 2 + d][j + 10**d] += ways
+            dp[i + 2 + d][j + 10**d] %= P
+            e = j + 10 ** (d + 1)
+            if e <= N + 1:
+                dp[i + 2 + d][e] -= ways
+    for j in range(N):
+        dp[i + 1][j + 1] += dp[i + 1][j]
+        dp[i + 1][j + 1] %= P
+ret = 0
+for i in range(2, N):
+    ret += dp[i][N]
+    ret %= P
 
-print(sum([dp[i][N] for i in range(N)]) % P)
-
+print(ret)
 
 """
-1文字の時->1増える
-2文字の時->同じ
-3文字以上の時->N-2減る
-
+解き方は忘れておる
+DPで殴れるか？
 N<3000
-N**2*logN　あたりまではいけそう
 
-dpっぽいはぽい
-文字は増やした時の文字数、的な
-dp[i][j]=i文字使って加工後にj文字になっているパターン数
-遷移は同じ文字か違う文字か
+同じ文字を伸ばす場合と違う文字を伸ばす場合のパターン分け
+ああああ思い出した累積和や
+桁が上がるのがミソ
 
-桁上がりがあることを忘れていた
-
-dp[i][j][k]=i文字使って加工後にj文字になっていて、最後の文字のカウント数がk個の時のパターン数
-
-N**3じゃねーか
-
-遷移する方向を考えなおしてみる
-dp[i][j]=i文字使って加工後にj文字になっているパターン数
-同じ文字が続けられるだけiを伸ばしていくというのは？
-jの遷移は文字を変えるイメージ
-
-あとは累積和とる、なお実装
+dp[i][j]:変換後i文字になる変換前j文字の文字列の個数
+数字4文字分はみ出るからdp表は4文字多くする　今理解した
+桁が上がるところだけ記載するようにして、
+適宜累積和する
 
 """

@@ -9,15 +9,16 @@ def gcd(x, y):
 
 
 ret = 0
-l = L
-while ret < R - l:
-    r = R
-    while True:
-        if 1 == gcd(l, r):
-            ret = max(ret, r - l)
+for l in range(L, R):
+    if R - l < ret:
+        break
+    for r in range(R, L, -1):
+        tmp = r - l
+        if gcd(l, r) == 1:
             break
-        else:
-            r -= 1
-    l += 1
+        if ret > tmp:
+            break
+    if ret < tmp:
+        ret = tmp
 
 print(ret)

@@ -1,28 +1,34 @@
-c = input()
+C = input()
 
-if c == "a" or c == "z" * 20:
+if C == "a" or C == "z" * 20:
     print("NO")
-    exit()
-
-ret = ""
-# 1文字
-if len(c) == 1:
-    ret = chr(ord("a") + 20 - 1) * ((ord(c) - ord("a") + 1) // 20) + "a" * (
-        (ord(c) - ord("a") + 1) % 20
-    )
-# aのみ
-elif c == "a" * len(c):
-    ret = chr(ord("a") + len(c) - 1)
-# zのみ
-elif c == "z" * len(c):
-    ret = c[:-1] + "ya"
-# 全部同じ
-elif c == c[0] * len(c):
-    ret = c[:-2] + chr(ord(c[-2]) + 1) + chr(ord(c[-1]) - 1)
-# 反転して同じじゃない
-elif c != c[::1]:
-    ret = c[::1]
+elif len(C) == 1:
+    print(chr(ord(C) - 1) + "a")
+elif C == "z" and C == C[0] * len(C):
+    print(C[:-1] + chr(ord(C[-1]) - 1) + "a")
+elif C != C[::-1]:
+    print(C[::-1])
 else:
-    ret = "".join(sorted(c))
+    ord_a = ord("a")
+    C_v = list(map(lambda x: ord(x) - ord_a + 1, C))
+    C_sum = sum(C_v)
+    ret = (C_sum // 26) * "z"
+    if C_sum % 26 != 0:
+        ret += chr(C_sum % 26 + ord_a - 1)
+    print(ret)
 
-print(ret)
+
+"""
+パターン分けの嵐
+
+NO
+a
+z*20
+
+1文字
+
+zで同一
+
+それ以外
+
+"""

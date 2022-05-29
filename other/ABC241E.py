@@ -1,33 +1,26 @@
-from collections import defaultdict
-
-
 N, K = map(int, input().split())
 A = list(map(int, input().split()))
+logK = 41
 
-count = defaultdict()
-num = 0
-count[num] = 0
-one_way = [(num, num)]
-loop = []
-for i in range(K):
-    num += A[num % N]
-    one_way.append((num % N, num))
-    if num % N in count:
-        num_n = num + A[num % N]
-        loop = one_way[count[num % N] + 1 :]
-        one_way = one_way[: count[num % N] + 1]
-        break
-    count[num % N] = i + 1
+doubling = [[0] * N for _ in range(logK + 1)]
 
-ret = one_way[-1][1]
-if K + 1 == len(one_way):
-    print(ret)
-    exit()
+for i in range(N):
+    doubling[0][i] = A[i]
 
-loop_sum = loop[-1][1] - ret
+for k in range(logK):
+    for i in range(N):
+        doubling[k + 1][i] = doubling[k][i] + doubling[k][(i + doubling[k][i]) % N]
 
-ret += loop_sum * ((K - len(one_way)) // len(loop))
+ret = 0
+pos = 0
+for k in range(logK):
+    if (K >> k) & 1:
+        ret += doubling[k][pos]
+        pos = (pos + doubling[k][pos]) % N
+print(pos)
 
-ret += loop[(K - len(one_way)) % len(loop)][1] - one_way[-1][1]
 
-print(ret)
+"""
+K回の操作の中で、各要素何回出てきますか？という問題
+ダンプリングくさい、が実装は忘れた
+"""
