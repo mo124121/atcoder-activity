@@ -1,34 +1,24 @@
 N, K = map(int, input().split())
 A = list(map(int, input().split()))
+logK = 41
 
-seen = set()
-seen.add(0)
-x = 0
-trans = [0]
-for _ in range(N):
-    x += A[x % N]
+doubling = [[0] * N for _ in range(logK + 1)]
 
-    if x % N in seen:
-        break
-    trans.append(x % N)
-    seen.add(x % N)
-z = trans.index(x % N)
+for i in range(N):
+    doubling[0][i] = A[i]
+
+for k in range(logK):
+    for i in range(N):
+        doubling[k + 1][i] = doubling[k][i] + doubling[k][(i + doubling[k][i]) % N]
 
 ret = 0
-if K < z:
-    for t in trans[:K]:
-        ret += A[t]
-else:
-    for t in trans[:z]:
-        ret += A[t]
-    cycle = len(trans) - z
-    loop_sum = 0
-    for t in trans[z:]:
-        loop_sum += A[t]
-    ret += loop_sum * ((K - z) // cycle)
-    for t in trans[z : z + (K - z) % cycle]:
-        ret += A[t]
-print(ret)
+pos = 0
+for k in range(logK):
+    if (K >> k) & 1:
+        ret += doubling[k][pos]
+        pos = (pos + doubling[k][pos]) % N
+print(pos)
+
 
 """
 K回の操作の中で、各要素何回出てきますか？という問題
