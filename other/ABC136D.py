@@ -1,21 +1,28 @@
 S = input()
 N = len(S)
-ret = [0] * N
-st = 0
-r = 1
-while st < N:
-    if S[r] == "L":
-        l = r - 1
-        end = r + 1
-        while end < N:
-            if S[end] == "R":
-                break
-            end += 1
-        ret[r] = (r - st) // 2 + (end - 1 - l + 1) // 2
-        ret[l] = (r - st + 1) // 2 + (end - 1 - l) // 2
-        st = end
-        r = st + 1
+logK = 20
+
+dp = [[0] * N for _ in range(logK + 1)]
+
+for i in range(N):
+    if S[i] == "R":
+        dp[0][i] = i + 1
     else:
-        r += 1
+        dp[0][i] = i - 1
+
+for k in range(logK):
+    for i in range(N):
+        dp[k + 1][i] = dp[k][dp[k][i]]
+
+pos = [i for i in range(N)]
+
+for i in range(N):
+    for k in range(logK):
+        if (10**6 >> k) & 1:
+            pos[i] = dp[k][pos[i]]
+
+ret = [0] * N
+for p in pos:
+    ret[p] += 1
 
 print(*ret)
