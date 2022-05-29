@@ -1,44 +1,88 @@
 from collections import defaultdict
 
 
+class FenwickTree:
+    def __init__(self, n, init_data=0):
+        self.size = n
+        self.tree = [0] * (n + 1)
+        if init_data != 0:
+            for i in range(1, n + 1):
+                self.add(i, init_data)
+
+    def sum(self, i):
+        ret = 0
+        i += 1
+        while i > 0:
+            ret += self.tree[i]
+            i -= i & -i
+        return ret
+
+    def add(self, i, x):
+        i += 1
+        while i <= self.size:
+            self.tree[i] += x
+            i += i & -i
+
+    def get(self, i):
+        return self.sum(i) - self.sum(i - 1)
+
+    def lower_bound(self, w):
+        if w <= 0:
+            return 0
+        x = 0
+        r = 1
+        while r < self.size:
+            r = r << 1
+        length = r
+        S = 0
+        while length > 0:
+            if length + x < self.size and self.tree[x + length] < w:
+                w -= self.tree[x + length]
+                x += length
+            length = length >> 1
+        return x
+
+    def show(self):
+        ret = []
+        for i in range(self.size):
+            ret.append(self.get(i))
+        print(*ret)
+
+
+class RangedFenwick:
+    def __init__(self, n, init_data=0) -> None:
+        self.ft0 = FenwickTree(n + 1, init_data=init_data)
+        self.ft1 = FenwickTree(n + 1)
+        self.size = n
+
+    def add_range(self, l, r, x):
+        l += 1
+        r += 1
+        self.ft0.add(l, -x * (l - 1))
+        self.ft0.add(r + 1, x * r)
+        self.ft1.add(l, x)
+        self.ft1.add(r + 1, -x)
+
+    def add(self, i, x):
+        self.ft0.add(i, x)
+
+    def sum(self, i):
+        return self.ft0.sum(i) + self.ft1.sum(i) * i
+
+    def get(self, i):
+        return self.sum(i + 1) - self.sum(i)
+
+    def show(self):
+        ret = []
+        for i in range(self.size):
+            ret.append(self.get(i))
+        print(*ret)
+
+
 N, M, Q = map(int, input().split())
-
-data0 = [0] * (N + 1)
-data1 = [0] * (N + 1)
-# 区間[l, r)に x を加算
-def _add(data, k, x):
-    while k <= N:
-        data[k] += x
-        k += k & -k
-
-
-def add(l, r, x):
-    _add(data0, l, -x * (l - 1))
-    _add(data0, r, x * (r - 1))
-    _add(data1, l, x)
-    _add(data1, r, -x)
-
-
-# 区間[l, r)の和を求める
-def _get(data, k):
-    s = 0
-    while k:
-        s += data[k]
-        k -= k & -k
-    return s
-
-
-def query(l, r):
-    return (
-        _get(data1, r - 1) * (r - 1)
-        + _get(data0, r - 1)
-        - _get(data1, l - 1) * (l - 1)
-        - _get(data0, l - 1)
-    )
-
-
 queries = [list(map(int, input().split())) for _ in range(Q)]
 
+rft = RangedFenwick(N + 1)
 # 先読みしてリセットする対応を探す
 seen = defaultdict(list)
 target = [set() for _ in range(Q)]
@@ -56,18 +100,15 @@ ret_tmp = [0] * Q
 for i in range(Q):
     q = queries[i]
     if q[0] == 1:
-        add(q[1] - 1, q[2], q[3])
-    if q[0] == 2:
+        rft.add_range(q[1] - 1, q[2], q[3])
+    elif q[0] == 2:
         for t in target[i]:
             j = queries[t][2]
-            ret_tmp[t] -= query(j, j + 1)
+            ret_tmp[t] -= rft.get(j) + q[2]
     else:
         j = queries[i][2]
-        ret.append(query(j, j + 1) - ret_tmp[i])
+        ret.append(rft.get(j) - ret_tmp[i])
 print(*ret, sep="\n")
-
-
-#
 
 
 """
@@ -75,5 +116,8 @@ print(*ret, sep="\n")
 
 クエリ先読みして、全体置き換え時に最終的に反映される要素のmapを持っておく
 出力の段階が来たら合計の辻褄合わせをする
+
+あわんわ
+
 
 """
