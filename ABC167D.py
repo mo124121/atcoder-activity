@@ -1,17 +1,26 @@
 N, K = map(int, input().split())
 A = [0] + list(map(int, input().split()))
 
-logK = 61
+way = [1]
+seen = set([1])
+pos = 1
+for i in range(N):
+    pos = A[pos]
+    if pos in seen:
+        break
+    way.append(pos)
+    seen.add(pos)
+enter = way.index(pos)
 
-dp = [[0] * (N + 1) for _ in range(logK + 1)]
-dp[0] = A
-
-
-for k in range(logK):
-    for i in range(1, N + 1):
-        dp[k + 1][i] = dp[k][dp[k][i]]
-ret = 1
-for k in range(logK):
-    if (K >> k) & 1:
-        ret = dp[k][ret]
+if K < enter:
+    ret = way[K]
+else:
+    l = len(way) - enter
+    i = (K - enter) % l
+    ret = way[enter + i]
 print(ret)
+
+
+"""
+ループ検知実装
+"""
