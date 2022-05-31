@@ -1,50 +1,16 @@
-from collections import deque
-
-
 def solve(N, A):
-    if N == 2:
-        ops = [(max(A), min(A))]
-        v = max(A) - min(A)
-        return v, ops
-
-    ps = []
-    ms = []
-    for a in A:
-        if a >= 0:
-            ps.append(a)
-        else:
-            ms.append(a)
-    ps.sort()
-    ms.sort(reverse=True)
-
-    ps = deque(ps)
-    ms = deque(ms)
+    A.sort()
+    m, p = A[0], A[-1]
     ops = []
-    if len(ps) == 0:
-        x = ms.popleft()
-        y = ms.popleft()
-        ps.append(x - y)
-        ops.append((x, y))
-
-    if len(ms) == 0:
-        x = ps.popleft()
-        y = ps.popleft()
-        ms.append(x - y)
-        ops.append((x, y))
-
-    while len(ps) > 1:
-        x = ms.pop()
-        y = ps.popleft()
-        ms.append(x - y)
-        ops.append((x, y))
-
-    while len(ms) > 0:
-        x = ps.pop()
-        y = ms.popleft()
-        ps.append(x - y)
-        ops.append((x, y))
-
-    return ps.pop(), ops
+    for a in A[1:-1]:
+        if a < 0:
+            ops.append((p, a))
+            p -= a
+        else:
+            ops.append((m, a))
+            m -= a
+    ops.append((p, m))
+    return p - m, ops
 
 
 def main():
