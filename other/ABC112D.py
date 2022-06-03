@@ -1,15 +1,10 @@
 N, M = map(int, input().split())
-
-for i in range(M // N, 0, -1):
+ret = 1
+for i in range(1, 10**6 + 1):
     if M % i == 0:
-        print(i)
-        exit()
+        if M // i >= N:
+            ret = max(ret, i)
+        if M // (M // i) >= N:
+            ret = max(ret, M // i)
 
-"""
-上界 M/N when M%N==0
-下界 1
-
-上から貪欲にやってみる？
-割り切れたらおしまい、的な
-
-"""
+print(ret)

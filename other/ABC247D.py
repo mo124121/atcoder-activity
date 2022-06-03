@@ -2,25 +2,27 @@ from collections import deque
 
 
 Q = int(input())
-dq = deque()
+
+q = deque()
+
 ret = []
 for i in range(Q):
-
-    S = input().split()
-    if int(S[0]) == 1:
-        dq.append((int(S[1]), int(S[2])))
+    query = list(map(int, input().split()))
+    if query[0] == 1:
+        _, x, c = query
+        q.append((x, c))
     else:
-        c = int(S[1])
+        c = query[1]
         r = 0
-        while True:
-            y, d = dq.popleft()
-            if c <= d:
-                r += y * c
-                dq.appendleft((y, d - c))
-                break
+        while c > 0:
+            x, ci = q.popleft()
+            if c < ci:
+                r += x * c
+                q.appendleft((x, ci - c))
+                c = 0
             else:
-                r += y * d
-                c -= d
+                r += x * ci
+                c -= ci
         ret.append(r)
-for r in ret:
-    print(r)
+
+print(*ret, sep="\n")
