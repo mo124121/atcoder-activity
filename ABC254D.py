@@ -2,16 +2,20 @@ from bisect import bisect, bisect_left
 
 
 def solve(N):
-    A = [i**2 for i in range(1, N + 1)]
-    seen = set(A)
     ret = 0
 
     for i in range(1, N + 1):
-        if i not in seen:
-            j = bisect(A, N / i)
-        else:
-            j = bisect(A, N) - bisect_left(A, i)
-        ret += j * 2 - 1
+        k = i
+        j = 2
+        while j**2 <= k:
+            while k % j**2 == 0:
+                k //= j**2
+            j += 1
+
+        j = 1
+        while k * j**2 <= N:
+            ret += 1
+            j += 1
     return ret
 
 
@@ -24,13 +28,12 @@ def naive(N):
             if abs(e - int(e)) < 0.0000001:
                 r += 1
         ret += r
-        print(i, r)
     return ret
 
 
 def main():
     N = int(input())
-    ret = naive(N)
+    ret = solve(N)
     print(ret)
 
 
@@ -42,3 +45,7 @@ main()
 #     nai = naive(i)
 #     if sol != nai:
 #         print(i, sol, nai)
+
+
+# for i in range(1, 101):
+#     print(i, naive(i))
