@@ -1,39 +1,29 @@
-import sys
-
-sys.setrecursionlimit(10**6)
-
-if sys.implementation.name == "pypy":
-    import pypyjit
-
-    pypyjit.set_param("max_unroll_recursion=-1")
-
 N, M = map(int, input().split())
 from collections import defaultdict
+from itertools import permutations
 
 G = defaultdict(list)
+edges = set()
 for i in range(M):
     a, b = map(int, input().split())
     G[a].append(b)
     G[b].append(a)
-
+    edges.add((a, b))
+    edges.add((b, a))
 
 ret = 0
-seen = set()
+for pat in permutations(range(2, N + 1)):
+    pat = [1] + list(pat)
+    flag = True
+    for i in range(N - 1):
+        if (pat[i], pat[i + 1]) not in edges:
+            flag = False
+            break
+    if flag:
+        ret += 1
 
 
-def dfs(node):
-    if len(seen) == N - 1:
-        return 1
-    seen.add(node)
-    ret = 0
-    for nxt in G[node]:
-        if nxt not in seen:
-            ret += dfs(nxt)
-    seen.discard(node)
-    return ret
-
-
-print(dfs(1))
+print(ret)
 
 """
 Nが小さい
@@ -44,4 +34,8 @@ Nが小さい
 もうちょっと枝切りしたい
 
 普通にdfsしてみては？
+
+解説後
+DFSで良かった
+辺を見ずにnodeの順列で辺が存在するかでもよい
 """
