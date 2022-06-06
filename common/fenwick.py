@@ -82,5 +82,6 @@ if __name__ == "__main__":
     ft.show()
 
     rft = RangedFenwick(10)
+    rft.add(6, 5)
     rft.add_range(9, 10, 5)
     rft.show()
