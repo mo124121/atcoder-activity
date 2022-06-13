@@ -5,7 +5,7 @@ N, M = map(int, input().split())
 S = list(map(int, input().split()))
 X = set(map(int, input().split()))
 
-A = [3]
+A = [0]
 for s in S:
     a = s - A[-1]
     A.append(a)
@@ -13,25 +13,20 @@ B = [[] for _ in range(2)]
 for i, a in enumerate(A):
     B[i % 2].append(a)
 
-count1 = Counter(B[0])
-count2 = Counter(B[1])
-# print(*A)
-# print(count1, count2)
-ret = 0
-for x in X:
-    for k, v in count1.items():
-        c = 0
-        diff = k - x
-        for y in X:
-            c += count1[y + diff]
-            c += count2[y - diff]
-        ret = max(ret, c)
+elems = []
+for i in range(N):
+    for x in X:
+        c = x - A[i]
+        if i % 2 != 0:
+            c *= -1
+        elems.append(c)
 
-    for k, v in count2.items():
-        c = 0
-        diff = k - x
-        for y in X:
-            c += count2[y + diff]
-            c += count1[y - diff]
-        ret = max(ret, c)
-print(ret)
+occ_count = Counter(elems)
+
+print(occ_count.most_common(1)[0][1])
+
+
+"""
+天才解法を眺める
+
+"""
