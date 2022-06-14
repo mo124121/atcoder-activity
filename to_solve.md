@@ -40,8 +40,6 @@ https://tubo28.me/compprog/algorithm/minball/
 
 ### bitDP
 
-- 典型90問 045
-- ABC187-F
 - M-SOLUTIONS 2020-E
 
 ### 累積和DP
