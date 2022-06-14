@@ -14,8 +14,22 @@ for i in range(N):
 
 INF = 10**18
 dp = [[INF] * (2**N) for _ in range(N)]
+dp[0][1] = 0
 
+for bit in range(1 << N):
+    for v in range(N):
+        if (bit >> v) & 1 == 0:
+            continue
+        for vn in range(N):
+            if (bit >> vn) & 1 == 1:
+                continue
+            bitn = bit | 1 << vn
+            dp[vn][bitn] = min(dp[vn][bitn], dp[v][bit] + D[v][vn])
 
+ret = INF
+for v in range(N):
+    ret = min(ret, dp[v][(1 << N) - 1] + D[v][0])
+print(ret)
 """
 Nが小さい
 N<=17
@@ -43,4 +57,7 @@ Zが特殊だが、これも双方向違うコストがあるという感覚で�
 
 解説後
 やはりbit DP
+
+bitの走査として、
+遷移前の状態が現れてから、遷移後の状態が現れることが保証されている
 """
