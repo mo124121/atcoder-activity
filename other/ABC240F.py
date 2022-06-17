@@ -1,25 +1,23 @@
 T = int(input())
-
-for _ in range(T):
+ret = []
+for t in range(T):
     N, M = map(int, input().split())
-    B = 0
-    A = 0
-    ret = -5
+    XY = []
     for i in range(N):
-        x, y = map(int, input().split())
-        if i == 0:
-            ret = max(ret, x)
-        if B > 0 and x < 0:
-            d = B // -x
-            if d < y:
-                ret = max(ret, A + B * d + x * d * (d + 1) // 2)
-        A += B * y + x * y * (y + 1) // 2
-        B += x * y
-        ret = max(ret, A)
+        XY.append(tuple(map(int, input().split())))
+    r = -(10**18)
+    A = 0
+    Bpre = 0
+    for x, y in XY:
+        B = Bpre + x * y
+        r = max(r, A + Bpre + x)
+        if Bpre > 0 and B < 0:
+            yi = Bpre // abs(x)
+            r = max(r, A + (Bpre + x + Bpre + x * yi) * yi // 2)
+        A += y * (Bpre + x + B) // 2
+        Bpre = B
+    r = max(r, A)
 
-    print(ret)
+    ret.append(r)
 
-
-"""
-xiの範囲が小さい
-"""
+print(*ret, sep="\n")
