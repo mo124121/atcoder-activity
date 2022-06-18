@@ -1,22 +1,21 @@
 N = int(input())
 LR = []
-W = 2 * 10**5
-imos = [0] * (W + 1)
 for _ in range(N):
-    l, r = map(int, input().split())
-    imos[l] += 1
-    imos[r] -= 1
+    LR.append(tuple(map(int, input().split())))
 
-for i in range(W):
-    imos[i + 1] += imos[i]
+LR.sort()
 
 ret = []
-for i in range(W):
-    if imos[i] == 0 and imos[i + 1] != 0:
-        l = i + 1
-    if imos[i] != 0 and imos[i + 1] == 0:
-        r = i + 1
-        ret.append((l, r))
+for l, r in LR:
+    if ret and l <= ret[-1][1]:
+        ret[-1][1] = max(r, ret[-1][1])
+    else:
+        ret.append([l, r])
 
 for l, r in ret:
     print(l, r)
+
+
+"""
+一回あきらめた貪欲法のデバッグ
+"""
