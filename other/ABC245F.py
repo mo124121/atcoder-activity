@@ -29,6 +29,8 @@ def main():
             if loop_flags[node] != FALSE:
                 loop_flags[node] = TRUE
                 return loop_flags[node]
+            else:
+                return FALSE
         loop_flags[node] = UNSET
         for nxt in G[node]:
             flag = rec(nxt)
