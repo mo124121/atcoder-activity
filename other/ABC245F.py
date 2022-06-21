@@ -10,6 +10,42 @@ if sys.implementation.name == "pypy":
     pypyjit.set_param("max_unroll_recursion=-1")
 
 
+class SCC:
+    def __init__(self, N, G, Grev) -> None:
+        self.order = []
+        self.used = [False] * N
+        self.group = defaultdict(list)
+        self.N = N
+        self.G = G
+        self.Grev = Grev
+
+    def _dfs(self, s):
+        self.used[s] = True
+        for t in self.G[s]:
+            if not self.used[t]:
+                self._dfs(t)
+            self.order.append(s)
+        
+    def _rdfs(self,s,col):
+        self.group[col].append(s)
+        self.used[s]=True
+        for t in self.Grev[s]:
+            if not self.used[t]:
+                self._rdfs(t,col)
+
+    def run(self):
+        for i in range(self.N):
+            if not self.used[i]:
+                self._dfs(i)
+        self.used=[False]*self.N
+        count=0
+        for s in reversed(self.order):
+            if not self.used[s]:
+                self._rdfs(s,count)
+                count+=1
+        return count,self.group
+
+
 def main():
     N, M = map(int, input().split())
 
@@ -18,38 +54,20 @@ def main():
     for i in range(M):
         a, b = map(int, input().split())
         G[a].append(b)
+        Grev[b].append(a)
 
-    TRUE = 1
-    FALSE = 0
-    UNSET = -1
-    loop_flags = {}
+    scc=SCC(N+1,G,Grev)
+    count,group=scc.run()
+    idx=[0]*(N+1)
+    for i in range(count):
+        for v in group[i]:
+            idx[v]=i
 
-    def rec(node):
-        if node in loop_flags:
-            if loop_flags[node] != FALSE:
-                loop_flags[node] = TRUE
-                return loop_flags[node]
-            else:
-                return FALSE
-        loop_flags[node] = UNSET
-        for nxt in G[node]:
-            flag = rec(nxt)
-            if flag == TRUE:
-                loop_flags[node] = TRUE
-                return TRUE
-
-        loop_flags[node] = FALSE
-        return FALSE
-
-    ans = 0
-
-    for i in range(1, N + 1):
-        if i not in G:
-            loop_flags[i] = FALSE
-
-    for i in range(1, N + 1):
-        if rec(i) == TRUE:
-            ans += 1
+    ans=0
+    dp=[0]*(count)
+    for i in range(count):
+        if len(group[i]==1):
+            for v in group[i][0]
 
     print(ans)
 
