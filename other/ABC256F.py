@@ -63,14 +63,15 @@ for i, a in enumerate(A):
 
 
 ret = []
+inv2 = pow(2, MOD - 2, MOD)
 for _ in range(Q):
     q = list(map(int, input().split()))
     if q[0] == 1:
         _, x, v = q
         x -= 1
-        ft_A.add(x, v - A[x])
-        ft_Ai.add(x, (v - A[x]) * x)
-        ft_Ai2.add(x, (v - A[x]) * x * x)
+        ft_A.add(x, (v - A[x]) % MOD)
+        ft_Ai.add(x, (v - A[x]) * x % MOD)
+        ft_Ai2.add(x, (v - A[x]) * x * x % MOD)
         A[x] = v
     else:
         _, x = q
@@ -78,7 +79,7 @@ for _ in range(Q):
         S_A = ft_A.sum(x)
         S_Ai = ft_Ai.sum(x)
         S_Ai2 = ft_Ai2.sum(x)
-        r = (S_Ai2 // 2 - S_Ai * (2 * x + 3) // 2 + S_A * (x + 1) * (x + 2) // 2) % MOD
+        r = (S_Ai2 - S_Ai * (2 * x + 3) + S_A * (x + 1) * (x + 2)) * inv2 % MOD
         ret.append(r)
 
 print(*ret, sep="\n")
