@@ -1,29 +1,27 @@
+import networkx as nx
+
 N = int(input())
+G = nx.DiGraph()
+G.add_node("s")
+G.add_node("t")
 AB = []
 for i in range(N):
     AB.append(tuple(map(int, input().split())))
-AB.sort(key=lambda x: x[1])
+    G.add_node(f"r{i}")
+    G.add_edge("s", f"r{i}")
 CD = []
 for i in range(N):
+    G.add_node(f"b{i}")
+    G.add_edge(f"b{i}", "t")
     CD.append(tuple(map(int, input().split())))
-CD.sort()
 
-ret = 0
-red = []
-blue = []
 
-for c, d in CD:
-    max_i = -1
-    max_y = -1
-    for i, (a, b) in enumerate(AB):
+for i, (a, b) in enumerate(AB):
+    for j, (c, d) in enumerate(CD):
         if a < c and b < d:
-            if max_y < b:
-                max_i = i
-                max_y = b
-    if max_i != -1:
-        del AB[max_i]
-        ret += 1
-print(ret)
+            G.add_edge(f"r{i}", f"b{j}")
+
+result = nx.ford_
 
 
 """
