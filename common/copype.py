@@ -75,9 +75,10 @@ def tousa_sum(a, d, n):
     return n * (2 * a + (n - 1) * d) // 2
 
 
+##復元できるの
 def compress(L):
-    S = sorted(set(L))
-    d = dict()
+    S = sorted(set(L))  # 配列に含まれるユニークな要素
+    d = dict()  # 要素の順位
     i = 0
     for s in S:
         d[s] = i
@@ -86,6 +87,20 @@ def compress(L):
 
 
 n, S, d = compress(L)
+
+# 復元できないもの
+def compress(L):
+    S = sorted(set(L))  # 配列に含まれるユニークな要素
+    d = dict()  # 要素の順位
+    i = 0
+    for s in S:
+        d[s] = i
+        i += 1
+    ret = []
+    for l in L:
+        ret.append(d[l])
+
+    return ret
 
 
 if __name__ == "__main__":
