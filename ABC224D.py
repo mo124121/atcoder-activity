@@ -14,6 +14,7 @@ seen = set()
 
 q = deque()
 q.append((0, p))
+seen.add(p)
 
 ALL = set("123456789")
 while q:
@@ -21,8 +22,6 @@ while q:
     if p == goal:
         print(count)
         exit()
-    if p in seen:
-        continue
     seen.add(p)
     s = ALL.difference(set(p)).pop()
     for nxt in G[s]:
@@ -31,10 +30,10 @@ while q:
         pn = "".join(pn)
         if pn not in seen:
             q.append((count + 1, pn))
+            seen.add(pn)
 
 
 print(-1)
-
 
 """
 幅探索
