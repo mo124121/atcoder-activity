@@ -1,27 +1,8 @@
 N = int(input())
-X = [0] * N
-Y = [0] * N
+U = []
+V = []
 for i in range(N):
     x, y = map(int, input().split())
-    X[i], Y[i] = x - y, x + y
-d = max(max(Y) - min(Y), max(X) - min(X))
-
-print(d)
-
-
-"""
-マンハッタン距離は45度回転が定石
-ただ別に回転しなくてもいい気もする
-
-グラフ木の直径同様、
-2回一番遠いところを選べば答えに見える
-4WA/18
-反例思いついてダメ、最初の選び方が悪いと、
-遠くなる頂点にたどり着かない
-
-やっぱ斜めにするか、
-そのうえで、x,yで一番端に来るやつが答えの候補
-
-
-
-"""
+    U.append(x - y)
+    V.append(x + y)
+print(max(max(U) - min(U), max(V) - min(V)))

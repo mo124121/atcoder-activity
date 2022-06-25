@@ -1,11 +1,10 @@
-k, s = map(int, input().split())
+K, S = map(int, input().split())
 
-count = 0
+ret = 0
 
-for x in range(0,k+1):
-    for y in range(0,k+1):
-        z = s - x - y
-        if z>=0 and z<=k:
-            count += 1
+for x in range(K + 1):
+    for y in range(K + 1):
+        if 0 <= S - x - y <= K:
+            ret += 1
 
-print(count)
+print(ret)

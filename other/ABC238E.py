@@ -1,11 +1,7 @@
+N, Q = map(int, input().split())
 from collections import defaultdict, deque
 
-N, Q = map(int, input().split())
-l = [0] * Q
-r = [0] * Q
-
 G = defaultdict(list)
-
 for i in range(Q):
     l, r = map(int, input().split())
     G[l - 1].append(r)
@@ -13,15 +9,15 @@ for i in range(Q):
 
 q = deque()
 q.append(0)
-seen = {0: True}
-while len(q):
-    node = q.pop()
-    for neibor in G[node]:
-        if neibor == N:
-            print("Yes")
-            exit()
-        if neibor not in seen:
-            seen[neibor] = True
-            q.append(neibor)
-
+seen = set()
+seen.add(0)
+while q:
+    node = q.popleft()
+    if node == N:
+        print("Yes")
+        exit()
+    for nxt in G[node]:
+        if nxt not in seen:
+            seen.add(nxt)
+            q.append(nxt)
 print("No")

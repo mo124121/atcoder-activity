@@ -1,20 +1,27 @@
+from collections import Counter
+
+
 N = int(input())
-S = [input().split() for i in range(N)]
 
+myoji = Counter()
+namae = Counter()
 
-for i in range(N):
-    flag_s = False
-    flag_t = False
-    for j in range(N):
-        if i == j:
+ST = [input().split() for _ in range(N)]
+
+for s, t in ST:
+    myoji[s] += 1
+    namae[t] += 1
+
+for s, t in ST:
+    if s == t:
+        if myoji[s] == 1 and namae[s] == 1:
             continue
-        if S[i][0] == S[j][0] or S[i][0] == S[j][1]:
-            flag_s = True
-        if S[i][1] == S[j][0] or S[i][1] == S[j][1]:
-            flag_t = True
-    if flag_s and flag_t:
-        print("No")
-        exit()
-
+    else:
+        if myoji[s] == 1 and namae[s] == 0:
+            continue
+        if myoji[t] == 0 and namae[t] == 1:
+            continue
+    print("No")
+    exit()
 
 print("Yes")
