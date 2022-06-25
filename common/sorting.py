@@ -55,7 +55,20 @@ def quick_sort(a: list, l: int, r: int):
     quick_sort(a, i + 1, r)
 
 
+def bucket_sort(a: list):
+    n = max(a)
+    count = [0] * (n + 1)
+    for ai in a:
+        count[ai] += 1
+    ret = []
+    for i, c in enumerate(count):
+        ret.extend([i] * c)
+    return ret
+
+
 if __name__ == "__main__":
     b = [1, 1515, 3314, 134, 35]
     quick_sort(b, 0, len(b))
     print(b)
+    c = [114, 114, 2, 55, 11135, 42]
+    print(bucket_sort(c))

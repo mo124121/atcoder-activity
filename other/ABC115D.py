@@ -1,37 +1,56 @@
-from functools import lru_cache
-import sys
+def solve(N, K):
+    size = 1
+    count = 1
+    for i in range(N):
+        size = size * 2 + 3
+        count = count * 2 + 1
+    ret = 0
+    for i in range(N + 1):
+        if K == size:
+            ret += count
+            break
+        if K == 1:
+            break
 
-sys.setrecursionlimit(10**6)
+        size = (size - 3) // 2
+        count = (count - 1) // 2
+        if K == size + 2:
+            ret += count + 1
+            break
+        elif K > size + 2:
+            ret += count + 1
+            K -= size + 2
+        else:
+            K -= 1
 
-N, X = map(int, input().split())
-
-size = [0] * (N + 1)
-putty = [0] * (N + 1)
-size[0] = 1
-putty[0] = 1
-
-for i in range(N):
-    size[i + 1] = 2 * size[i] + 3
-    putty[i + 1] = 2 * putty[i] + 1
-
-
-@lru_cache(maxsize=None)
-def burger(l, x):
-    if l == 0:
-        return 1
-    if x <= 1:
-        return 0
-
-    if size[l - 1] + 2 > x:
-        return burger(l - 1, x - 1)
-    elif size[l - 1] + 2 == x:
-        return putty[l - 1] + 1
-    elif size[l - 1] + 2 < x:
-        return putty[l - 1] + 1 + burger(l - 1, x - size[l - 1] - 2)
-    else:
-        return putty[l]
+    return ret
 
 
-p = burger(N, X)
+def main():
+    N, K = map(int, input().split())
+    ret = solve(N, K)
+    print(ret)
 
-print(p)
+
+def naive(N, K):
+    burger = "P"
+    for _ in range(N):
+        burger = "B" + burger + "P" + burger + "B"
+    ret = 0
+    for c in burger[:K]:
+        if c == "P":
+            ret += 1
+    return ret
+
+
+main()
+
+# n = 2
+# s = 1
+# for _ in range(n):
+#     s = s * 2 + 3
+# for i in range(s + 1):
+#     sol = solve(n, i)
+#     nai = naive(n, i)
+#     if sol != nai:
+#         print(n, i, sol, nai)
