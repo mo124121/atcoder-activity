@@ -28,7 +28,7 @@ while q:
         pn = list(p)
         pn[pn.index(nxt)] = s
         pn = "".join(pn)
-        if pn not in seen:
+        if pn not in seen:  # <-ここ
             q.append((count + 1, pn))
             seen.add(pn)
 
@@ -41,4 +41,5 @@ print(-1)
 時間足りない幅探索は枝切りを2回するイメージ
 遷移前と遷移後
 
+遷移する直前に確認するのがスマートそう
 """
