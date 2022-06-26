@@ -31,10 +31,14 @@ def solve(N):
 
     MOD = 998244353
     bn = Binominal(N**2, MOD)
-    ret = 1
-    ret = pow(N, N, MOD) - N
-    ret = ret * bn.fact[N] % MOD
-    ret = ret * bn.fact[N] % MOD
+    r = 1
+    r = r * bn.fact[N - 1] % MOD
+    r = r * bn.fact[N - 1] % MOD
+    r = r * bn.fact[(N - 1) ** 2] % MOD
+    r = r * bn.binominal(N**2, 2 * N - 1) % MOD
+    r = r * N**2 % MOD
+
+    ret = (bn.fact[N**2] - r) % MOD
     return ret
 
 
@@ -43,7 +47,7 @@ def main():
     print(solve(N))
 
 
-# main()
+main()
 
 
 def naive(N):
@@ -71,4 +75,4 @@ def naive(N):
     return ret
 
 
-print(solve(5))
+print(solve(2))
