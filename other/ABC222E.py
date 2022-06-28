@@ -10,34 +10,26 @@ for i in range(N - 1):
 
 count = Counter()
 
+
+def dfs(node, goal, par=-1):
+    if node == goal:
+        return True
+
+    for nxt, edge in G[node]:
+        if nxt != par:
+            ret = dfs(nxt, goal, node)
+            if ret:
+                count[edge] += 1
+                return True
+
+    return False
+
+
 for i in range(M - 1):
     s = A[i]
     t = A[i + 1]
-    q = deque()
-    q.append((s, 0))
-    seen = {}
-    seen[s] = 0
-    # 最短経路の把握
-    while q:
-        node, d = q.popleft()
-        if node == t:
-            break
-        for nxt, _ in G[node]:
-            if nxt not in seen:
-                q.append((nxt, d + 1))
-                seen[nxt] = d + 1
+    dfs(s, t)
 
-    # 経路復元　各辺の通過回数のカウント
-    q.clear()
-    q.append((t, d))
-    while q:
-        node, d = q.popleft()
-        if node == s:
-            break
-        for nxt, edge in G[node]:
-            if nxt in seen and seen[nxt] == d - 1:
-                q.append((nxt, d - 1))
-                count[edge] += 1
 
 # dpでの数え上げ
 dp = Counter()
