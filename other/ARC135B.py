@@ -1,21 +1,22 @@
 N = int(input())
 S = list(map(int, input().split()))
 
-x = [0] * (N + 2)
-x[0] = x[1] = 0
-for i in range(N):
-    x[i + 2] = S[i] - x[i + 1] - x[i]
+x = [0, 0]
 
-c = [0] * 3
-for i in range(3):
-    c[i] = -min(x[i::3])
+for s in S:
+    x.append(s - x[-1] - x[-2])
 
-if c[0] + c[1] > -c[2]:
+c0 = max([-x[i] for i in range(0, N + 2, 3)])
+c1 = max([-x[i] for i in range(1, N + 2, 3)])
+c2 = min([x[i] for i in range(2, N + 2, 3)])
+
+if c0 + c1 > c2:
     print("No")
     exit()
-
-add = [c[0], c[1], -c[0] - c[1]]
-
-A = [xi + add[i % 3] for i, xi in enumerate(x)]
 print("Yes")
+
+A = [c0, c1]
+for s in S:
+    A.append(s - A[-1] - A[-2])
+
 print(*A)
