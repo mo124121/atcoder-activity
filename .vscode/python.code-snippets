@@ -84,7 +84,7 @@
 			"",
 			"G=defaultdict(list)",
 			"for i in range(${1:M}):",
-			"    a,b=map(int,input().split())",
+			"    ${2:a},${3:b}=map(int,input().split())",
 			"    G[${2:a}].append(${3:b})",
 			"    G[${3:b}].append(${2:a})"
 		],
