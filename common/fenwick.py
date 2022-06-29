@@ -76,6 +76,41 @@ class RangedFenwick:
         print(*ret)
 
 
+class FenwickTreeMod:
+    def __init__(self, n, mod, init_data=0):
+        self.size = n
+        self.mod = mod
+        self.tree = [0] * (n + 1)
+        if init_data != 0:
+            for i in range(1, n + 1):
+                self.add(i, init_data)
+
+    def sum(self, i):
+        ret = 0
+        i += 1
+        while i > 0:
+            ret += self.tree[i]
+            ret %= self.mod
+            i -= i & -i
+        return ret
+
+    def add(self, i, x):
+        i += 1
+        while i <= self.size:
+            self.tree[i] += x
+            self.tree[i] %= self.mod
+            i += i & -i
+
+    def get(self, i):
+        return (self.sum(i) - self.sum(i - 1)) % self.mod
+
+    def show(self):
+        ret = []
+        for i in range(self.size):
+            ret.append(self.get(i))
+        print(*ret)
+
+
 if __name__ == "__main__":
     ft = FenwickTree(10)
     ft.add(6, 5)
