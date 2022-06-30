@@ -7,6 +7,8 @@ if sys.implementation.name == "pypy":
 
     pypyjit.set_param("max_unroll_recursion=-1")
 
+##再帰が深いと上でもデバッガが落ちる
+
 
 class LinkedList:
     class Cell:
