@@ -1,22 +1,21 @@
 N, D = map(int, input().split())
 MOD = 998244353
 
+two = [1] * (N + 1)
+for i in range(N):
+    two[i + 1] = two[i] * 2 % MOD
+ans = 0
+for i in range(D + 1):
+    j = D - i
+    if i >= N:
+        continue
+    if j >= N:
+        continue
+    now = two[N - max(i, j)] - 1
+    now = two[max(i - 1, 0)] * now % MOD
+    now = two[max(j - 1, 0)] * now % MOD
+    ans += now
+    ans %= MOD
 
-f = [0] * (N + 1)
-g = [0] * (N + 1)
 
-for i in range(1, N + 1):
-    l = i - 1
-    r = D - l
-    leaf = 0
-    if 0 <= r <= i - 1:
-        leaf = pow(2, l - 1, MOD) * pow(2, max(0, r - 1), MOD)
-        if l != r:
-            leaf *= 2
-        leaf %= MOD
-    g[i] = (g[i - 1] + leaf) % MOD
-
-for i in range(1, N + 1):
-    f[i] = (f[i - 1] * 2 + g[i]) % MOD
-
-print(f[N] * 2 % MOD)
+print(ans * 2 % MOD)
