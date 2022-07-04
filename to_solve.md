@@ -106,6 +106,7 @@ https://tubo28.me/compprog/algorithm/minball/
 ### 解説読むの放置されてたもの
 
 - ARC119-B
+- yahoo procon 2019 qual D
 
 ### 人のコードを見て洗練させたいもの
 
