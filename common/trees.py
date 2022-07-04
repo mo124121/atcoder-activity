@@ -11,32 +11,30 @@ if sys.implementation.name == "pypy":
 class UnionFind:
     def __init__(self, N):
 
-        self.parent = [0] * N
-        self.rank = [0] * N
-        for i in range(N):
-            self.parent[i] = i
+        self.parent_or_size = [-1] * N
 
     def root(self, x):
-        if self.parent[x] == x:
+        if self.parent_or_size[x] < 0:
             return x
         else:
-            self.parent[x] = self.root(self.parent[x])
-            return self.parent[x]
+            self.parent_or_size[x] = self.root(self.parent_or_size[x])
+            return self.parent_or_size[x]
 
     def unite(self, x, y):
         root_x = self.root(x)
         root_y = self.root(y)
         if root_x == root_y:
             return
-        if self.rank[root_x] < self.rank[root_y]:
-            self.parent[root_x] = root_y
-        else:
-            self.parent[root_y] = root_x
-            if self.rank[root_x] == self.rank[root_y]:
-                self.rank[root_x] += 1
+        if -self.parent_or_size[root_x] < -self.parent_or_size[root_y]:
+            root_x, root_y = root_y, root_x
+        self.parent_or_size[root_x] += self.parent_or_size[root_y]
+        self.parent_or_size[root_y] = root_x
 
     def same(self, x, y):
         return self.root(x) == self.root(y)
+
+    def size(self, x):
+        return -self.parent_or_size[self.root(x)]
 
 
 # https://gist.github.com/masa-aa/4be96f053457dc60625a3552288fb1e4
