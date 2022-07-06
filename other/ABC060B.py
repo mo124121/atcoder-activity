@@ -1,10 +1,12 @@
-a,b,c=map(int,input().split())
+A, B, C = map(int, input().split())
 
-ret="NO"
+v = A % B
+seen = set()
+while v not in seen:
+    seen.add(v)
+    if v == C:
+        print("YES")
+        exit()
+    v = (v + A) % B
 
-for i in range(1,101):
-    if (a*i)%b==c:
-        ret="YES"
-        break
-
-print(ret)
+print("NO")
