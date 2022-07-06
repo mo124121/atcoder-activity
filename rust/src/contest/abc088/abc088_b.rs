@@ -3,5 +3,7 @@
 use proconio::input;
 
 fn main() {
-    input! {}
+    input! {N:i32,
+    A:[i32;N]}
+    A.sort()
 }

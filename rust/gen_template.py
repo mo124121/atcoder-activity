@@ -26,17 +26,21 @@ if not os.path.exists(dir_path):
 # ソースコードの準備(ファイルのコピー)
 templete_file_path: str = f"{RUST_PATH}/src/contest/template.rs"
 for problem in problems:
-    dst_file_path = f"{RUST_PATH}/src/contest/{contest_name}/main{problem}.rs"
+    dst_file_path = (
+        f"{RUST_PATH}/src/contest/{contest_name}/{contest_name}_{problem}.rs"
+    )
     if not os.path.exists(dst_file_path):
         shutil.copy(templete_file_path, dst_file_path)
 
 
 # cargo.tomlコードの出力
-
-for problem in problems:
-    print(
-        f"""[[bin]]
+with open(f"{RUST_PATH}/Cargo.toml", "a") as f:
+    for problem in problems:
+        f.write(
+            f"""
+[[bin]]
 name = "{contest_name}_{problem}"
-path = "src/contest/{contest_name}/main{problem}.rs"
-    """
-    )
+path = "src/contest/{contest_name}/{contest_name}_{problem}.rs"
+
+"""
+        )

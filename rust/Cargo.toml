@@ -102,5 +102,35 @@ proconio = { version = "=0.3.6", features = ["derive"] }
 #smallvec = "=1.2.0"
 
 [[bin]]
-name = "abc258_a"
-path = "src/contest/abc258/maina.rs"
+name = "abs_a"
+path = "src/contest/abs/abs_a.rs"
+
+[[bin]]
+name = "abc086_a"
+path = "src/contest/abc086/abc086_a.rs"
+
+
+[[bin]]
+name = "abc081_a"
+path = "src/contest/abc081/abc081_a.rs"
+
+
+[[bin]]
+name = "abc081_b"
+path = "src/contest/abc081/abc081_b.rs"
+
+
+[[bin]]
+name = "abc087_b"
+path = "src/contest/abc087/abc087_b.rs"
+
+
+[[bin]]
+name = "abc083_b"
+path = "src/contest/abc083/abc083_b.rs"
+
+
+[[bin]]
+name = "abc088_b"
+path = "src/contest/abc088/abc088_b.rs"
+
