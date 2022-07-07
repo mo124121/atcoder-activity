@@ -149,3 +149,7 @@ path = "src/contest/abc085/abc085_c.rs"
 name = "arc065_a"
 path = "src/contest/arc065/arc065_a.rs"
 
+
+[[bin]]
+name = "arc085_a"
+path = "src/contest/arc085/arc085_a.rs"
