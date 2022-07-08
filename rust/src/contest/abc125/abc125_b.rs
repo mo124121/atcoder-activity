@@ -4,14 +4,12 @@ use proconio::input;
 
 fn main() {
     input! {N:i64}
-    let mut ans = 0;
     let MOD = 998244353;
-    let mut q = 1;
-    while q * q <= N {
-        ans += ((N / q) - q + 2) / 2;
-        ans %= MOD;
-        q += 1;
-    }
+    let ans = (1..)
+        .take_while(|a| a * a <= N)
+        .map(|a| ((N / a) - a + 2) / 2)
+        .sum::<i64>()
+        % MOD;
 
     println!("{}", ans);
 }
