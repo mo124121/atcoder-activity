@@ -114,3 +114,8 @@ path = "src/contest/tokiomarin2020/tokiomarin2020_c.rs"
 [[bin]]
 name = "abc184_d"
 path = "src/contest/abc184/abc184_d.rs"
+
+[[bin]]
+name = "abc259_d"
+path = "src/contest/abc259/abc259_d.rs"
+
