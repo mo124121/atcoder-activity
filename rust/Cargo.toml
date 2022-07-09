@@ -119,3 +119,13 @@ path = "src/contest/abc184/abc184_d.rs"
 name = "abc259_d"
 path = "src/contest/abc259/abc259_d.rs"
 
+
+[[bin]]
+name = "arc143_a"
+path = "src/contest/arc143/arc143_a.rs"
+
+
+[[bin]]
+name = "abc135_c"
+path = "src/contest/abc135/abc135_c.rs"
+

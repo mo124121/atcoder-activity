@@ -1,18 +1,9 @@
-N=int(input())
-P=tuple(map(int,input().split()))
-Q=tuple(map(int,input().split()))
+from itertools import permutations
 
-import itertools
-if P > Q:
-    big = P
-    small =Q
-else:
-    big = Q
-    small = P
 
-count=0
-for pattern in itertools.permutations(range(1,N+1)):
-    if small < pattern <=big:
-        count +=1
+N = int(input())
+P = tuple(map(int, input().split()))
+Q = tuple(map(int, input().split()))
 
-print(count)
+Pseq = list(permutations(list(range(1, N + 1))))
+print(abs(Pseq.index(P) - Pseq.index(Q)))
