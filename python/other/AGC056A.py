@@ -2,17 +2,24 @@ N = int(input())
 
 X = [["."] * N for i in range(N)]
 
-for i in range(N):
-    for j in range(3):
-        X[i][(i * 3 + j) % N] = "#"
+for h in range(N):
+    for w in range(3):
+        X[h][(h * 3 + w) % N] = "#"
 
-if N % 3 != 0:
-    X[1], X[N // 3] = X[N // 3], X[1]
+if N % 3 == 2:
+    h1 = N // 3
+    h2 = 2 * N // 3
+    X[h1 + 1], X[h2 - 1] = X[h2 - 1], X[h1 + 1]
+
+if N % 3 == 1:
+    h1 = N // 3
+    h2 = 2 * N // 3
+    X[h1], X[h2] = X[h2], X[h1]
 
 
-for i in range(N):
-    ans = "".join(X[i])
-    print(ans)
+for x in X:
+    print(*x, sep="")
+
 """
 ループするイメージ
 N=6はある、すくなくともN%6==0のときは埋められる
@@ -23,6 +30,8 @@ N=6はある、すくなくともN%6==0のときは埋められる
 全探索する？11C3^11 間に合わない
 後段に行くほど選択肢は少ない
 
-
+前解いてなかった
+とりあえずだんだんに生成して後で調整する
+可視化して雰囲気を見るのが大事
 
 """
