@@ -1,29 +1,30 @@
-N = input()
+from functools import lru_cache
+
+
+N = int(input())  # 多倍長
 K = int(input())
-D = len(N)
-
-ans = 0
-if K == 1:
-    ans = int(N[0]) + 9 * (D - 1)
-elif K == 2 and D >= K:
-    for d in range(2, D):  # 最大桁-1までの数え上げ
-        ans += 9 * 9 * (d - 1)
-    # 最大桁 最大値以外までの数え上げ
-    ans += (int(N[0]) - 1) * 9 * (D - 1)
-    # 最大値 最大値近辺の数え上げ
-    ans += 1 * 9 * (D - 2)
-    ans += int(N[1])
-elif K == 3 and D >= K:
-    for d in range(3, D):
-        ans += 9 * 9 * 9 * (d - 1) * (d - 2) // 2
-    ans += (int(N[0]) - 1) * 9 * 9 * (D - 1) * (D - 2) // 2
-    if int(N[1]) > 0:
-        ans += 1 * (int(N[1]) - 1) * 9 * (D - 2)
-        ans += 1 * 1 * 9 * (D - 3)
-        ans += 1 * 1 * int(N[2])
 
 
-print(ans)
+@lru_cache(maxsize=None)
+def rec(n, k):
+    if n < 10:
+        if k == 0:
+            return 1
+        if k == 1:
+            return n
+        return 0
+
+    q, r = divmod(n, 10)
+    ret = 0
+    if k > 0:
+        ret += r * rec(q, k - 1)
+        ret += (9 - r) * rec(q - 1, k - 1)
+    ret += rec(q, k)
+
+    return ret
+
+
+print(rec(N, K))
 
 """
 Kの大きさ？で再帰的構造がありそう
@@ -41,5 +42,9 @@ Kの大きさ？で再帰的構造がありそう
 990*
 99*0
 
+数字合わないので解説見る
+桁DPとな…
+
+その前に再帰で解いてみる
 
 """

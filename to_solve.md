@@ -77,6 +77,11 @@ https://tubo28.me/compprog/algorithm/minball/
 
 - ABC231-F
 
+## 数え上げ
+
+- ABC154-E
+- ABC138-F
+
 ## その他
 
 ### 時間なくて届かなかったもの
