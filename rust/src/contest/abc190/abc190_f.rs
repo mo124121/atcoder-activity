@@ -58,13 +58,16 @@ fn main() {
     let mut ans = 0;
     let mut ft = Fenwick::from_slice(&vec![0_i32; N + 1]);
     for j in 0..N {
-        ans += j as i32 - ft.prefix_sum(A[j]);
-        ft.add(A[j], 1);
+        ans += j as i32 - ft.prefix_sum(A[j] + 1);
+        println!("{:?}", ft.table);
+        ft.add(A[j] + 1, 1);
+        println!("{:?}", ft.table);
     }
 
     println!("{}", ans); //k=0
-    for k in 1..N {
-        ans += N as i32 - ft.prefix_sum(A[k]) - ft.prefix_sum(A[k] - 1);
+    for k in 0..N - 1 {
+        ans += N as i32 - ft.prefix_sum(A[k] + 1) - ft.prefix_sum(A[k]);
         println!("{}", ans);
     }
 }
+/*たぶんバグってる */

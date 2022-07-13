@@ -39,3 +39,5 @@ impl Fenwick {
         Self { table }
     }
 }
+
+/*たぶんバグってる */
