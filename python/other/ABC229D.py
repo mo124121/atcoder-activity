@@ -1,24 +1,18 @@
-from collections import deque
-
-
 S = input()
 K = int(input())
 
-S = deque(S)
-q = deque()
-total = 0
+
+r = 0
 ret = 0
-while S:
-    c = S.popleft()
-    q.append(c)
-    total += 1
-    if c == ".":
-        K -= 1
-    while K < 0:
-        cq = q.popleft()
-        if cq == ".":
-            K += 1
-        total -= 1
-    ret = max(ret, total)
+for l in range(len(S)):
+    while K >= 0 and r < len(S):
+        if S[r] == ".":
+            if K == 0:
+                break
+            K -= 1
+        r += 1
+    ret = max(ret, r - l)
+    if S[l] == ".":
+        K += 1
 
 print(ret)

@@ -1,32 +1,34 @@
-from collections import deque
-
-
 N, R = map(int, input().split())
-S = list(input())
-prev = 0
+S = input()
+T = []
+for i, s in enumerate(S):
+    if s == ".":
+        T.append(i)
+if not T:
+    print(0)
+    exit()
+
+final_pos = max(T[-1] - R + 1, 0)
+now = 0
+filled = -1
 ret = 0
-r = 0
-shot = 0
-while "." in S:
-    while len(S) > 0 and "o" == S[-1]:
-        S.pop()
-    r = max(r, len(S) - R)
-    S = S[: -min(R, len(S))]
-    shot += 1
-ret = r + shot
+for t in T:
+    if t >= final_pos:
+        ret += final_pos - now
+        ret += 1
+        break
+    if t <= filled:
+        continue
+    # move
+    ret += t - now
+    now = t
+    # shoot
+    filled = now + R - 1
+    ret += 1
 
 print(ret)
 
 """
-少し条件分岐が複雑
-面倒だからごり押しする
-
-あー書いてくと面倒
-
-後ろからやるのがいいか？
-
-AC
-解説後
-右端を見つけた後で、左から貪欲にやればよろしい
+最後に塗るべきところまでは移動しなくていい
 
 """
