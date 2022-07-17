@@ -117,3 +117,7 @@ https://tubo28.me/compprog/algorithm/minball/
 
 - ABC198-D
 - ABC257-D
+
+### 解説を理解すべき＆最速コードをよく読むべきもの
+
+- ABC015-D

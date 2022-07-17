@@ -105,3 +105,8 @@ proconio = { version = "=0.3.6", features = ["derive"] }
 name = "abc190_f"
 path = "src/contest/abc190/abc190_f.rs"
 
+
+[[bin]]
+name = "abc015_d"
+path = "src/contest/abc015/abc015_d.rs"
+

@@ -1,14 +1,8 @@
-N,K = map(int,input().split())
-
-h = [0]*N
-for i in range(N):
-    h[i]=int(input())
-
-h.sort()
-
-ret=1000000000
-for i in range(N-K+1):
-    if ret > h[i+K-1]-h[i]:
-        ret = h[i+K-1]-h[i]
+N, K = map(int, input().split())
+H = [int(input()) for _ in range(N)]
+H.sort()
+ret = 10**18
+for i in range(N - K + 1):
+    ret = min(ret, H[i + K - 1] - H[i])
 
 print(ret)

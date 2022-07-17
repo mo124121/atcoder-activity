@@ -1,19 +1,16 @@
-from itertools import product
-
-
 N, K = map(int, input().split())
-T = [list(map(int, input().split())) for _ in range(N)]
 
-flag = False
+dp = set()
+dp.add(0)
 
-for cs in product(range(K), repeat=N):
-    tmp = T[0][cs[0]]
-    for i in range(1, N):
-        tmp ^= T[i][cs[i]]
-    if tmp == 0:
-        flag = True
-
-if flag:
+for i in range(N):
+    nxt = set()
+    T = list(map(int, input().split()))
+    for v in dp:
+        for t in T:
+            nxt.add(t ^ v)
+    dp = nxt
+if 0 in nxt:
     print("Found")
 else:
     print("Nothing")
