@@ -112,6 +112,7 @@ https://tubo28.me/compprog/algorithm/minball/
 
 - ARC119-B
 - yahoo procon 2019 qual D
+- ABC041-D
 
 ### 人のコードを見て洗練させたいもの
 
