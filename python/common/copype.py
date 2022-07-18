@@ -72,6 +72,10 @@ def gcd(x, y):
         return gcd(y, x % y)
 
 
+def lcm(x, y):
+    return x * y // gcd(x, y)
+
+
 def tousa_sum(a, d, n):
     # 初項a,交差d,項数n
     return n * (2 * a + (n - 1) * d) // 2

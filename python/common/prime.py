@@ -30,17 +30,24 @@ while i**2 <= N:
 # https://muhenkou.net/?p=7691#%E7%B4%A0%E5%9B%A0%E6%95%B0%E5%88%86%E8%A7%A3
 # 素因数分解 O(√N)???
 N = int(input())
-i = 2
-ans = dict()
-n = N
-while i * i <= N:
-    while n % i == 0:
-        n = n // i
-        if i in ans:
-            ans[i] += 1
-        else:
-            ans[i] = 1
-    i += 1
-if n != 1:
-    ans[n] = 1
+
+
+def prime_factorization(N):
+    i = 2
+    ans = dict()
+    n = N
+    while i * i <= N:
+        while n % i == 0:
+            n = n // i
+            if i in ans:
+                ans[i] += 1
+            else:
+                ans[i] = 1
+        i += 1
+    if n != 1:
+        ans[n] = 1
+    return ans
+
+
+ans = prime_factorization(N)
 print(list(ans.items()))
