@@ -5,24 +5,14 @@ for k in range(1, N + 1):
         print("Yes")
         print(k + 1)
         ret = [[] for _ in range(k + 1)]
-        diag = [[] for _ in range(k)]
-        v = 1
-        for i in range(k):
-            for j in range(i + 1):
-                diag[i].append(v)
-                v += 1
-
-        for i in range(k):
+        edge_i = 1
+        for i in range(k + 1):
             for j in range(i):
-                ret[i].append(diag[i][j])
-
-        for i in range(k):
-            for j in range(i, k):
-                ret[i].append(diag[j][i])
-        ret[k] = [i * (i + 1) // 2 for i in range(1, k + 1)]
-
+                ret[i].append(edge_i)
+                ret[j].append(edge_i)
+                edge_i += 1
         for line in ret:
-            print(k, *line)
+            print(len(line), *line)
 
         exit()
     elif k * (k + 1) // 2 > N:
@@ -74,4 +64,6 @@ print("No")
 解説読んだ、天才すぎる
 
 逆三角形のイメージを持つこと面白い
+
+別解の完全グラフはとても面白い
 """
