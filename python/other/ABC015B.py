@@ -1,10 +1,11 @@
 N = int(input())
 A = list(map(int, input().split()))
 
-sum_bug = 0
-sum_soft = 0
+tot = 0
+count = 0
 for a in A:
-    if a != 0:
-        sum_bug += a
-        sum_soft += 1
-print((sum_bug + sum_soft - 1) // sum_soft)
+    if a > 0:
+        tot += a
+        count += 1
+
+print((tot + count - 1) // count)
