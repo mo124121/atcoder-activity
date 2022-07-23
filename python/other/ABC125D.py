@@ -1,30 +1,11 @@
 N = int(input())
 A = list(map(int, input().split()))
-minus_count = 0
-for a in A:
-    if a < 0:
-        minus_count += 1
-B = [abs(A[i]) for i in range(N)]
 
-B.sort()
+m_count = sum(int(a < 0) for a in A)
+abs_min = min(abs(a) for a in A)
+ret = sum(abs(a) for a in A)
 
-if minus_count % 2 == 0:
-    print(sum(B))
-else:
-    print(sum(B) - 2 * min(B))
+if m_count % 2:
+    ret -= abs_min * 2
 
-"""
-負数が偶数 -> 全部のabs
-負数が奇数 ->　min(abs(A))だけマイナス、他プラス　
-
-なぜそう考えたか整理する
-・項の正負を制御することによって、スコアを変える
-・スコアに対しては、項同士の相互作用はない
-・操作としては、複数の項を同時に操作する必要がある
-・負が隣り合っていれば両方とも正にできる
-・隣り合ってないなら正負を反転して負がある位置を移動させることができる
-・上記二つから、負がどこにあっても移動でき、負が並ぶところまで好きに操作でき消しこめる
-・したがい、最終的な個数として負数が偶数なら消しこめるし、そうでないなら消しこめない
-・消しこめないときは、一番損をしないように値を一つ選んで負数にする
-
-"""
+print(ret)

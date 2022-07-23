@@ -15,7 +15,7 @@ class Binominal:
         self.mod = mod
         self.N = N
 
-    def calc(self, n, r):
+    def binominal(self, n, r):
         if r < 0 or n < r:
             return 0
         r = min(r, n - r)
@@ -23,22 +23,14 @@ class Binominal:
 
 
 N, K = map(int, input().split())
+MOD = 10**9 + 7
+bn = Binominal(N + K, MOD)
+if N > K:
+    print(bn.binominal(N + K - 1, K))
+    exit()
 
-if K >= N:
-    bn = Binominal(N, 10**9 + 7)
-    ret = bn.calc(N, K % N)
-else:
-    bn = Binominal(N + K, 10**9 + 7)
-    ret = bn.calc(N + K - 1, K)
+base = K // N
+r = K % N
+
+ret = bn.binominal(N, r)
 print(ret)
-
-"""
-考察
-偏りがないのが一番でかくなるはず
-NC(KmodN)
-
-0の全列挙がわからん
-x0x0xx
-(N+1)CK ???
-
-"""
