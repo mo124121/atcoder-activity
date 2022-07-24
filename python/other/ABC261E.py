@@ -1,21 +1,19 @@
 N, C = map(int, input().split())
 SIZE = 30
-op = [[0, 1] for _ in range(SIZE)]
+m = (2 << SIZE) - 1
+one = m
+zero = 0
 
 for i in range(N):
     t, a = map(int, input().split())
-    for bit in range(SIZE):
-        if t == 1:
-            op[bit][0] &= a >> bit & 1
-            op[bit][1] &= a >> bit & 1
-        elif t == 2:
-            op[bit][0] |= a >> bit & 1
-            op[bit][1] |= a >> bit & 1
-        else:
-            op[bit][0] ^= a >> bit & 1
-            op[bit][1] ^= a >> bit & 1
-    X = 0
-    for bit in range(SIZE):
-        X += op[bit][C >> bit & 1] << bit
-    C = X
+    if t == 1:
+        one &= a
+        zero &= a
+    elif t == 2:
+        one |= a
+        zero |= a
+    else:
+        one ^= a
+        zero ^= a
+    C = (C & one) | ((C ^ m) & zero)
     print(C)
